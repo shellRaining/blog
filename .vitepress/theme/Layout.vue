@@ -1,24 +1,17 @@
 <script setup lang="ts">
-import { useData } from "vitepress";
-import NOTFOUND404 from "./NOTFOUND404.vue";
+import DefaultTheme from "vitepress/theme";
+import Home from "./Home/Home.vue";
+import Page from "./Page/Page.vue";
+import Hero from "./Hero/Hero.vue";
 
-const { site, frontmatter, page } = useData();
+const { Layout } = DefaultTheme;
 </script>
 
 <template>
-  <NOTFOUND404 v-if="page.isNotFound"></NOTFOUND404>
-  <div v-else-if="frontmatter.home">
-    <h1>{{ site.title }}</h1>
-    <p>{{ site.description }}</p>
-    <ul>
-      <li><a href="/markdown-examples.html">Markdown Examples</a></li>
-      <li><a href="/api-examples.html">API Examples</a></li>
-    </ul>
-  </div>
-  <div v-else>
-    <a href="/">Home</a>
-    <Content />
-  </div>
+  <Layout>
+    <template #home-hero-before><Hero /></template>
+    <template #home-features-after> <Page /></template>
+  </Layout>
 </template>
 
 <style scoped></style>
