@@ -1,12 +1,21 @@
 {
-  "devDependencies": {
-    "typescript": "^5.2.2",
-    "vitepress": "^1.0.0-rc.20",
-    "vue": "^3.3.4"
-  },
+  "name": "blog-theme",
+  "version": "0.0.0",
+  "author": "shellraining <shellraining@gmail.com>",
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "dayjs": "latest",
+    "markdown-it-sub": "^2.0.0",
+    "markdown-it-wikilinks": "^1.4.0",
+    "viewerjs": "^1.11.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vitepress": "latest",
+    "vue": "^3.4.26"
   }
 }
