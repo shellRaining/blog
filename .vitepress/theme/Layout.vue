@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-
 import NOTFOUND404 from "./NOTFOUND404.vue";
 
-// https://vitepress.dev/reference/runtime-api#usedata
 const { site, frontmatter, page } = useData();
 </script>
 
