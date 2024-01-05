@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "author": "shellraining <shellraining@gmail.com>",
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vitepress": "^1.0.0-rc.20",
-    "vue": "^3.3.4"
+    "typescript": "^5.3.3",
+    "vitepress": "1.0.0-rc.35",
+    "vue": "^3.4.5"
   },
   "scripts": {
     "docs:dev": "vitepress dev",
