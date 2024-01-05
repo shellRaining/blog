@@ -12,5 +12,7 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dayjs": "^1.11.10"
+  }
 }
