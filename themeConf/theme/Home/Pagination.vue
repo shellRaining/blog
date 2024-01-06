@@ -28,7 +28,7 @@ function go(pageIdx: number) {
     <button
       class="pagination-btn-next"
       @click="go(curPage + 1)"
-      v-if="curPage < pageNum"
+      v-show="curPage < pageNum"
     >
       Next page
     </button>
@@ -70,12 +70,12 @@ button:hover::after {
   transform-origin: bottom left;
 }
 
-.pagination-btn-prev {
+.pagination > *:first-child {
   position: absolute;
   left: 0;
 }
 
-.pagination-btn-next {
+.pagination > *:last-child {
   position: absolute;
   right: 0;
 }

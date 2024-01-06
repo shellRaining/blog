@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { useData } from "vitepress";
 import { ref } from "vue";
 import Avator from "./Avator.vue";
 
-const { theme } = useData();
 const heroName = ref("始不垂翅，终能奋翼");
 </script>
 
