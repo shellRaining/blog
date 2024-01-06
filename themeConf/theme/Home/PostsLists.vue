@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { data as posts } from "./posts.data.mts";
+import { data as posts } from "../posts.data.mts";
 import PostCard from "./PostCard.vue";
 import Pagination from "./Pagination.vue";
 import { useData } from "vitepress";

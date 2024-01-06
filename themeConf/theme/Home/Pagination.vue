@@ -49,6 +49,7 @@ button {
   cursor: pointer;
   font-size: 1.2rem;
   font-weight: bold;
+  position: relative; /* TODO: why it works? */
 }
 
 button::after {
