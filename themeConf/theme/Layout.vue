@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import DefaultTheme from "vitepress/theme";
 import Hero from "./Hero/Hero.vue";
-import Avator from './Hero/Avator.vue'
 import Page from "./Home/PostsLists.vue";
 import Title from "./Doc/Title.vue";
 import Category from "./Doc/Category.vue";
@@ -24,8 +23,7 @@ function back() {
         <button @click="back">cd ··</button>
       </div>
     </template>
-    <template #home-hero-before><Avator /> </template>
-    <template #home-hero-info><Hero /></template>
+    <template #home-hero-before><Hero /> </template>
     <template #home-features-after> <Page /></template>
   </Layout>
 </template>

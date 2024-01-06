@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { useData } from "vitepress";
 import { ref } from "vue";
+import Avator from "./Avator.vue";
 
-const { frontmatter } = useData();
-const heroName = ref(frontmatter.value.hero.name ?? "始不垂翅，终能奋翼");
+const { theme } = useData();
+const heroName = ref("始不垂翅，终能奋翼");
 </script>
 
 <template>
+  <Avator class="hero_img"/>
   <div class="hero">
     <h1 class="hero__title">{{ heroName }}</h1>
     <p class="hero__description">shellRaining blog</p>
@@ -14,6 +16,9 @@ const heroName = ref(frontmatter.value.hero.name ?? "始不垂翅，终能奋翼
 </template>
 
 <style scoped>
+.hero_img {
+  margin: 50px;
+}
 .hero {
   padding: 0 1rem;
   margin: 0 auto;
@@ -22,12 +27,13 @@ const heroName = ref(frontmatter.value.hero.name ?? "始不垂翅，终能奋翼
 
   .hero__title {
     margin: 0;
-    font-size: 3rem;
+    font-size: 2.5rem;
+    line-height: 1.5;
   }
   .hero__description {
-    margin: 20px 0;
     font-size: 1.5rem;
     color: #666;
+    line-height: 1;
   }
 
   @media (max-width: 768px) {
