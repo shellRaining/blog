@@ -4,6 +4,7 @@ export default defineConfig({
   title: "blog",
   description: "A VitePress Site",
   themeConfig: {
+    logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",
     search: {
       provider: "local",
     },

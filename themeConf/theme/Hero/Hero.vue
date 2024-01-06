@@ -1,8 +1,14 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useData } from "vitepress";
+import { ref } from "vue";
+
+const { frontmatter } = useData();
+const heroName = ref(frontmatter.value.hero.name ?? "始不垂翅，终能奋翼");
+</script>
 
 <template>
   <div class="hero">
-    <h1 class="hero__title">始不垂翅，终能奋翼</h1>
+    <h1 class="hero__title">{{ heroName }}</h1>
     <p class="hero__description">shellRaining blog</p>
   </div>
 </template>
