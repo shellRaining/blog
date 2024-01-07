@@ -19,8 +19,8 @@ function go(pageIdx: number) {
   <div class="pagination">
     <button
       class="pagination-btn-prev"
-      v-show="curPage > 1"
       @click="go(curPage - 1)"
+      :style="{ visibility: curPage === 1 ? 'hidden' : 'visible' }"
     >
       Previous page
     </button>
@@ -28,7 +28,7 @@ function go(pageIdx: number) {
     <button
       class="pagination-btn-next"
       @click="go(curPage + 1)"
-      v-show="curPage < pageNum"
+      :style="{ visibility: curPage === pageNum ? 'hidden' : 'visible' }"
     >
       Next page
     </button>
@@ -40,7 +40,6 @@ function go(pageIdx: number) {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   padding: 1rem 0;
 }
 
@@ -71,12 +70,10 @@ button:hover::after {
 }
 
 .pagination > *:first-child {
-  position: absolute;
-  left: 0;
+  margin-right: auto;
 }
 
 .pagination > *:last-child {
-  position: absolute;
-  right: 0;
+  margin-left: auto;
 }
 </style>

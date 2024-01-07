@@ -10,7 +10,6 @@ const test = gallerys[0];
     <p class="post-date">{{ test.frontmatter.date }}</p>
   </a>
   <a href="./Img">this is a test</a>
-  <!-- <pre>{{ gallerys }}</pre> -->
 </template>
 
 <style scoped></style>
