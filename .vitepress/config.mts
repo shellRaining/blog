@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "blog",
+  lang: "zh-cn",
   description: "A VitePress Site",
   themeConfig: {
     logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",

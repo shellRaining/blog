@@ -9,8 +9,8 @@ date: 2024-01-07
 
 1. 组合式 API，尽管 Vue `2.7` 目前也已经支持使用 Composition API
 1. 单文件组件语法 (SFC)，还有其 setup 语法糖
-1. `<Teleport>`， `Suspense` 组件等
-1. `Fragment` 片段，主要是针对 `template` 标签只能够有一个根元素的问题，这个问题和透传有关系，当使用这个特性的时候，需要显式定义 attribute 应该分布在哪里
+1. `<Teleport>`， `<Suspense>` 组件等
+1. `Fragment` 片段，主要是针对 `<template>` 标签只能够有一个根元素的问题，这个问题和透传有关系，当使用这个特性的时候，需要显式定义 attribute 应该分布在哪里
    ```vue
    <!-- Layout.vue -->
    <template>
