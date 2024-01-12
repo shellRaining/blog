@@ -2,6 +2,7 @@
 title: javascript Array 方法
 tag:
   - javascript
+  - interview
 date: 2024-01-09
 ---
 

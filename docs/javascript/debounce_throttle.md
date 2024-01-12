@@ -2,6 +2,7 @@
 title: 节流和防抖
 tag:
   - javascript
+  - interview
 date: 2024-01-08
 ---
 
