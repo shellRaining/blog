@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import markdownItSub from "markdown-it-sub";
 
 export default defineConfig({
   title: "blog",
@@ -18,11 +19,11 @@ export default defineConfig({
         text: "🔖Tags",
         link: "/tags",
       },
-      // TODO: need implement
-      // {
-      //   text: "📃Archives",
-      //   link: "/archives",
-      // },
     ],
   },
+  markdown: {
+    config: (md) => {
+      md.use(markdownItSub)
+    }
+  }
 });

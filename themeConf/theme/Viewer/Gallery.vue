@@ -4,19 +4,22 @@ import { onMounted } from "vue";
 import "viewerjs/dist/viewer.css";
 
 onMounted(() => {
-  new Viewer(document.getElementById("images"), {
-    toolbar: {
-      prev: {
-        show: 1,
-        size: "large",
+  const el = document.getElementById("images");
+  if (el) {
+    new Viewer(el, {
+      toolbar: {
+        prev: {
+          show: 1,
+          size: "large",
+        },
+        next: {
+          show: 1,
+          size: "large",
+        },
       },
-      next: {
-        show: 1,
-        size: "large",
-      },
-    },
-    movable: false,
-  });
+      movable: false,
+    });
+  }
 });
 </script>
 
