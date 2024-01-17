@@ -14,15 +14,18 @@ function back() {
 
 <template>
   <Layout>
+    <!-- doc list -->
     <template #doc-before>
       <Title />
       <Category />
     </template>
+
+    <!-- doc part -->
     <template #doc-after>
-      <div>
-        <button @click="back">cd ··</button>
-      </div>
+      <button @click="back" style="display: block">cd ··</button>
     </template>
+
+    <!-- hero part -->
     <template #home-hero-before><Hero /> </template>
     <template #home-features-after> <Page /></template>
   </Layout>
