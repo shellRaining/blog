@@ -1,57 +1,31 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, useSlots } from "vue";
+import { onMounted, ref, useSlots } from "vue";
+import { truncate } from "./truncate";
+import { defaultPageStyle } from "./defaultPageStyle";
 
-const { width, height, backgroundColor, color, fontSize } = defineProps<{
-  width?: number;
-  height?: number;
-  backgroundColor?: string;
-  color?: string;
-  fontSize?: string;
-}>();
-
-const pageStyle = reactive({
-  width: width ?? "300px",
-  height: height ?? "400px",
-  backgroundColor: backgroundColor ?? "#f2eecb",
-  color: color ?? "#000",
-  fontSize: fontSize ?? "1rem",
+// control page style
+const props = defineProps();
+const userPageStyle = Object.assign({ ...props }, defaultPageStyle);
+const pageStyle = ref({
+  width: userPageStyle.width + "px",
+  height: userPageStyle.height + "px",
+  backgroundColor: userPageStyle.backgroundColor,
+  color: userPageStyle.color,
+  fontSize: userPageStyle.fontSize + "rem",
+  padding: userPageStyle.padding,
 });
-console.log(pageStyle);
 
+// control page text truncate
+const text = (useSlots().default?.()[0].children as string) || "";
+console.log(text);
+
+const texts = ref(truncate(text, userPageStyle));
+
+// control page flip
 interface PageHTMLElement extends HTMLElement {
   pageIdx: number;
 }
-
 let pages = ref<HTMLElement | null>(null);
-const text = (useSlots().default?.()[0].children as string) || "";
-
-const div = document.createElement("div");
-div.className = "test";
-document.body.appendChild(div);
-const texts = ref(truncate(text, div));
-document.body.removeChild(div);
-
-// TODO: 优化
-function truncate(text: string, el: HTMLElement): string[] {
-  const boxHeight = height ?? 400;
-  const result = [];
-  while (text.length > 0) {
-    let low = 0;
-    let high = text.length;
-    while (low < high) {
-      let mid = Math.floor((low + high + 1) / 2);
-      el.innerText = text.substring(0, mid);
-      if (el.scrollHeight > boxHeight) {
-        high = mid - 1;
-      } else {
-        low = mid;
-      }
-    }
-    result.push(text.substring(0, low));
-    text = text.substring(low);
-  }
-  return result;
-}
 
 onMounted(() => {
   const pageNum = pages.value?.children.length ?? 0;
@@ -100,19 +74,9 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-.test {
-  width: 300px;
-  height: 400px;
-  white-space: pre-wrap;
-  padding: 16px;
-}
-</style>
-
 <style scoped>
 li {
   list-style: none;
-  padding: 1rem;
 }
 
 .book {
