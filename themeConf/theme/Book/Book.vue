@@ -2,23 +2,25 @@
 import { onMounted, ref, useSlots } from "vue";
 import { truncate } from "./truncate";
 import { defaultPageStyle } from "./defaultPageStyle";
+import { deleteUndefinedFields } from "../../shared/general";
 
 // control page style
-const props = defineProps();
-const userPageStyle = Object.assign({ ...props }, defaultPageStyle);
-const pageStyle = ref({
-  width: userPageStyle.width + "px",
-  height: userPageStyle.height + "px",
-  backgroundColor: userPageStyle.backgroundColor,
-  color: userPageStyle.color,
-  fontSize: userPageStyle.fontSize + "rem",
-  padding: userPageStyle.padding,
-});
+const props = defineProps<{
+  width?: number;
+  height?: number;
+  backgroundColor?: string;
+  color?: string;
+  fontSize?: string;
+  padding?: string;
+}>();
+const userPageStyle = Object.assign(
+  defaultPageStyle,
+  deleteUndefinedFields({ ...props }),
+);
 
 // control page text truncate
+// TODO: this should be hack
 const text = (useSlots().default?.()[0].children as string) || "";
-console.log(text);
-
 const texts = ref(truncate(text, userPageStyle));
 
 // control page flip
@@ -62,12 +64,7 @@ onMounted(() => {
 <template>
   <div class="book">
     <div id="pages" class="pages close" ref="pages">
-      <li
-        class="page"
-        :style="pageStyle"
-        v-for="(text, index) in texts"
-        :key="index"
-      >
+      <li class="page" v-for="(text, index) in texts" :key="index">
         {{ text }}
       </li>
     </div>
@@ -80,25 +77,19 @@ li {
 }
 
 .book {
-  --page-width: 300px;
-  --page-height: 400px;
-  --page-bg-color: #f2eecb;
-  --page-font-color: #000;
-  --page-font-size: 1rem;
-
   perspective: 250vw;
 
   .pages {
     position: relative;
-    width: calc(var(--page-width) * 2);
-    height: var(--page-height);
     backface-visibility: hidden;
     transform-style: preserve-3d;
     left: 0;
     transition: left 1.4s ease-in-out;
+    width: v-bind('userPageStyle.width * 2 + "px"');
+    height: v-bind('userPageStyle.height + "px"');
 
     &.close {
-      left: calc(-1 * var(--page-width));
+      left: v-bind('userPageStyle.width * -1 + "px"');
     }
 
     .page {
@@ -109,6 +100,12 @@ li {
       backface-visibility: hidden;
       transform-style: preserve-3d;
       white-space: pre-wrap;
+      width: v-bind('userPageStyle.width + "px"');
+      height: v-bind('userPageStyle.height + "px"');
+      background-color: v-bind("userPageStyle.backgroundColor");
+      color: v-bind("userPageStyle.color");
+      font-size: v-bind("userPageStyle.fontSize");
+      padding: v-bind("userPageStyle.padding");
 
       &:nth-child(odd) {
         right: 0;
