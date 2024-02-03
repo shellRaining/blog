@@ -5,7 +5,7 @@
   "devDependencies": {
     "typescript": "^5.3.3",
     "vitepress": "1.0.0-rc.35",
-    "vue": "^3.4.7"
+    "vue": "^3.4.15"
   },
   "scripts": {
     "docs:dev": "vitepress dev",
@@ -13,9 +13,10 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "dayjs": "^1.11.10",
+    "dayjs": "^.11.10",
     "markdown-it-sub": "^2.0.0",
-    "vexip-ui": "^2.2.24",
+    "markdown-it-wikilinks": "^1.4.0",
+    "vexip-ui": "^2.3.1",
     "viewerjs": "^1.11.6"
   }
 }

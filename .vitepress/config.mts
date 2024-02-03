@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import markdownItSub from "markdown-it-sub";
+import markdownItWikilinksFn from "markdown-it-wikilinks";
 
 export default defineConfig({
   title: "blog",
@@ -23,7 +24,8 @@ export default defineConfig({
   },
   markdown: {
     config: (md) => {
-      md.use(markdownItSub)
-    }
-  }
+      md.use(markdownItSub);
+      md.use(markdownItWikilinksFn());
+    },
+  },
 });

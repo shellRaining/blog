@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import { onContentUpdated } from "vitepress";
+import { onContentUpdated, useData } from "vitepress";
 import { shallowRef, ref } from "vue";
 import { getHeaders } from "./utils";
 import type { HeaderInfo } from "./utils";
 
 const headers = shallowRef<HeaderInfo[]>([]);
 const showIndent = ref(false);
+const pageData = useData().page;
+const { frontmatter } = pageData.value;
+console.log(frontmatter);
 
 onContentUpdated(() => {
   headers.value = getHeaders();
@@ -17,7 +20,10 @@ onContentUpdated(() => {
 
 <template>
   <!-- TODO: refactor -->
-  <div class="category__wrapper" v-if="headers.length > 0">
+  <div
+    class="category__wrapper"
+    v-if="headers.length > 0 && (frontmatter.openCategory ?? true)"
+  >
     <ul class="category-ul__level2">
       <li class="header" v-for="item in headers">
         <a :href="item.link" class="header__level2" v-if="item.level === 2">{{
