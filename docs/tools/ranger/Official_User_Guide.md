@@ -1,8 +1,8 @@
 ---
-title: Official User Guide
+title: ranger 官方文档
 tag:
   - ranger
-date: 2024-02-01
+date: 2024-02-03
 openCategory: false
 ---
 
@@ -12,11 +12,13 @@ ranger 的主要窗口默认由三个面板组成（顺便说一句，这被称�
 
 中间的负责展示当前目录，左侧负责展示父目录，当前目录被高亮，右侧的负责展示子目录内容或者对内容进行预览
 
-如果你很熟悉 [vim](https://www.vim.org)，你应该会对 ranger 的 UI 操作感到熟悉。ranger 使用 `hjkl` 键进行导航，并且从 vim 借鉴了许多习惯。例如: `yy` (在 vim 中复制行) 复制文件，`pp` 粘贴文件，`dd` 剪切文件。更复杂的功能可以通过 `:` (冒号) 调用命令行来调用。
+如果你很熟悉 vim，你应该会对 ranger 的 UI 操作感到熟悉。ranger 使用 `hjkl` 键进行导航，并且从 vim 借鉴了许多习惯。例如: `yy` (在 vim 中复制行) 复制文件，`pp` 粘贴文件，`dd` 剪切文件。更复杂的功能可以通过 `:` (冒号) 调用命令行来调用。
 
 当前文件的属性可以在底部看到，当前目录的路径可以在顶部看到。
 
 `:`(冒号) 打开 ranger 的控制台 - 在这里你可以手动运行命令。
+
+<img src='https://raw.githubusercontent.com/shellRaining/img/main/2402/ranger_UI.png'>
 
 ## 基本操作
 
@@ -29,7 +31,7 @@ ranger 的主要窗口默认由三个面板组成（顺便说一句，这被称�
 更多有用的键位
 
 - `i` 查看文件或者退出查看文件。查看文件意味着全屏显示当前文件的预览，可以滚动查看。
-- `q` 退出。你可以使用这个键关闭当前标签，退出查看或者退出 ranger 如果这是最后一个标签。
+- `q` 退出。你可以使用这个键关闭当前标签，如果是最后一个标签，则关闭 ranger
 
 ## 键位绑定和提示
 
@@ -155,7 +157,7 @@ __TIP 2:__ 你也可以使用 `dU` 来查看文件夹的列表，按大小排序
 
 ## 文件操作
 
-### Opening, moving, copy-pasting
+### 复制和移动
 
 要打开一个文件并让 ranger 选择打开它的程序(通过 [`rifle`](#Rifle))，只需按 `Enter` 键。要自己选择，按 `r` 键，然后从列表中选择或者输入你想要使用的程序。你也可以使用 `:open_with` 命令。
 
@@ -171,8 +173,6 @@ mime ^image, has kolourpaint, X, flag f = kolourpaint -- "$@"
 
 (要复制目录，文件名，或者文件路径作为文本到你的剪贴板，你需要安装 [xclip](https://github.com/astrand/xclip)，[xsel](http://www.vergenet.net/~conrad/software/xsel/) 或者 [pbcopy](https://www.unix.com/man-page/all/1/pbcopy/) (在使用 macOS 时)，分别使用 `yd`，`yn` 和 `yp`
 
-复制目录，文件名，或者文件路径。复制文件仍然是 ranger 内部的操作。
-
 移动文件和复制文件的操作几乎没有什么区别: 只需在开始使用 `dd` 而不是 `yy`。
 
 要复制/移动多个文件，只需使用 `Space` 键标记它们，然后使用 `dd`/`yy`。如果你想操作存储在不同目录中的多个文件，你可以使用 `ya`/`da` 将它们添加到要复制/移动的文件列表中，然后再粘贴它们。
@@ -181,15 +181,13 @@ mime ^image, has kolourpaint, X, flag f = kolourpaint -- "$@"
 
 如果你想从一个 ranger 实例复制文件到另一个 ranger 实例，在一个实例中输入 `:save_copy_buffer`，在另一个实例中输入 `:load_copy_buffer`。这种方法也可以用于导出文件列表。它们被保存在文件 `~/.config/ranger/copy_buffer` 中。
 
-#### Rifle
-
+::: info
 `rifle` 是一个强大的智能文件打开器，它与 ranger 捆绑在一起。它试图根据文件的 MIME 类型，扩展名，可用程序和其他一些因素来猜测它应该用什么程序打开给定的文件。它是通过 `rifle.conf` 文件配置的。它在 ranger 内部使用，但也可以作为一个独立的程序使用。
+:::
 
 ### 重命名
 
 要重命名一个文件，只需高亮它，然后按 `cw` 就像你在 vim 中改变一个单词一样，在屏幕底部会出现 `:rename` 命令，等待新的文件名，输入它然后按 `Enter`。你也可以在重命名时使用 `%s`，例如，如果你只想改变文件的扩展名，你可以使用 `:rename %s.txt`。还有 `I` 和 `A` 键绑定，它们分别在文件名的开始和结尾打开控制台，用于重命名。
-
-### 批量重命名
 
 ranger 支持使用 `:bulkrename` 命令进行批量文件重命名。标记你想要重命名的文件，然后调用 `:bulkrename`。它应该会在你的文本编辑器中打开一个包含这些文件的列表的文件(使用 `rifle` 确定)，你可以自由地在那个文件中更改文件名。当你完成后，保存文件并关闭编辑器。ranger 将在几秒钟内显示你将要发生的预览。
 
@@ -237,7 +235,5 @@ ranger 的元信息功能是一个全新的功能。它可以用来为任何文�
 - `mtime`: 显示文件的修改时间
 - `sizemtime`: 显示文件的大小和修改时间
 - `metatitle`: 请参考下面的内容。
-
-最后是 `metatitle` 行模式，对于组织各种文档非常方便: 书籍，电影，图片等。它基于文件的元数据显示文件。当前的格式是: `[[year - ]title] alignment [authors]`。如果括号中的内容为空，它会被忽略。`title` 字段对于这个功能来说是必须的。要定义自定义行模式，请参考这个页面: [[Custom linemodes|Custom linemodes]]。
 
 `:meta` 将元数据存储在每个使用它的目录中的 `.metadata.json` 文件中。
