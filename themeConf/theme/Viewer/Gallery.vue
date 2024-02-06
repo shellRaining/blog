@@ -17,7 +17,6 @@ onMounted(() => {
           size: "large",
         },
       },
-      movable: false,
     });
   }
 });

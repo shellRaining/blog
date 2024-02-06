@@ -8,7 +8,6 @@ const headers = shallowRef<HeaderInfo[]>([]);
 const showIndent = ref(false);
 const pageData = useData().page;
 const { frontmatter } = pageData.value;
-console.log(frontmatter);
 
 onContentUpdated(() => {
   headers.value = getHeaders();
@@ -52,6 +51,7 @@ onContentUpdated(() => {
   color: var(--vp-c-brand-light);
   overflow-y: auto;
   max-height: 300px;
+  margin: 1rem 0;
 }
 
 .category-ul__level2 {

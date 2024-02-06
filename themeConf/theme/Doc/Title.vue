@@ -41,5 +41,6 @@ onContentUpdated(() => {
   margin-bottom: 1em;
   padding-bottom: 1em;
   border-bottom: 1px dashed #c7c7c7;
+  margin-bottom: 1.5em;
 }
 </style>

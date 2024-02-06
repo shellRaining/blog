@@ -12,7 +12,6 @@ const parameters = {
   code: `${text}`,
   styles: { playerRoot: { backgroundColor: "red" } },
 };
-console.log(parameters);
 
 const srcUrl =
   baseUrl + "#data=" + encodeURIComponent(JSON.stringify(parameters));
