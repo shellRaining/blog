@@ -59,13 +59,11 @@ return {
 
 对于 `Roman` 字体，有一个字体度量叫做 *cap-height*，它表示了一个大写字母的大小，你可以使用这个度量来计算一个缩放因子，用于让回退字体看起来和原始字体一样大。
 
-设置 [use_cap_height_to_scale_fallback_fonts](../config/use_cap_height_to_scale_fallback_fonts.md) 为 `true` 将会让 wezterm 尝试使用 *cap-height* 来自动缩放回退字体。
-
 ### 手动回退字体缩放
 
 CJK 字体通常不会有有用的 *cap-height* 度量，所以可能需要手动配置回退字体的缩放因子，以便提高 CJK 字体的大小，使得字形更加可读。
 
-下面的例子展示了如何将 `"Microsoft YaHei"` 回退字体的有效大小提高到正常大小的 `1.5` 倍。 缩放因子不能影响字体度量，所以可能需要同时指定 [line_height](../config/line_height.md) 来产生更加令人愉悦的显示效果。
+下面的例子展示了如何将 `"Microsoft YaHei"` 回退字体的有效大小提高到正常大小的 `1.5` 倍。 缩放因子不能影响字体度量，所以可能需要同时指定 line_height 来产生更加令人愉悦的显示效果。
 
 ```lua
 local wezterm = require 'wezterm'

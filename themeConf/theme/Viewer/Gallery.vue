@@ -4,6 +4,7 @@ import { onMounted } from "vue";
 import "viewerjs/dist/viewer.css";
 
 onMounted(() => {
+  // TODO: refactor this
   const el = document.getElementById("images");
   if (el) {
     new Viewer(el, {

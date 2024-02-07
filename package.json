@@ -16,7 +16,6 @@
     "dayjs": "^.11.10",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-wikilinks": "^1.4.0",
-    "vexip-ui": "^2.3.1",
     "viewerjs": "^1.11.6"
   }
 }
