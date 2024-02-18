@@ -21,6 +21,7 @@ export default defineConfig({
         link: "/tags",
       },
     ],
+    postsPerPage: 7,
   },
   markdown: {
     config: (md) => {
