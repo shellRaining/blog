@@ -88,6 +88,68 @@ app2.get("/", function (_req, res) {
 app2.listen(5378);
 ```
 
+### node 中间件
+
+实现原理：同源策略是浏览器需要遵循的标准，而如果是服务器向服务器请求就没有跨域一说。其请求顺序如下
+
+<img width='' src='https://raw.githubusercontent.com/shellRaining/img/main/2402/middleware.png'>
+
+1. 首先浏览器发出黑色的请求，请求我们的页面，此时我们使用的是浏览器的 61257 端口和使用 5377 端口的代理服务器进行通信
+1. 然后当用户点击按钮请求 `/api/request`，这时候的请求还是代理服务器
+1. 代理服务器接收到后，创建一个新端口 61258 来和位于 5378 端口的数据所在服务器进行通信，并将数据返回给代理服务器
+1. 代理服务器将数据转发给浏览器
+
+这个过程中遇到的数据包如下所示
+
+<img width='' src='https://raw.githubusercontent.com/shellRaining/img/main/2402/middleware_pack.png'>
+
+1-4 都是用来建立 HTTP 连接所发的数据包（从浏览器到代理服务器），5-6 是浏览器请求数据的数据包，代理服务器收到后确认，7-10 也是用来建立 HTTP 连接的数据包（从代理服务器到数据所在服务器），11-13 经历了代理服务器请求并最终收到数据的过程，请求结束后关闭连接（四次挥手），但是此时图中的包乱序了，看不出是谁的结束包。大致过程如下
+
+代码在 [https://github.com/shellRaining/JavaScript-experiment/tree/main/node_midware](https://github.com/shellRaining/JavaScript-experiment/tree/main/node_midware)
+
+### Nginx 反向代理
+
+实现原理类似于 Node 中间件代理，需要你搭建一个中转 nginx 服务器，用于转发请求。此处暂不详说
+
+### websocket
+
+::: info
+摘自 [博客](https://github.com/Jacky-Summer/personal-blog/blob/master/%E6%97%A5%E5%B8%B8%E6%80%BB%E7%BB%93/%E5%89%8D%E7%AB%AF%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%BD%92%E7%BA%B3%E6%95%B4%E7%90%86.md#websocket)
+
+WebSocket 是一种网络通信协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯，长连接方式不受跨域影响。由于原生 WebSocket API 使用起来不太方便，我们一般都会使用第三方库如 ws。
+
+Web 浏览器和服务器都必须实现 WebSockets 协议来建立和维护连接。由于 WebSockets 连接长期存在，与典型的 HTTP 连接不同，对服务器有重要的影响。
+:::
+
+```html
+<button onclick="send()">click and watch console</button>
+<script>
+  function send() {
+    let socket = new WebSocket("ws://localhost:5377");
+    socket.onopen = function () {
+      socket.send("向服务端发送数据");
+    };
+    socket.onmessage = function (e) {
+      console.log(e.data); // 服务端传给你的数据
+    };
+  }
+</script>
+```
+
+```js
+const WebSocket = require('ws')
+
+let wsServer = new WebSocket.Server({ port: 5377 })
+wsServer.on('connection', function (ws) {
+  ws.on('message', function (data) {
+    console.log(data) // 向服务端发送数据
+    ws.send('服务端传给你的数据')
+  })
+})
+```
+
+### 其他待补充……
+
 ## 参考
 
 [https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html](https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html)
