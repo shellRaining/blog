@@ -4,14 +4,16 @@
   "author": "shellraining <shellraining@gmail.com>",
   "scripts": {
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build --outDir docs/.vitepress/dist",
+    "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
     "dayjs": "latest",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-wikilinks": "^1.4.0",
-    "viewerjs": "^1.11.6"
+    "pagefind": "^1.0.4",
+    "viewerjs": "^1.11.6",
+    "vitepress-plugin-pagefind": "^0.2.12"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
