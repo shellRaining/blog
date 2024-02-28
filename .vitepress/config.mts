@@ -1,10 +1,10 @@
 import { defineConfig } from "vitepress";
 import markdownItSub from "markdown-it-sub";
 import markdownItWikilinksFn from "markdown-it-wikilinks";
-import {
-  pagefindPlugin,
-  chineseSearchOptimize,
-} from "vitepress-plugin-pagefind";
+// import {
+//   pagefindPlugin,
+//   chineseSearchOptimize,
+// } from "vitepress-plugin-pagefind";
 
 export default defineConfig({
   title: "blog",
@@ -33,11 +33,11 @@ export default defineConfig({
       md.use(markdownItWikilinksFn());
     },
   },
-  vite: {
-    plugins: [
-      pagefindPlugin({
-        customSearchQuery: chineseSearchOptimize,
-      }),
-    ],
-  },
+  // vite: {
+  //   plugins: [
+  //     pagefindPlugin({
+  //       customSearchQuery: chineseSearchOptimize,
+  //     }),
+  //   ],
+  // },
 });
