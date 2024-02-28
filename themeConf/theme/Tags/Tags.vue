@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { withBase } from "vitepress";
 import { data as posts, BlogPost } from "../posts.data.mts";
 import dayjs from "dayjs";
@@ -30,10 +30,22 @@ function toggleTag(tagName: string) {
   selectedTag.value = tagName === selectedTag.value ? "" : tagName;
 }
 
+// Search tags
+const searchInput = ref<HTMLInputElement | null>(null);
 const searchText = ref("");
 const filteredTagNames = computed(() => {
   return tagNames.filter((tagName) => tagName.includes(searchText.value));
 });
+onMounted(() => {
+  searchInput.value?.focus();
+  // bind command+j (macOS) to search input
+  window.addEventListener("keydown", (e) => {
+    if (e.metaKey && e.key === "j") {
+      searchInput.value?.focus();
+      e.preventDefault();
+    }
+  });
+})
 </script>
 
 <template>
@@ -41,8 +53,9 @@ const filteredTagNames = computed(() => {
     <h1 class="tags-h1__title">Tags</h1>
     <input
       type="text"
-      placeholder="search"
-      style="border: solid black 1px"
+      placeholder="search tags..."
+      class="search__input"
+      ref="searchInput"
       v-model="searchText"
     />
     <div class="tags">
@@ -88,6 +101,15 @@ const filteredTagNames = computed(() => {
   padding-bottom: 14px;
   font-size: 2.25em;
   margin-top: 24px;
+}
+
+.search__input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #c7c7c7;
+  font-size: 1rem;
 }
 
 .tags {
