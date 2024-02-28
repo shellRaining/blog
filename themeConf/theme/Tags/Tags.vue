@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { withBase } from "vitepress";
 import { data as posts, BlogPost } from "../posts.data.mts";
 import dayjs from "dayjs";
@@ -29,14 +29,25 @@ const selectedTag = ref(tagNames[0] ?? "");
 function toggleTag(tagName: string) {
   selectedTag.value = tagName === selectedTag.value ? "" : tagName;
 }
+
+const searchText = ref("");
+const filteredTagNames = computed(() => {
+  return tagNames.filter((tagName) => tagName.includes(searchText.value));
+});
 </script>
 
 <template>
   <div class="tags-block__wrapper">
     <h1 class="tags-h1__title">Tags</h1>
+    <input
+      type="text"
+      placeholder="search"
+      style="border: solid black 1px"
+      v-model="searchText"
+    />
     <div class="tags">
       <span
-        v-for="tagName in tagNames"
+        v-for="tagName in filteredTagNames"
         class="tag"
         :class="{ tag__active: tagName === selectedTag }"
         @click="toggleTag(tagName)"
