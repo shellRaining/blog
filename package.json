@@ -4,7 +4,7 @@
   "author": "shellraining <shellraining@gmail.com>",
   "scripts": {
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
+    "docs:build": "mkdir -p docs/.vitepress/dist && vitepress build",
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
