@@ -2,7 +2,7 @@
 title: 浏览器中的进程和线程
 tag:
   - browser
-  - interview
+  - interview_question
 date: 2024-01-07
 ---
 

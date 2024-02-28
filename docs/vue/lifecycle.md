@@ -2,7 +2,7 @@
 title: Vue 的生命周期钩子
 tag:
   - vue
-  - interview
+  - interview_question
 date: 2024-01-08
 ---
 

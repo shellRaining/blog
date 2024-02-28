@@ -2,7 +2,7 @@
 title: CORS（跨域资源请求）
 tag:
   - internet
-  - interview
+  - interview_question
 date: 2024-02-26
 ---
 

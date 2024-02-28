@@ -1,7 +1,7 @@
 ---
 title: 什么是跨域
 tag:
-  - interview
+  - interview_question
 date: 2024-02-22
 ---
 

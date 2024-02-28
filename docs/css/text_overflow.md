@@ -2,7 +2,7 @@
 title: 文本溢出 (单行和多行)
 tag:
   - css
-  - interview
+  - interview_question
 date: 2024-01-10
 ---
 

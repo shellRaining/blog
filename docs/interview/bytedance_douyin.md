@@ -1,7 +1,7 @@
 ---
 title: 字节跳动前端开发实习生-电商业务职位面试经过
 tag:
-  - interview
+  - interview_process
 date: 2024-01-10
 ---
 
