@@ -1,10 +1,6 @@
 import { defineConfig } from "vitepress";
 import markdownItSub from "markdown-it-sub";
 import markdownItWikilinksFn from "markdown-it-wikilinks";
-// import {
-//   pagefindPlugin,
-//   chineseSearchOptimize,
-// } from "vitepress-plugin-pagefind";
 
 export default defineConfig({
   title: "blog",
@@ -13,7 +9,13 @@ export default defineConfig({
   themeConfig: {
     logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",
     search: {
-      provider: "local",
+      // provider: "local",
+      provider: "algolia",
+      options: {
+        appId: "JG14PKMURZ",
+        apiKey: "efb035578911aba5198729241bfaec0e",
+        indexName: "shell-raining",
+      },
     },
     nav: [
       {
@@ -24,6 +26,10 @@ export default defineConfig({
         text: "🔖Tags",
         link: "/tags",
       },
+      {
+        text: "📃Archive",
+        link: "/archive",
+      },
     ],
     postsPerPage: 7,
   },
@@ -33,11 +39,4 @@ export default defineConfig({
       md.use(markdownItWikilinksFn());
     },
   },
-  // vite: {
-  //   plugins: [
-  //     pagefindPlugin({
-  //       customSearchQuery: chineseSearchOptimize,
-  //     }),
-  //   ],
-  // },
 });
