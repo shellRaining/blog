@@ -512,7 +512,7 @@ setTimeout(function() {
 
 输出结果：
 
-![](./images/setinterval.png)
+<img width='' src='https://raw.githubusercontent.com/zhansingsong/js-leakage-patterns/master/%E5%B8%B8%E8%A7%81%E7%9A%84JavaScript%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/images/setinterval.png'>
 
 针对暴露出的问题，对代码做如下修改：
 
