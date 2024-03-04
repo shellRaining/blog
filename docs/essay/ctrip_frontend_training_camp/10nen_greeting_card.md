@@ -3,6 +3,7 @@ title: 十年贺卡（微信小程序）
 tag:
   - essay
   - miniProgram
+  - trainingCamp
 date: 2024-02-26
 ---
 
