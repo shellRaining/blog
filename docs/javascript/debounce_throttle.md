@@ -42,6 +42,15 @@ function throttle(fn, delay) {
 两个对象相减是不是很奇怪,但是这里是进行了一次隐式类型转换,调用了 Date 对象的 `toValue` 方法,转换成了时间戳,故可以进行数字操作
 
 更多内容可见 [隐式类型转换](./implicit_type_conversion.md)
+
+还有请注意这里的 apply 函数，如果没有他，我们类似这样的调用就是导致 this 指向错误
+
+```javascript
+obj.fn = throttle(fn)
+obj.fn()
+```
+
+我们希望第二行代码执行的时候 fn 中的 this 指向 obj
 :::
 
 这种方式也可以改写成首次不执行，需要增加一个状态变量，如下所示
@@ -119,6 +128,27 @@ for (let i = 0; i < 100000000; i++) {
 更改的方式就是，将返回的函数用 promise 包裹起来，然后通过 await/async 来调用
 
 ```javascript
+function throttle(fn, delay) {
+  let timer = null;
+  let lastTime = 0;
+
+  return function (...args) {
+    return new Promise((resolve) => {
+      const curTime = Date.now();
+      if (curTime - lastTime >= delay) {
+        lastTime = curTime;
+        resolve(fn.apply(this, args));
+      } else {
+        if (!timer) {
+          timer = setTimeout(() => {
+            timer = null;
+            resolve(fn.apply(this, args));
+          }, delay);
+        }
+      }
+    });
+  };
+}
 (async function () {
   for (let i = 0; i < 100000000; i++) {
     await throttleFn.call({ a: 1 });
@@ -129,7 +159,7 @@ for (let i = 0; i < 100000000; i++) {
 同理，甚至可以在这里再拓展一点，因为使用了 promise 和 resolve，所以传入的函数可以返回一个值，这在之前的函数中是很难做到的
 
 ```javascript
-const throttleFn = throttle3(function () {
+const throttleFn = throttle(function () {
   return 1;
 }, 1000);
 ```
