@@ -63,7 +63,7 @@ app2.get("/", function (_req, res) {
 });
 ```
 
-更多关于 CORS 的内容可以看 [CORS（跨域资源请求）](./cors.md)
+更多关于 CORS 的内容可以看 [CORS（跨域资源请求）](../net/cors.md)
 
 ### JSONP
 
