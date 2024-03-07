@@ -28,10 +28,10 @@ date: 2024-02-26
 
 报文分为请求报文和回复报文，每种报文分为四个部分
 
-1. 请求行，包含请求类型，URL，还有 HTTP 版本
-1. 请求头部，这里的就是标头了，后面会详细介绍
+1. 起始行，包含请求类型，URL，还有 HTTP 版本
+1. 头部，这里的就是标头了，后面会详细介绍
 1. 空行，这个空行是必须的
-1. 请求数据
+1. 请求数据或响应数据
 
 <img src='https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages/httpmsgstructure2.png' style="background-color: white">
 
