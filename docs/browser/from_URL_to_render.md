@@ -27,7 +27,7 @@ date: 2024-03-06
 TCP 的“三次握手”技术经常被称为 SYN、SYN-ACK、ACK
 
 ::: info
-握手挥手问题可以看 [TCP 三次握手，四次挥手](../net/TCP_handshake.md)
+握手挥手问题可以看 [TCP 三次握手，四次挥手](../net/tcp_handshake.md)
 :::
 
 ::: warning

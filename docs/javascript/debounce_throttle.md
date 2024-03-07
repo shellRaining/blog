@@ -53,10 +53,6 @@ obj.fn()
 我们希望第二行代码执行的时候 fn 中的 this 指向 obj
 :::
 
-这种方式也可以改写成首次不执行，需要增加一个状态变量，如下所示
-
-<!-- TODO: 以后再增加这份代码罢 -->
-
 ### 首次不执行,但最后一次尾调用会执行
 
 这种方式对应着定时器方式
@@ -77,6 +73,32 @@ function throttle(fn, delay) {
 ```
 
 如果发现有定时器存在，那么就直接返回，等到定时器结束以后，他会自动执行，并且销毁定时器，这样就可以接受下一次的调用了
+
+### 首次和最后一次尾调用都不会执行
+
+这种方式也可以改写成最后一次不执行，需要增加两个状态变量，分别是 waiting 和 scheduled，waiting 用来判断是否有定时器，scheduled 用来判断是否有调用，最后一次调用时如果有定时器，就会仅设置 scheduled，而不是重新计时定时器
+
+```javascript
+function throttle(func, limit) {
+    let waiting = false;
+    let scheduled = false;
+
+    return function() {
+        if (!waiting) {
+            waiting = true;
+            setTimeout(() => {
+                waiting = false;
+                if (scheduled) {
+                    func.apply(this, arguments);
+                    scheduled = false;
+                }
+            }, limit);
+        } else {
+            scheduled = true;
+        }
+    }
+}
+```
 
 ### 首次和最后一次尾调用都会执行
 
@@ -107,6 +129,34 @@ function throttle(fn, delay) {
 这种方式以时间戳方式为主要载体，如果发现时间戳超时，则会执行，和上面的方式相似，但是如果发现没有超时，那么就设置一个定时器
 
 这种方式的弊端则是，它比上面的两种方式开销大概大一倍，而且第二次和第三次输出之间的间隔变得很小
+
+### 使用两个参数控制是否首次和尾次执行
+
+```javascript
+function throttle(func, limit, first, end) {
+  let waiting = false;
+  let scheduled = false;
+
+  return function () {
+    if (!waiting) {
+      if (first) {
+        func.apply(this, arguments);
+        first = false
+      }
+      waiting = true;
+      setTimeout(() => {
+        waiting = false;
+        if (scheduled && end) {
+          func.apply(this, arguments);
+          scheduled = false;
+        }
+      }, limit);
+    } else {
+      scheduled = true;
+    }
+  };
+}
+```
 
 ::: warning
 这里其实可以出一个考题，是我无意中发现的
@@ -182,3 +232,7 @@ function debounce(fn, delay) {
   };
 }
 ```
+
+其特点是：规定时间内多次调用不执行，停止一段时间后执行一次
+
+应用场景可以使搜索框的动态输入，只有在用户停止输入一段时间后才会进行搜索
