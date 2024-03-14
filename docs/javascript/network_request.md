@@ -192,11 +192,11 @@ FormData 是表示 HTML 表单数据的对象。
 
 我们可以使用以下方法修改 FormData 中的字段：
 
-- formData.append(name, value) —— 添加具有给定 name 和 value 的表单字段，
-- formData.append(name, blob, fileName) —— 添加一个字段，就像它是 <input type="file">，第三个参数 fileName 设置文件名（而不是表单字段名），因为它是用户文件系统中文件的名称，
-- formData.delete(name) —— 移除带有给定 name 的字段，
-- formData.get(name) —— 获取带有给定 name 的字段值，
-- formData.has(name) —— 如果存在带有给定 name 的字段，则返回 true，否则返回 false。
+- `formData.append(name, value)` —— 添加具有给定 name 和 value 的表单字段，
+- `formData.append(name, blob, fileName)` —— 添加一个字段，就像它是 `<input type="file">`，第三个参数 fileName 设置文件名（而不是表单字段名），因为它是用户文件系统中文件的名称，
+- `formData.delete(name)` —— 移除带有给定 name 的字段，
+- `formData.get(name)` —— 获取带有给定 name 的字段值，
+- `formData.has(name)` —— 如果存在带有给定 name 的字段，则返回 true，否则返回 false。
 
 从技术上来讲，一个表单可以包含多个具有相同 name 的字段，因此，多次调用 append 将会添加多个具有相同名称的字段。
 
@@ -207,7 +207,7 @@ FormData 是表示 HTML 表单数据的对象。
 
 ### formData 发送文件
 
-表单始终以 Content-Type: multipart/form-data 来发送数据，这个编码允许发送文件。因此 <input type="file"> 字段也能被发送，类似于普通的表单提交。
+表单始终以 `Content-Type: multipart/form-data` 来发送数据，这个编码允许发送文件。因此 `<input type="file">` 字段也能被发送，类似于普通的表单提交。
 
 ```html
 <form id="formElem">
@@ -340,7 +340,7 @@ alert(signal.aborted); // true
 
 ### fetch 中止
 
-fetch 方法接受一个可选的 signal 选项，它可以设置为一个 AbortController 的 signal 属性。
+fetch 方法接受一个可选的 signal 选项，它可以设置为一个 `AbortController` 的 signal 属性。
 
 ```javascript
 let controller = new AbortController();
@@ -349,7 +349,7 @@ fetch(url, {
 });
 ```
 
-当一个 fetch 被中止，它的 promise 就会以一个 error AbortError reject，因此我们应该对其进行处理，例如在 try..catch 中。
+当一个 fetch 被中止，它的 promise 就会以一个 error AbortError reject，因此我们应该对其进行处理，例如在 try...catch 中。
 
 ::: warning
 因为是使用 await 进行的处理，如果 promise reject 了，我们还需要一层 try catch 来进行错误处理，而使用 promise 语法则不会这么麻烦，直接指定 then 后面的错误处理器即可
