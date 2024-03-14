@@ -69,6 +69,8 @@ app2.get("/", function (_req, res) {
 
 script 标签中的 src 属性是不受跨域限制的，所以我们可以使用 script 标签来进行跨域请求，这就是 JSONP 的原理
 
+我们在发送请求的脚本中定义一个回调函数，然后将其作为 get 的参数传送给另一个站点服务器
+
 ```html
 <script>
   function f(info) {
@@ -78,7 +80,7 @@ script 标签中的 src 属性是不受跨域限制的，所以我们可以使�
 <script src="http://localhost:5378?callback=f"></script>
 ```
 
-同时后端处理的时候也要返回一个调用该回调的字符串，调用的参数就是我们需要的数据
+后端接收到该函数名后，将其与参数组合成一个函数调用的字符串，然后返回给请求方，请求方接收到到的实际上就是一个 JavaScript 脚本，立刻执行里面的代码（即拼接后的函数调用）
 
 ```javascript
 app2.get("/", function (_req, res) {
@@ -147,6 +149,8 @@ wsServer.on('connection', function (ws) {
   })
 })
 ```
+
+详细信息可看[这篇文章](./network_request.md)
 
 ### 其他待补充……
 
