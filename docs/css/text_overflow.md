@@ -34,14 +34,12 @@ date: 2024-01-10
 
 - `-webkit-line-clamp: 2`（用来限制在一个块元素显示的文本的行数，2 表示最多显示 2 行。 为了实现该效果，它需要组合其他的 WebKit 属性）
 - `display: -webkit-box`（和 1 结合使用，将对象作为弹性伸缩盒子模型显示 ）
-- `-webkit-box-orient: vertical`（和 1 结合使用 ，设置或检索伸缩盒对象的子元素的排列方式 ）
+- `-webkit-box-orient: vertical`（和 1 结合使用 ，设置伸缩盒对象的子元素的排列方式 ）
 - `overflow: hidden`（文本溢出限定的宽度就隐藏内容）
 - `text-overflow: ellipsis`（多行文本的情况下，用省略号“…”隐藏溢出范围的文本）
 
 ::: warning
 我在查看 MDN 文档的时候发现，这个属性是一个非标准属性，所以在使用的时候需要注意兼容性问题
-
-其中 display: `-webkit-box` 似乎就是 `flex`，但是在 MDN 文档中并没有找到相关的解释，在参考中有相关链接，而且 box-orient 也是一个非标准属性，现在好像已经被 flexbox 取代，相关链接 [https://developer.mozilla.org/zh-CN/docs/web/css/box-orient](https://developer.mozilla.org/zh-CN/docs/web/css/box-orient)
 :::
 
 ### 通过 JavaScript 实现
