@@ -174,6 +174,29 @@ function createHandler(isReadonly: boolean, shallow = false) {
 
 这是我的一个实现，可以通过这个实现 `reactive`，`readonly`，`shallowReactive`，`shallowReadonly` 函数等。
 
+## 响应式原理（ref）
+
+上面的存在一个问题，`reactive` 只能用于对象的响应式，而基本类型还是要使用 `ref`，这里有两种实现方法
+
+1. 直接通过包装 `reactive` 函数来实现 `ref` 函数，比如 `const ref = intialValue => reactive({value: intialValue});`
+2. 通过对象的访问器属性，如下面的代码
+
+    ```javascript
+    const ref = raw => {
+      const r = {
+        get value(){
+          track(r, 'value');
+          return raw;
+        },
+        set value(newVal){
+            raw = newVal;
+          trigger(r, 'value');
+        }
+      }
+      return r;
+    }
+    ```
+
 ## 总结
 
 首先需要知道两个概念：副作用和响应式变量。副作用是指函数执行过程中修改了外部变量，而响应式变量是指被访问时，会收集依赖于这个响应式变量的副作用函数，当这个响应式变量发生变化时，会触发这些副作用函数。

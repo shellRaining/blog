@@ -98,3 +98,98 @@ Session 是另一种记录客户状态的机制，不同的是 Cookie 保存在�
 1. 通过在响应报文设置一个 `Set-Cookie：JSESSIONID=XXXXXXX`，向用户端发送一个设置 cookie 的请求
 1. 浏览器收到后，设置一个 `JSESSIONID=XXXXXXX` 的 cookie 信息，该 cookie 的过期时间为浏览器会话结束
 1. 每次用户请求，都会携带这个 cookie，服务器根据该信息获取 session ID
+
+
+## LocalStorage 和 SessionStorage
+
+两个存储对象都提供相同的方法和属性：
+
+- `setItem(key, value)` —— 存储键/值对。
+- `getItem(key)` —— 按照键获取值。
+- `removeItem(key)` —— 删除键及其对应的值。
+- `clear()` —— 删除所有数据。
+- `key(index)` —— 获取该索引下的键名。
+- `length` —— 存储的内容的长度。
+
+在所有同源的窗口之间，localStorage 数据可以共享。因此，如果我们在一个窗口中设置了数据，则在另一个窗口中也可以看到数据变化。
+
+我们还可以像使用一个普通对象那样，读取/设置键，像这样：
+
+```javascript
+// 设置 key
+localStorage.test = 2;
+
+// 获取 key
+alert( localStorage.test ); // 2
+
+// 删除 key
+delete localStorage.test;
+```
+
+这是历史原因造成的，并且大多数情况下都可行，但通常不建议这样做，因为：
+
+1. 有些键可能会与内建的属性冲突，比如 `setItem`/`getItem`/`removeItem`/`key`/`length`。
+2. 有一个 `storage` 事件，在我们更改数据时会触发。但以类对象方式访问时，不会触发该事件。我们将在本章的后面看到。
+
+::: warning
+这很类似一个 map，但是请注意，键和值都必须是字符串。
+
+如果是任何其他类型，例数字或对象，它会被自动转换为字符串。
+:::
+
+### 遍历 localStorage
+
+我们可以通过获取 `localStorage` 的 `length` 属性，然后使用 `index` 的方法来遍历 `localStorage`。
+
+```javascript
+for(let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i);
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+也可以使用 `for...in` 循环，但是要注意，`for...in` 循环会遍历所有的属性，包括内建的属性，所以我们需要使用 `hasOwnProperty` 方法来判断是否是自身属性。
+
+```javascript
+for(let key in localStorage) {
+  if (!localStorage.hasOwnProperty(key)) {
+    continue; // 跳过像 "setItem"，"getItem" 等这样的键
+  }
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+同时还可以使用 `Object.keys()` 来获取所有的键名，然后再遍历。因为 keys 默认只返回自身的属性（同理这里可以直接使用 `Object.entries()` 来获取键值对
+
+### 和 `sessionStorage` 的区别
+
+`sessionStorage` 对象的使用频率比 `localStorage` 对象低得多。
+
+属性和方法是相同的，但是它有更多的限制：
+
+- `sessionStorage` 的数据只存在于当前浏览器标签页。
+- 具有相同页面的另一个标签页中将会有不同的存储。
+- 但是，它在同一标签页下的 iframe 之间是共享的（假如它们来自相同的源）。
+- 数据在页面刷新后仍然保留，但在关闭/重新打开浏览器标签页后不会被保留。
+
+### 不同页面间通信
+
+`localStorage` 和 `sessionStorage` 也可以用于不同页面间的通信。
+
+比如，一个页面可以在 `localStorage` 中设置一个值，另一个页面可以在 `storage` 事件中获取该值。
+
+```javascript
+// 页面 1
+localStorage.setItem('key', 'value');
+
+// 页面 2
+window.addEventListener('storage', function(event) {
+  alert(event.key); // key
+  alert(event.newValue); // value
+});
+```
+
+### 和 `cookie` 的区别
+
+- `cookie` 是存储在客户端的，`localStorage` 和 `sessionStorage` 是存储在客户端的
+- 大小限制：`cookie` 的大小限制是 4kb，每个页面 20+ 左右个，`localStorage` 和 `sessionStorage` 的大小限制是 5MB

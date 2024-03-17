@@ -817,6 +817,7 @@ function createRequest(tasks, limit = 6) {
   })
 }
 ```
+:::
 
 #### Promise.race
 

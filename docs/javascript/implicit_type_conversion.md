@@ -11,6 +11,8 @@ date: 2024-01-09
 
 <img src='https://raw.githubusercontent.com/shellRaining/img/main/2401/implicit_type_conversion.png'>
 
+这里有一个没提到，就是使用 `+` 来处理字符串时，和使用 `Number` 构造函数处理效果一样，但是 `+` 和 `Number` 也有不同的地方，处理 bigInt 类型时，`+` 会报错，而 `Number` 会正常解析
+
 ## 练习
 
 ```javascript
