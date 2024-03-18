@@ -33,6 +33,8 @@ date: 2024-02-27
 
 ### 静态作用域（动态作用域）语言
 
+静态作用域又称做词法作用域
+
 - 静态作用域语言：C、C++、Java、JavaScript、TypeScript、Lua 等
 - 动态作用域语言：Bash、Perl 等
 
