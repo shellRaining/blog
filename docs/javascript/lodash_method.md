@@ -12,7 +12,6 @@ date: 2024-03-17
 ```javascript
 function get(obj, path, defaultValue) {
   const newPath = path.replace(/\[/g, ".").replace(/\]/g, "").split(".");
-  console.log(newPath);
   return (
     newPath.reduce((a, b) => {
       return (a || {})[b];

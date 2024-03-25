@@ -17,7 +17,7 @@ function back() {
     <!-- doc list -->
     <template #doc-before>
       <Title />
-      <Category />
+      <!-- <Category /> -->
     </template>
 
     <!-- doc part -->
