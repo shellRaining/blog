@@ -92,7 +92,7 @@ Date: Thu, 13 Oct 2016 11:45:00 GMT
 Server: EOS (lax004/2813)
 ```
 
-更多信息见参考
+更多信息见参考和 [HTTP 方法 OPTIONS](./HTTP_method.md#options)
 :::
 
 ### 凭据

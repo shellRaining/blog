@@ -23,7 +23,7 @@ date: 2024-03-17
 
 ## 协商缓存
 
-如果强缓存没有命中，客户端会向服务器发送一个请求到服务器，验证协商缓存是否命中，如果协商缓存命中，请求响应返回的 http 状态为 304 并且会显示一个 Not Modified 的字符串
+如果强缓存没有命中，客户端会向服务器发送一个 `GET` 请求到服务器，验证协商缓存是否命中，如果协商缓存命中，请求响应返回的 http 状态为 304 并且会显示一个 Not Modified 的字符串
 
 协商缓存通过 `Last-Modified` 和 `If-Modified-Since` 或者 `Etag` 和 `If-None-Match` 两种响应头实现
 
@@ -33,6 +33,6 @@ date: 2024-03-17
 
 ## 状态码
 
-`200`：强缓 Expires/Cache-Control 存失效时，返回新的资源文件
-`200(from cache)`: 强缓 Expires/Cache-Control 两者都存在，未过期，Cache-Control 优先 Expires 时，浏览器从本地获取资源成功
-`304(Not Modified)`：协商缓存 Last-modified/Etag 没有过期时，服务端返回状态码 304
+- `200`：强缓 Expires/Cache-Control 存失效时，返回新的资源文件
+- `200(from cache)`: 强缓 Expires/Cache-Control 两者都存在，未过期，Cache-Control 优先 Expires 时，浏览器从本地获取资源成功
+- `304(Not Modified)`：协商缓存 Last-modified/Etag 没有过期时，服务端返回状态码 304

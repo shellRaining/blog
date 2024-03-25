@@ -25,3 +25,23 @@ function get(obj, path, defaultValue) {
 
 使用 || 时，A 会先转化为布尔值判断，为 true 时返回 A , false 返回 B
 :::
+
+## flattenDeep 方法
+
+```javascript
+var flatten = function (arr, n) {
+  if (n == 0) return arr;
+  const res = [];
+  for (const elem of arr) {
+    if (elem instanceof Array) res.push(...flatten(elem, n - 1));
+    else res.push(elem);
+  }
+  return res;
+};
+```
+
+这里只需要指定 n 的值即可
+
+1. n = 1 时，只展开一层，n = 2 时，展开两层，以此类推
+2. 如果 n 为负数，那么展开所有层
+3. 如果 n 为 0，那么不展开
