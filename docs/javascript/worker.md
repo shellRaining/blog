@@ -23,7 +23,7 @@ web worker 可以说是为 JavaScript 带来了多线程的能力，主线程创
 
 1. Dedicated Worker：专用工作者线程，只能被创建它的脚本所使用
 1. Shared Worker：共享工作者线程，可以被多个同源页面共享
-1. Service Worker：用于创建离线应用，消息推送等，常用在 PWA 中
+1. Service Worker：服务工作者线程，用于创建离线应用，消息推送等，常用在 PWA 中
 
 ## 使用
 
