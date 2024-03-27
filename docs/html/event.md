@@ -40,6 +40,10 @@ document.body.addEventListener('click', function (e) {
 
 通过 `target` 可以获取事件发生的精确位置，通过 `currentTarget` 可以获取事件处理程序所在的位置。同时，事件处理程序中的 `this` 也是指向 `currentTarget`。
 
+::: tip
+其实所有事件处理器的 `this` 参数都是绑定到放置监听器的 DOM 元素，我们可以通过 `this` 来访问元素的属性（或者是子节点）
+:::
+
 我们也可以通过 `stopPropagation` 来阻止事件冒泡。在事件处理程序中调用 `e.stopPropagation()` 即可
 
 ## 捕获机制

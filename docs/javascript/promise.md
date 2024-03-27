@@ -817,6 +817,7 @@ function createRequest(tasks, limit = 6) {
   })
 }
 ```
+
 :::
 
 #### Promise.race
@@ -877,6 +878,31 @@ MyPromise.prototype.finally = function (fn) {
     });
   });
 }
+```
+
+#### Promise.prototype.any
+
+这是 ES2021 引入的新方法，用于获取一组 Promise 实例中最先解决的实例的返回值。
+
+```javascript
+Promise.any = function (tasks) {
+  return new Promise((resolve, reject) => {
+    const len = tasks.length;
+    let cnt = 0;
+
+    for (let i = 0; i < len; i++) {
+      Promise.resolve(tasks[i]).then(
+        (value) => {
+          resolve(value);
+        },
+        (reason) => {
+          cnt++;
+          if (cnt === len) reject(reason);
+        },
+      );
+    }
+  });
+};
 ```
 
 #### Promise.allSettled

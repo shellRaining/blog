@@ -23,7 +23,7 @@ date: 2024-01-07
 1. `emits` 组件选项，用来声明组件的事件
 1. 使用 mono-repo 管理源码，这样可以在非 DOM 环境下也使用一些 Vue 的特性，比如响应式函数， `createRenderer` 等
 1. 单文件组件中可以在 `style` 中使用 `v-bind`
-1. 更好的 tree-shaking 支持，减少打包体积
+1. 更好的 tree-shaking 支持，减少打包体积，因为 Vue2 所有的全局 API 都被添加到 Vue.prototype 上，这意味着无论你是否使用这些 API，它们都将被包含到你的最终构建中，这使得 dead code elimination 或 tree shaking 变得无法实现。但在 Vue3 全局 API 和内部帮助函数被作为 ES modules 导出。这使得模块捆绑器（比如 webpack 和 Rollup）可以更有效地通过 tree shaking 来删除未使用的代码。更多 tree-shaking 优化可以看 [tree shaking](../build_tools/treeshaking.md)
 
 ::: warning
 还有一些边边角角的不同，比如 `v-if` 和 `v-for` 的优先级等，Vue2 是先执行 `v-for` 再执行 `v-if`，而 Vue3 是先执行 `v-if` 再执行 `v-for`

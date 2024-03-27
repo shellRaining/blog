@@ -575,6 +575,20 @@ progress 事件仅在下载阶段触发。
 - `timeout` —— 上传超时（如果设置了 timeout 属性）。
 - `loadend` —— 上传完成，无论成功还是 error。
 
+```javascript
+xhr.upload.onprogress = function(event) {
+  alert(`Uploaded ${event.loaded} of ${event.total} bytes`);
+};
+
+xhr.upload.onload = function() {
+  alert(`Upload finished successfully.`);
+};
+
+xhr.upload.onerror = function() {
+  alert(`Error during the upload: ${xhr.status}`);
+};
+```
+
 ## 断点续传
 
 使用 fetch 方法来上传文件相当容易。但是对于大文件，如果出现了网络问题，是没有内建的方法来实现续传的。

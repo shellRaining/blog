@@ -1,12 +1,12 @@
 ---
 title: JavaScript 首屏性能优化
 tag:
-  - javascript
+  - browser
   - interview_question
 date: 2024-03-16
 ---
 
-我这里提到的性能优化是指首页性能优化（first contentful paint）
+我这里提到的性能优化是指首页性能优化（first contentful paint），关于首屏加载的过程见[这里](./from_URL_to_render.md#%E4%BA%A4%E4%BA%92)
 
 主要是从一下两个方面
 
