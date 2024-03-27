@@ -35,7 +35,7 @@ OSI 模型分为 7 层，从上到下依次为：
 
 ## 表示层
 
-这里最出名的协议是加密协议 SSL（Secure Sockets Layer）和 TLS（Transport Layer Security），HTTPS 就是基于这两个协议的，更多请看 [HTTPS](../net/https.md)
+这里最出名的协议是加密协议 SSL（Secure Sockets Layer）和 TLS（Transport Layer Security），HTTPS 就是基于这两个协议的，更多请看 [HTTPS](../net/HTTPS.md)
 
 这里将应用处理的信息转换为适合网络传输的格式（可能是因为网络传送的数据格式和应用处理的数据格式不一样）
 
