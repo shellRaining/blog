@@ -31,7 +31,7 @@ export default defineConfig({
         link: "/archive",
       },
     ],
-    postsPerPage: 7,
+    postsPerPage: 10,
   },
   markdown: {
     config: (md) => {

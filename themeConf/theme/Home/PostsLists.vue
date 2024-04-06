@@ -13,6 +13,11 @@ const postsPerPage = theme.value.postsPerPage || 5; // TODO: need to refactor
 const totalPage = Math.ceil(postNum.value / postsPerPage);
 const curPosts = ref(posts.slice(0, postsPerPage));
 
+// set route when first open the page
+const urlParams = new URLSearchParams(window.location.search);
+const pageIdx = Number(urlParams.get("page")) || 1;
+updatePostList(pageIdx);
+
 function updatePostList(pageIdx: number) {
   curPage.value = pageIdx;
   curPosts.value = posts.slice(
@@ -20,6 +25,12 @@ function updatePostList(pageIdx: number) {
     pageIdx * postsPerPage,
   );
 }
+
+window.addEventListener("popstate", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const pageIdx = Number(urlParams.get("page")) || 1;
+  updatePostList(pageIdx);
+});
 </script>
 
 <template>
@@ -60,7 +71,8 @@ function updatePostList(pageIdx: number) {
 .posts-pagination {
   width: 80%;
   max-width: var(--custom-w-max-posts-list);
-  margin: 0 auto; /* NOTE: this is used to place the block center */
+  margin: 0 auto;
+  /* NOTE: this is used to place the block center */
 }
 
 @media (max-width: 768px) {

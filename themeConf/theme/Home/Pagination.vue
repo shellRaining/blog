@@ -12,6 +12,10 @@ function go(pageIdx: number) {
     return;
   }
   emit("pageChanged", pageIdx);
+  // update the page route, like ?page=1
+  const urlParams = new URLSearchParams(window.location.search);
+  urlParams.set("page", String(pageIdx));
+  window.history.pushState({}, "", `${window.location.pathname}?${urlParams}`);
 }
 </script>
 
