@@ -3,7 +3,7 @@ import { data as posts } from "../posts.data.mts";
 import PostCard from "./PostCard.vue";
 import Pagination from "./Pagination.vue";
 import { useData } from "vitepress";
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 const { theme } = useData();
 
@@ -26,10 +26,18 @@ function updatePostList(pageIdx: number) {
   );
 }
 
-window.addEventListener("popstate", () => {
+function handlePopState() {
   const urlParams = new URLSearchParams(window.location.search);
   const pageIdx = Number(urlParams.get("page")) || 1;
   updatePostList(pageIdx);
+}
+
+onMounted(() => {
+  window.addEventListener("popstate", handlePopState);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", handlePopState);
 });
 </script>
 

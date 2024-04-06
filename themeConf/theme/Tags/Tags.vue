@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { withBase } from "vitepress";
 import { data as posts, BlogPost } from "../posts.data.mts";
 import dayjs from "dayjs";
@@ -26,8 +26,18 @@ const tagsInfo = initTags(posts);
 const tagNames = Array.from(tagsInfo.keys());
 const selectedTag = ref(tagNames[0] ?? "");
 
+// set init route
+let urlParams = new URLSearchParams(window.location.search);
+let tag = urlParams.get("tag") ?? tagNames[0];
+selectedTag.value = tag;
+window.history.replaceState({}, "", `${window.location.pathname}?tag=${tag}`);
+
 function toggleTag(tagName: string) {
   selectedTag.value = tagName === selectedTag.value ? "" : tagName;
+
+  let urlParams = new URLSearchParams(window.location.search);
+  urlParams.set("tag", selectedTag.value);
+  window.history.pushState({}, "", `${window.location.pathname}?${urlParams}`);
 }
 
 // Search tags
@@ -36,6 +46,13 @@ const searchText = ref("");
 const filteredTagNames = computed(() => {
   return tagNames.filter((tagName) => tagName.includes(searchText.value));
 });
+
+const handlePopState = function () {
+  urlParams = new URLSearchParams(window.location.search);
+  tag = urlParams.get("tag") ?? tagNames[0];
+  selectedTag.value = tag;
+};
+
 onMounted(() => {
   searchInput.value?.focus();
   // bind command+j (macOS) to search input
@@ -43,9 +60,16 @@ onMounted(() => {
     if (e.metaKey && e.key === "j") {
       searchInput.value?.focus();
       e.preventDefault();
+    } else if (e.key === "Escape") {
+      searchInput.value?.blur();
     }
   });
-})
+  window.addEventListener("popstate", handlePopState);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", handlePopState);
+});
 </script>
 
 <template>
