@@ -14,8 +14,8 @@
     "viewerjs": "^1.11.6"
   },
   "devDependencies": {
-    "typescript": "^5.4.2",
-    "vitepress": "1.0.0-rc.35",
+    "typescript": "^5.4.4",
+    "vitepress": "latest",
     "vue": "^3.4.21"
   }
 }

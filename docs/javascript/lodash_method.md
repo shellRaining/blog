@@ -86,6 +86,7 @@ function shallowClone(obj) {
 
 ```javascript
 function deepclone(obj, hash = new WeakMap()) {
+  if (hash.has(obj)) return hash.get(obj);
   if (typeof obj !== "object") return obj;
   if (obj == null) return null;
   if (obj instanceof Date) return new Date(obj);
@@ -127,3 +128,39 @@ function curry(fn) {
 
 与此同时，获取一个函数的形参个数，可以通过 `fn.length` 来获取
 :::
+
+## sort 方法
+
+这个其实不是 lodash 的方法，但是奈何排序经常用到，这里也写一下
+
+```javascript
+function sort(arr) {
+  const len = arr.length;
+  if (len <= 1) return arr;
+
+  let left = [];
+  let right = [];
+  const pivotIdx = Math.floor(len / 2);
+  const pivot = arr[pivotIdx];
+
+  for (let i = 0; i < len; i++) {
+    if (pivotIdx != i) {
+      const val = arr[i];
+      (val < pivot ? left : right).push(val);
+    }
+  }
+
+  left = sort(left);
+  right = sort(right);
+
+  return left.concat([pivot], right);
+}
+```
+
+::: warning
+这里的实现将 splice 方法抹去了，但是之前写的时候在这边出现了 bug，所以警告一下
+
+注意 `splice` 方法的参数，第一个参数是开始的索引，第二个参数是*删除的个数*（而不是删除的结束位置），如果不传第二个参数，那么就是删除到末尾，而且其返回值是一个*数组*，而不是删除的元素
+:::
+
+还有就是 left 数组和 right 数组要在递归调用的时候重新赋值，因为递归调用的时候，left 和 right 是新的数组，而不是原来的数组
