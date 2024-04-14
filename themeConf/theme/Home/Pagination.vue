@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { onMounted, onUnmounted } from "vue";
+
 const props = defineProps<{
   pageNum: number;
   curPage: number;
@@ -7,6 +9,23 @@ const emit = defineEmits<{
   pageChanged: [pageIdx: number];
 }>();
 
+function handlePopState() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const pageIdx = Number(urlParams.get("page")) || 1;
+  emit("pageChanged", pageIdx);
+}
+
+onMounted(() => {
+  // set route when first open the page
+  const urlParams = new URLSearchParams(window.location.search);
+  const pageIdx = Number(urlParams.get("page")) || 1;
+  emit("pageChanged", pageIdx);
+  window.addEventListener("popstate", handlePopState);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", handlePopState);
+});
 function go(pageIdx: number) {
   if (pageIdx < 1 || pageIdx > props.pageNum) {
     return;

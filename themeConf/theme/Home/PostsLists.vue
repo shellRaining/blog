@@ -3,7 +3,7 @@ import { data as posts } from "../posts.data.mts";
 import PostCard from "./PostCard.vue";
 import Pagination from "./Pagination.vue";
 import { useData } from "vitepress";
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref } from "vue";
 
 const { theme } = useData();
 
@@ -13,11 +13,6 @@ const postsPerPage = theme.value.postsPerPage || 5; // TODO: need to refactor
 const totalPage = Math.ceil(postNum.value / postsPerPage);
 const curPosts = ref(posts.slice(0, postsPerPage));
 
-// set route when first open the page
-const urlParams = new URLSearchParams(window.location.search);
-const pageIdx = Number(urlParams.get("page")) || 1;
-updatePostList(pageIdx);
-
 function updatePostList(pageIdx: number) {
   curPage.value = pageIdx;
   curPosts.value = posts.slice(
@@ -25,20 +20,6 @@ function updatePostList(pageIdx: number) {
     pageIdx * postsPerPage,
   );
 }
-
-function handlePopState() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const pageIdx = Number(urlParams.get("page")) || 1;
-  updatePostList(pageIdx);
-}
-
-onMounted(() => {
-  window.addEventListener("popstate", handlePopState);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("popstate", handlePopState);
-});
 </script>
 
 <template>
@@ -52,12 +33,14 @@ onUnmounted(() => {
         :key="post.url"
       />
     </ul>
-    <Pagination
-      class="posts-pagination"
-      :pageNum="totalPage"
-      :curPage="curPage"
-      @page-changed="updatePostList"
-    />
+    <ClientOnly>
+      <Pagination
+        class="posts-pagination"
+        :pageNum="totalPage"
+        :curPage="curPage"
+        @page-changed="updatePostList"
+      />
+    </ClientOnly>
   </div>
 </template>
 
