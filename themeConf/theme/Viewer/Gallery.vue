@@ -1,13 +1,17 @@
 <script lang="ts" setup>
 import Viewer from "viewerjs";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import "viewerjs/dist/viewer.css";
 
-onMounted(() => {
-  // TODO: refactor this
-  const el = document.getElementById("images");
-  if (el) {
-    new Viewer(el, {
+let viewer: Viewer | null = null;
+
+function previewImage(e: Event) {
+  const target = e.target as HTMLElement; // maybe the img element
+  const currentTarget = e.currentTarget as HTMLElement; // the event binded element
+  if (target.tagName.toLowerCase() !== "img") return;
+
+  if (!viewer) {
+    viewer = new Viewer(currentTarget, {
       toolbar: {
         prev: {
           show: 1,
@@ -19,21 +23,19 @@ onMounted(() => {
         },
       },
     });
+    viewer.show();
   }
+}
+
+onMounted(() => {
+  const docDomContainer = document.querySelector("#VPContent");
+  docDomContainer?.addEventListener("click", previewImage);
+});
+
+onUnmounted(() => {
+  const docDomContainer = document.querySelector("#VPContent");
+  docDomContainer?.removeEventListener("click", previewImage);
 });
 </script>
 
-<template>
-  <ul id="images">
-    <div class="image-wrapper">
-      <slot></slot>
-    </div>
-  </ul>
-</template>
-
-<style scoped>
-:slotted(img) {
-  height: 300px;
-  margin: auto 40px;
-}
-</style>
+<template></template>

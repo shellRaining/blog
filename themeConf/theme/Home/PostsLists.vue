@@ -9,7 +9,7 @@ const { theme } = useData();
 
 const curPage = ref(1);
 const postNum = ref(posts.length);
-const postsPerPage = theme.value.postsPerPage || 5; // TODO: need to refactor
+const postsPerPage = theme.value.postsPerPage || 5;
 const totalPage = Math.ceil(postNum.value / postsPerPage);
 const curPosts = ref(posts.slice(0, postsPerPage));
 
@@ -24,7 +24,6 @@ function updatePostList(pageIdx: number) {
 
 <template>
   <div>
-    <!-- TODO: how to put the two item in the center will card width == Pagination width -->
     <ul class="posts-ul__list">
       <PostCard
         class="posts-li__item"
@@ -63,7 +62,6 @@ function updatePostList(pageIdx: number) {
   width: 80%;
   max-width: var(--custom-w-max-posts-list);
   margin: 0 auto;
-  /* NOTE: this is used to place the block center */
 }
 
 @media (max-width: 768px) {

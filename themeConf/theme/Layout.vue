@@ -3,7 +3,7 @@ import DefaultTheme from "vitepress/theme";
 import Hero from "./Hero/Hero.vue";
 import Page from "./Home/PostsLists.vue";
 import Title from "./Doc/Title.vue";
-import Category from "./Doc/Category.vue";
+import Gallery from "./Viewer/Gallery.vue";
 
 const { Layout } = DefaultTheme;
 
@@ -18,6 +18,7 @@ function back() {
     <template #doc-before>
       <Title />
       <!-- <Category /> -->
+      <Gallery />
     </template>
 
     <!-- doc part -->

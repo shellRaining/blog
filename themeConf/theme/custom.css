@@ -22,3 +22,12 @@
 #app {
   min-height: 100vh;
 }
+
+.VPDoc .content main {
+  img {
+    max-width: 300px;
+    margin: 0 auto;
+    cursor: pointer;
+    object-fit: cover;
+  }
+}
