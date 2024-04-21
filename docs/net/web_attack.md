@@ -39,7 +39,7 @@ export default {
 
 ## XSS 攻击的分类
 
-根据攻击的来源，XSS攻击可以分成：
+根据攻击的来源，XSS 攻击可以分成：
 
 - 存储型
 - 反射型
@@ -124,9 +124,17 @@ HTTP-only Cookie: 禁止 JavaScript 读取某些敏感 Cookie，攻击者完成 
 ### 预防
 
 1. 确保请求由用户发起，即通过一些验证手段，比如验证码、Token 等
-2. 验证发起请求的来源是否是外域，通过检查 `Origin` 和 `Referer` 头部来判断
-3. 使用 `SameSite` Cookie 属性，可以防止 CSRF 攻击，关于 cookie 的更多信息请见 [cookie](./cookie_session.md#cookie)
-4. 同样 jwt 也可以缓解 CSRF 攻击，因为 jwt 并不是随着浏览器的请求自动发送的，而是需要手动设置在请求头中
+
+1. 验证发起请求的来源是否是外域，通过检查 `Origin` 和 `Referer` 头部来判断，但是这两个字段都是可以被修改的，所以只凭借这两个字段并不可靠
+   ::: tip Origin 和 Referer 的区别：
+   `Origin` 字段通常用于跨站请求，尤其是跨域资源共享（CORS）请求。它只包含了协议、主机和端口号，不包含路径、查询参数或片段。例如：`http://example.com`
+
+   而 `Referer` 字段包含了请求的来源 URL，包括路径、查询参数和片段。例如：`http://example.com/foo/bar?baz`，这个字段可能会泄露一些用户的隐私信息，因此有些网站会禁用这个字段。
+   :::
+
+1. 使用 `SameSite` Cookie 属性，可以防止 CSRF 攻击，服务器 `set-cookie` 的时候指定这个属性即可，关于 cookie 的更多信息请见 [cookie](./cookie_session.md#cookie)
+
+1. 同样 jwt 也可以缓解 CSRF 攻击，因为 jwt 并不是随着浏览器的请求自动发送的，而是需要手动设置在请求头中
 
 ::: tip cookie 字段对于攻击的防御
 `SameSite` 是用来防御 CSRF 攻击的，而 `HttpOnly` 是用来防御 XSS 攻击的。
@@ -135,3 +143,4 @@ HTTP-only Cookie: 禁止 JavaScript 读取某些敏感 Cookie，攻击者完成 
 ## 参考
 
 - [https://tech.meituan.com/2018/10/11/fe-security-csrf.html](https://tech.meituan.com/2018/10/11/fe-security-csrf.html)
+- [https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html](https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html)

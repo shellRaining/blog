@@ -50,15 +50,14 @@ cookie 存在一些限制
 
 ### 常用的 cookie 键值对
 
-| 属性              | 描述                                                                                                        |
-| --------------- | --------------------------------------------------------------------------------------------------------- |
-| Path            | 是一个绝对路径，使得该路径下的所有页面都可以访问 cookie。                                                                           |
-| Domain          | 控制了可以访问 cookie 的域。如果我们想允许像 `forum.site.com` 这样的子域在 site.com 上设置 cookie，我们应该明确将 domain 选项设置为根域 `domain=site.com` |
-| Expires/Max-age | 在关闭浏览器后仍然存在的 cookie 需要设置 expires 或 max-age 选项中的一个。如果这两个参数都没有设置，那么 cookie 在关闭浏览器后就会消失。                             |
-| Secure          | 如果一个 cookie 是通过 `https://site.com` 设置的，使用此选项后，它将不会在相同域名的 HTTP 环境下出现，例如 `http://site.com`。它意味着 cookie 只能通过 HTTPS 传输。      |
-| Samesite        | 设置为 strict 或 lax，旨在防止 `XSRF` 侵害。                                                                              |
+| 属性              | 描述                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Path            | 是一个绝对路径，使得该路径下的所有页面都可以访问 cookie。                                                                                    |
+| Domain          | 控制了可以访问 cookie 的域。如果我们想允许像 `forum.site.com` 这样的子域在 site.com 上设置 cookie，我们应该明确将 domain 选项设置为根域 `domain=site.com`     |
+| Expires/Max-age | 在关闭浏览器后仍然存在的 cookie 需要设置 expires 或 max-age 选项中的一个。如果这两个参数都没有设置，那么 cookie 在关闭浏览器后就会消失。                               |
+| Secure          | 如果一个 cookie 是通过 `https://site.com` 设置的，使用此选项后，它将不会在相同域名的 HTTP 环境下出现，例如 `http://site.com`。它意味着 cookie 只能通过 HTTPS 传输。 |
+| Samesite        | 设置为 strict 或 lax，旨在防止 `XSRF` 侵害。设置为 strict 表示严格禁止第三方 cookie，lax 稍微宽松，大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外。      |
 | HttpOnly        | 这个选项禁止任何 JavaScript 访问 cookie。我们使用 `document.cookie` 看不到此类 cookie，也无法对此类 cookie 进行操作。同理，黑客注入的代码也无法获取，因此是一种比较强的保护措施。 |
-
 
 ### 第三方 cookie
 
@@ -173,3 +172,7 @@ window.addEventListener('storage', function(event) {
 
 - `cookie` 是存储在客户端的，`localStorage` 和 `sessionStorage` 是存储在客户端的
 - 大小限制：`cookie` 的大小限制是 4kb，每个页面 20+ 左右个，`localStorage` 和 `sessionStorage` 的大小限制是 5MB，但是不同浏览器可能有所不同
+
+## 参考
+
+- [https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html](https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html)

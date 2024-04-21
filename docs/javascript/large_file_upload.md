@@ -91,7 +91,7 @@ const data = fileChunkList.map(({ file }, index) => ({
 }));
 ```
 
-最后使用 `XMLHttpRequest` 或者 `fetch` 上传文件，这里我们搭配 `Promise.all` 来并发上传
+最后使用 `XMLHttpRequest` 或者 `fetch` 上传文件，这里我们搭配 `Promise.all` 来并发上传，详情请见 [Promise all 实现方式](./promise.md#promise-all)
 
 ```javascript
 const requestList = data.map(({ chunk, hash, filename, chunkName, size, chunkIndex, chunkCount }) => {

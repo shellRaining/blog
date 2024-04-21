@@ -693,7 +693,7 @@ if(x === null) {
 
 这个测试总共 872 用例，我们写的 Promise 完美通过了所有用例：
 
-### 其他 Promise 方法
+## 其他 Promise 方法
 
 在 ES6 的官方 Promise 还有很多 API，比如：
 
@@ -713,7 +713,7 @@ if(x === null) {
 
 虽然这些都不在 Promise/A+里面，但是我们也来实现一下吧，加深理解。其实我们前面实现了 Promise/A+再来实现这些已经是小菜一碟了，因为这个 API 全部是前面的封装而已。
 
-#### Promise.resolve
+### Promise.resolve
 
 将现有对象转为 Promise 对象，如果 Promise.resolve 方法的参数，不是具有 then 方法的对象（又称 thenable 对象），则返回一个新的 Promise 对象，且它的状态为 fulfilled。
 
@@ -729,7 +729,7 @@ MyPromise.resolve = function(parameter) {
 }
 ```
 
-#### Promise.reject
+### Promise.reject
 
 返回一个新的 Promise 实例，该实例的状态为 rejected。Promise.reject 方法的参数 reason，会被传递给实例的回调函数。
 
@@ -741,7 +741,7 @@ MyPromise.reject = function(reason) {
 }
 ```
 
-#### Promise.all
+### Promise.all
 
 该方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
 
@@ -749,7 +749,7 @@ MyPromise.reject = function(reason) {
 const p = Promise.all([p1, p2, p3]);
 ```
 
-`Promise.all()`方法接受一个数组作为参数，`p1`、`p2`、`p3`都是 Promise 实例，如果不是，就会先调用 Promise.resolve\`方法，将参数转为 Promise 实例，再进一步处理。当 p1, p2, p3 全部 resolve，大的 promise 才 resolve，有任何一个 reject，大的 promise 都 reject。
+`Promise.all()`方法接受一个数组作为参数，`p1`、`p2`、`p3`都是 Promise 实例，如果不是，就会先调用 `Promise.resolve`方法，将参数转为 Promise 实例，再进一步处理。当 p1, p2, p3 全部 resolve，大的 promise 才 resolve，有任何一个 reject，大的 promise 都 reject。
 
 ```javascript
 MyPromise.all = function(promiseList) {
@@ -796,18 +796,19 @@ function createRequest(tasks, limit = 6) {
     const res = new Array(len)
 
     function step(i) {
-      if (i < len) {
-        Promise.resolve(tasks[i]()).then((value) => {
-          res[i] = value
-          cnt++
-          if (cnt === len) {
-            resolve(res)
-          }
-          step(idx)
-        }, (reason) => {
-          reject(reason)
-        })
-      }
+      if (i >= len) return
+      // 这里需要注意我们需要手动调用这个函数以返回一个 promise
+      // 而上面无限制并发数的例子是直接传入的 promise
+      Promise.resolve(tasks[i]()).then((value) => {
+        res[i] = value
+        cnt++
+        if (cnt === len) {
+          resolve(res)
+        }
+        step(idx)
+      }, (reason) => {
+        reject(reason)
+      })
       idx++
     }
 
@@ -820,7 +821,7 @@ function createRequest(tasks, limit = 6) {
 
 :::
 
-#### Promise.race
+### Promise.race
 
 用法：
 
@@ -852,7 +853,7 @@ MyPromise.race = function(promiseList) {
 }
 ```
 
-#### Promise.prototype.catch
+### Promise.prototype.catch
 
 `Promise.prototype.catch`方法是`.then(null, rejection)`或`.then(undefined, rejection)`的别名，用于指定发生错误时的回调函数。
 
@@ -862,7 +863,7 @@ MyPromise.prototype.catch = function(onRejected) {
 }
 ```
 
-#### Promise.prototype.finally
+### Promise.prototype.finally
 
 `finally`方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
 
@@ -880,7 +881,7 @@ MyPromise.prototype.finally = function (fn) {
 }
 ```
 
-#### Promise.prototype.any
+### Promise.prototype.any
 
 这是 ES2021 引入的新方法，用于获取一组 Promise 实例中最先解决的实例的返回值。
 
@@ -905,7 +906,7 @@ Promise.any = function (tasks) {
 };
 ```
 
-#### Promise.allSettled
+### Promise.allSettled
 
 该方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是`fulfilled`还是`rejected`，包装实例才会结束。该方法由 [ES2020](https://github.com/tc39/proposal-promise-allSettled) 引入。该方法返回的新的 Promise 实例，一旦结束，状态总是`fulfilled`，不会变成`rejected`。状态变成`fulfilled`后，Promise 的监听函数接收到的参数是一个数组，每个成员对应一个传入`Promise.allSettled()`的 Promise 实例的执行结果。
 
