@@ -27,6 +27,8 @@ date: 2024-03-13
 
 在 `DOMContentLoaded` 事件触发前，或者执行该脚本前，如果 DOM 树已经解析完成，那么页面也会绘制（部分）出来。所以说 defer 脚本不会阻塞页面的绘制。但是之后执行如果出现操作 DOM 的情况，那么就可能发生回流和重绘。
 
+有关 `DOMContentLoaded` 事件，可以看[这里](../browser/page_life_cycle.md#domcontentloaded)
+
 ::: tip
 defer 虽说会按照执行顺序执行，但是测试并不是这样的
 :::
