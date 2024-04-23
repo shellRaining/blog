@@ -14,7 +14,8 @@ Vue 中的组件实例在创建的时候会经历一系列的初始化步骤，�
 生命周期钩子必须在同步函数中执行，不能够在异步代码 (比如定时器中) 执行
 :::
 
-<img width='500px' src='https://cn.vuejs.org/assets/lifecycle.DLmSwRQE.png'>
+<img src='https://raw.githubusercontent.com/shellRaining/img/main/2404/lifecycle.png'>
+
 
 但是这个图包含了选项式 API 和 组合式 API 两种写法的生命周期钩子，我们需要区分一下
 

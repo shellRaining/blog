@@ -20,7 +20,11 @@ date: 2024-03-14
 JavaScript 的异步任务根据事件分类分为两种：宏任务（MacroTask）和微任务（MicroTask）
 
 - 宏任务：main script、setTimeout、setInterval、setImmediate（Node.js）、I/O（Mouse Events、Keyboard Events、Network Events）、UI Rendering（HTML Parsing）、MessageChannel
-- 微任务：Promise.then（非 new Promise）、process.nextTick（Node.js）、MutationObserver
+- 微任务：Promise.then（非 new Promise）、process.nextTick（Node.js）、MutationObserver（用于观察 DOM 变动，包括子元素增减等）、IntersectionObserver（用以侦测元素是否与视口相交）
+
+::: warning
+这里的 UI Rendering 值得重新思考，页面重绘本身应该是渲染线程的工作，为什么要放在宏任务中？这里可能写的有错误
+:::
 
 宏任务与微任务的区别在于队列中事件的执行优先级。进入整体代码（宏任务）后，开始首次事件循环，当执行上下文栈清空后，事件循环机制会优先检测微任务队列中的事件并推至主线程执行，当微任务队列清空后，才会去检测宏任务队列中的事件，再将事件推至主线程中执行，而当执行上下文栈再次清空后，事件循环机制又会检测微任务队列，如此反复循环。
 
@@ -33,20 +37,28 @@ setTimeout(() => {
   console.log(2);
 }, 0);
 
-let promise = new Promise((res) => {
+let promise = new Promise((resolve) => {
   console.log(3);
   resolve();
 })
-  .then((res) => {
+  .then(() => {
     console.log(4);
   })
-  .then((res) => {
+  .then(() => {
+    // 注意 5 是在 8 后面打印出来的，因为只有当 4 打印完后才会将 5 推入微任务队列
     console.log(5);
   });
 
+new Promise((resolve) => {
+  console.log(7);
+  resolve()
+}).then(() => {
+  console.log(8);
+});
+
 console.log(6);
 
-// 1 3 6 4 5 2
+// 1 3 7 6 4 8 5 2
 ```
 
 ## requestAnimationFrame
@@ -100,14 +112,18 @@ window.requestAnimationFrame(step);
 1. 智能暂停：当标签页不可见或隐藏时，requestAnimationFrame 将会自动暂停，不再进行渲染，这节省了 CPU 和 GPU 的运行时间，同时降低了设备的功耗。而 setTimeout 则会继续运行，即使用户并未在查看页面。
 1. 浏览器优化：浏览器知道动画正在进行，所以它可以优化对此动画的处理，例如更智能地进行图层复合、跳过非必须的样式或布局计算等。
 
-## 浏览器和 node 时间循环的区别
+## 浏览器和 node 事件循环的区别
 
-浏览器的时间循环如上所述，我们假设从请求完一个 HTML 资源开始
+### 浏览器
+
+浏览器的事件循环如上所述，我们假设从请求完一个 HTML 资源开始
 
 1. 遇到一个 script 标签，浏览器会将其放入执行栈中执行
 1. 在执行过程中会出现一些异步操作，比如 `setTimeout`，这时候会将这个异步操作放入任务队列中（宏任务和微任务分开）
 1. 调用栈中的任务执行完毕后，会检查微任务队列，如果有任务则会执行，然后再次检查微任务队列，直到微任务队列为空
 1. 检查宏任务队列，如果有任务则会执行，然后再次检查微任务队列，直到微任务队列为空，如此循环
+
+### node
 
 node 事件循环相对复杂一些，因为 node 被设计为可以处理大量的 I/O 操作，所以 node 的事件循环分为 6 个阶段
 
@@ -115,7 +131,7 @@ node 事件循环相对复杂一些，因为 node 被设计为可以处理大量
 1. pending callbacks 阶段：执行延迟到下一个循环迭代的 I/O 回调
 1. idle, prepare 阶段：仅 node 内部使用
 1. poll 阶段：检索新的 I/O 事件，执行与 I/O 相关的回调（几乎所有情况下，除了关闭的回调函数，定时器和 setImmediate()）
-1. check 阶段：setImmediate() 回调函数在这里执行
-1. close callbacks 阶段：执行 close 事件，如 socket.on('close', ...)，或者 socket.on('end', ...) 等
+1. check 阶段：`setImmediate` 回调函数在这里执行
+1. close callbacks 阶段：执行 `close` 事件，如 `socket.on('close', ...)`，或者 `socket.on('end', ...)` 等
 
 其中 `nextTick` 将回调函数放入"next tick queue"，这个队列的任务会在当前操作结束和下一次事件循环开始之前执行。因此这意味着 `process.nextTick()` 的回调函数会比任何 I/O 操作、定时器或者 `setImmediate()` 的回调函数更早执行。

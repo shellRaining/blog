@@ -126,7 +126,22 @@ function curry(fn) {
 ::: warning
 注意 arguments 对象是一个类数组对象，它有一个 length 属性，表示的传入的参数个数
 
-与此同时，获取一个函数的形参个数，可以通过 `fn.length` 来获取
+与此同时，获取一个函数的*第一个默认参数之前的*形参个数，可以通过 `fn.length` 来获取，比如：
+
+```javascript
+function foo(a, b = 1, c) {
+  console.log(foo.length); // 1
+}
+```
+
+同时，剩余参数也不会计算在内
+
+```javascript
+function foo(a, b, ...rest) {
+  console.log(foo.length); // 2
+}
+```
+
 :::
 
 ## sort 方法
