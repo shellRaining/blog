@@ -15,6 +15,10 @@ date: 2024-04-24
 <div class="box two" style="display: inline-block; width: 200px; line-height: 200px; margin-left: -60px; vertical-align: top; background-color: #ea5; text-align: center; border: solid 1px black; margin-top: 30px;">two</div>
 <div class="box three" style="display: inline-block; width: 200px; line-height: 200px; margin-left: -60px; vertical-align: top; background-color: #ea5; text-align: center; border: solid 1px black; margin-top: 60px;">three</div>
 
+::: tip
+可以看到给每个元素都设置了 `display: inline-block`，这样可以让元素在一行显示，同时也可以设置元素的宽高，同时为了让他们高度上错开，我们使用了 `margin-top` 来控制，而且必须搭配 `vertical-align: top` 才可以，否则默认的 baseline 会让对齐失效，可以检查浏览器工具。
+:::
+
 此时如果给前两个元素设置 `position: relative`，效果会变成这样
 
 <div class="box one" style="display: inline-block; width: 200px; line-height: 200px; vertical-align: top; background-color: #ea5; text-align: center; border: solid 1px black; margin-top: 0; position: relative;">one</div>
@@ -106,3 +110,7 @@ HTML 解析为 DOM 树并且 CSS 解析为 CSSOM 树后，合并成渲染树，�
 - `filter` 属性
 
 尽量不要使用太多的层叠上下文，因为这会增加浏览器的渲染负担，同时也会增加维护的难度。
+
+## 面试题
+
+说到定位，有没有了解过层叠上下文，这里想问的是 z-index，可以先回答什么时候要使用这个属性，还有一些特例情况。（来自美团）

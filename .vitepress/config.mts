@@ -33,6 +33,9 @@ export default defineConfig({
     ],
     postsPerPage: 10,
   },
+  sitemap:{
+    hostname: "https://blog-shell-raining.vercel.app"
+  },
   markdown: {
     config: (md) => {
       md.use(markdownItSub);
