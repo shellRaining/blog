@@ -27,7 +27,7 @@ date: 2024-02-15
 
 <img src='https://raw.githubusercontent.com/shellRaining/img/main/2402/grid_layout.png'>
 
-可以看到需要对每个单元格都进行精细的操作，比如控制他们的 background-color，但这里就不是 grid 应该做的事情了，应该交给 CSS 选择器来进行这些操作，grid 仅负责布局，关于 grid 详细信息见 [CSS grid](../css/grid)
+可以看到需要对每个单元格都进行精细的操作，比如控制他们的 background-color，但这里就不是 grid 应该做的事情了，应该交给 CSS 选择器来进行这些操作，grid 仅负责布局，关于 grid 详细信息见 [CSS grid](../css/grid/grid_layout.md)
 
 ## nth-child 使用方式
 

@@ -19,7 +19,6 @@ const userPageStyle = Object.assign(
 );
 
 // control page text truncate
-// TODO: this should be hack
 const text = (useSlots().default?.()[0].children as string) || "";
 const texts = ref(truncate(text, userPageStyle));
 

@@ -18,7 +18,6 @@ onContentUpdated(() => {
 </script>
 
 <template>
-  <!-- TODO: refactor -->
   <div
     class="category__wrapper"
     v-if="headers.length > 0 && (frontmatter.openCategory ?? true)"

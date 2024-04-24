@@ -2,6 +2,7 @@
 title: flex 及其包含的相关属性
 tag:
   - css
+  - flex
 date: 2024-01-07
 ---
 
@@ -14,8 +15,6 @@ date: 2024-01-07
 `flex` 是三个属性的缩写，按照顺序依次是 `flex-grow`， `flex-shrink`， `flex-basis`
 
 ### 单值语法
-
-<!-- TODO: vim 模式匹配 -->
 
 单值语法：值必须是以下之一：
 
@@ -78,8 +77,6 @@ date: 2024-01-07
 | `flex: none`    | `flex: 0 0 auto` | 推荐    |
 | `flex: 1`       | `flex: 1 1 0%`   | 推荐    |
 | `flex: auto`    | `flex: 1 1 auto` | 使用场景少 |
-
-
 
 ## 参考
 

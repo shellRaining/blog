@@ -43,7 +43,7 @@ button {
 
 button::after {
   content: "";
-  position: absolute; /* TODO: how it works? */
+  position: absolute;
   width: 100%;
   height: 2px;
   bottom: 0;

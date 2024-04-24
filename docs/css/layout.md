@@ -19,7 +19,7 @@ date: 2024-01-09
 
 弹性盒子布局是专门用来进行一维布局的，只需要在父元素上利用 `display: flex`，子元素就会按照 flex 的规则进行布局
 
-详情请见 [flex 布局](./flex.md)
+详情请见 [flex 布局](./flex/flex_layout.md)
 
 <!-- TODO: need add some for flex -->
 

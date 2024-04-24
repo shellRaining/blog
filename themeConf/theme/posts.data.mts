@@ -10,7 +10,6 @@ export { data };
 export default createContentLoader("docs/**/*.md", {
   transform(rawData) {
     return rawData.sort((a, b) => {
-      // TODO: set default date for every post
       const timeA = dayjs(a.frontmatter.date);
       const timeB = dayjs(b.frontmatter.date);
 

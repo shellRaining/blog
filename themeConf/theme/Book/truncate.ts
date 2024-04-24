@@ -10,7 +10,6 @@ export interface PageStyle {
 }
 
 export function truncate(text: string, pageStyle: PageStyle) {
-  // TODO: 优化
   function handleTruncate(text: string, el: HTMLElement): string[] {
     const boxHeight = pageStyle.height ?? defaultPageStyle.height;
     const result = [];

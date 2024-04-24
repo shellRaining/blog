@@ -71,12 +71,12 @@ button {
   cursor: pointer;
   font-size: 1.2rem;
   font-weight: bold;
-  position: relative; /* TODO: why it works? */
+  position: relative;
 }
 
 button::after {
   content: "";
-  position: absolute; /* TODO: how it works? */
+  position: absolute;
   width: 100%;
   height: 2px;
   bottom: 0;
