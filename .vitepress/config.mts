@@ -9,13 +9,13 @@ export default defineConfig({
   themeConfig: {
     logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",
     search: {
-      // provider: "local",
-      provider: "algolia",
-      options: {
-        appId: "JG14PKMURZ",
-        apiKey: "efb035578911aba5198729241bfaec0e",
-        indexName: "shell-raining",
-      },
+      provider: "local",
+      // provider: "algolia",
+      // options: {
+      //   appId: "3UPZ027ZPM",
+      //   apiKey: "60a4d994ae4c510bf9a953739b9fe13f",
+      //   indexName: "shellRaining_blog",
+      // },
     },
     nav: [
       {
