@@ -8,50 +8,16 @@ openCategory: false
 outline: [2, 3]
 ---
 
-::: warning
-本文摘抄自参考中的[博客](https://dennisgo.cn/Articles/JavaScript/Promise.html)
-:::
+## Promises/A+ 规范
 
-## Promises/A+规范
-
-```javascript
-const wait1 = new Promise((resolve) => {
-  console.log("wait for 1s");
-  setTimeout(() => {
-    resolve(1);
-  }, 1000);
-});
-
-wait1
-  .then((value) => {
-    console.log(value);
-    return true;
-  })
-  .then((value) => {
-    console.log(value);
-  });
-```
-
-通过上面的例子，其实我们已经知道了一个 promise 长什么样子，Promises/A+规范其实就是对这个长相进一步进行了规范。下面我会对这个规范进行一些讲解。
-
-### 术语
-
-> 1. `promise`：是一个拥有 `then` 方法的对象或函数，其行为符合本规范
->
-> 1. `thenable`：是一个定义了 `then` 方法的对象或函数。这个主要是用来兼容一些老的 Promise 实现，只要一个 Promise 实现是 thenable，也就是拥有`then`方法的，就可以跟 Promises/A+兼容。
->
-> 1. `value`：指`reslove`出来的值，可以是任何合法的 JS 值（包括 `undefined` , thenable 和 promise 等）
->
-> 1. `exception`：异常，在 Promise 里面用`throw`抛出来的值
->
-> 1. `reason`：拒绝原因，是`reject`里面传的参数，表示`reject`的原因
+你最起码要对 promise 如何使用有一个了解才能学习 promise 内部的实现……不明白请看红宝书
 
 ### Promise 状态
 
 Promise 总共有三个状态：
 
 > 1. `pending`: 一个 promise 在 resolve 或者 reject 前就处于这个状态。
-> 1. `fulfilled`: 一个 promise 被 resolve 后就处于`fulfilled`状态，这个状态不能再改变，而且必须拥有一个**不可变**的值(`value`)。
+> 1. `fulfilled`: 一个 promise 被 resolve 后就处于 `fulfilled` 状态，这个状态不能再改变，而且必须拥有一个**不可变**的值(`value`)。
 > 1. `rejected`: 一个 promise 被 reject 后就处于`rejected`状态，这个状态也不能再改变，而且必须拥有一个**不可变**的拒绝原因(`reason`)。
 
 注意这里的**不可变**指的是`===`，也就是说，如果`value`或者`reason`是对象，只要保证引用不变就行，规范没有强制要求里面的属性也不变。Promise 状态其实很简单，画张图就是：
@@ -68,10 +34,7 @@ promise.then(onFulfilled, onRejected)
 
 #### 参数可选
 
-`onFulfilled` 和 `onRejected` 都是可选参数。
-
-- 如果 `onFulfilled` 不是函数，其必须被忽略
-- 如果 `onRejected` 不是函数，其必须被忽略
+`onFulfilled` 和 `onRejected` 都是可选参数。如果他们不是函数，必须被忽略。
 
 #### `onFulfilled` 特性
 
@@ -109,17 +72,15 @@ promise2 = promise1.then(onFulfilled, onRejected);
 - 如果 `onFulfilled` 不是函数且 `promise1` 成功执行，`promise2` 必须成功执行并返回相同的值
 - 如果 `onRejected` 不是函数且 `promise1` 拒绝执行，`promise2` 必须拒绝执行并返回相同的拒因
 
-规范里面还有很大一部分是讲解**Promise 解决过程**的，光看规范，很空洞，前面这些规范已经可以指导我们开始写一个自己的 Promise 了，**Promise 解决过程**会在我们后面写到了再详细讲解。
-
 ## 自己写一个 Promise
 
 我们自己要写一个 Promise，肯定需要知道有哪些工作需要做，我们先从 Promise 的使用来窥探下需要做啥：
 
 > 1. 新建 Promise 需要使用`new`关键字，那他肯定是作为面向对象的方式调用的，Promise 是一个类。
-> 1. 我们 `new Promise(fn)` 的时候需要传一个函数进去，说明 Promise 的参数是一个函数
+> 1. 我们 `new Promise(fn)` 的时候需要传一个函数进去，说明 Promise 的参数是一个函数，这个函数会立即执行。
 > 1. 构造函数传进去的`fn`会收到`resolve`和`reject`两个函数，用来表示 Promise 成功和失败，说明构造函数里面还需要`resolve`和`reject`这两个函数，这两个函数的作用是改变 Promise 的状态。
 > 1. 根据规范，promise 有`pending`，`fulfilled`，`rejected` 三个状态，初始状态为 `pending`，调用 `resolve` 会将其改为 `fulfilled`，调用 `reject` 会改为 `rejected`。
-> 1. promise 实例对象建好后可以调用`then`方法，而且是可以链式调用`then`方法，说明`then`是一个实例方法。[链式调用的实现这篇有详细解释](https://juejin.im/post/5e64cf0ef265da5734024f84#heading-7)，我这里不再赘述。简单的说就是`then`方法也必须返回一个带`then`方法的对象，可以是 this 或者新的 promise 实例。
+> 1. promise 实例对象建好后可以调用`then`方法，而且是可以链式调用`then`方法，说明`then`是一个实例方法。[链式调用的实现这篇有详细解释](https://juejin.im/post/5e64cf0ef265da5734024f84#heading-7)，我这里不再赘述。简单的说就是 `then` 方法也必须返回一个带 `then` 方法的对象，可以是 this 或者新的 promise 实例。
 
 ### 构造函数
 
@@ -138,16 +99,32 @@ function MyPromise(fn) {
 }
 ```
 
-### `resolve`和`reject`方法
+### 执行传入的函数
 
-根据规范，`resolve`方法是将状态改为 fulfilled，`reject`是将状态改为 rejected。
+由于我们会立即执行传入函数特性，我们会继续加入如下代码：
+
+```javascript
+function MyPromise(fn) {
+  // ...省略前面代码...
+
+  try {
+    fn(resolve, reject);
+  } catch (error) {
+    reject(error);
+  }
+}
+```
+
+注意加上 `try...catch`，如果捕获到错误就 `reject`。注意这里 `resolve` 和 `reject` 是构造函数里面的局部函数，我们马上会定义
+
+### `resolve` 和 `reject` 方法
+
+根据规范，`resolve` 方法是将状态改为 fulfilled，`reject` 是将状态改为 rejected。
 
 ```javascript
 // 这两个方法直接写在构造函数里面，这两个函数无法通过实例或者静态构造函数访问
 function MyPromise(fn) {
   // ...省略前面代码...
-
-  // 存一下 this,以便 resolve 和 reject 里面访问
   var that = this;
   // resolve 方法参数是 value
   function resolve(value) {
@@ -157,7 +134,6 @@ function MyPromise(fn) {
     }
   }
 
-  // reject 方法参数是 reason
   function reject(reason) {
     if(that.status === PENDING) {
       that.status = REJECTED;

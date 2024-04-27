@@ -36,5 +36,5 @@ grid 布局也和 flex 布局一样，控制其行为和表现的属性分为两
 
 ## 元素属性
 
-详情见 [grid 元素属性](./grid_elements.md)
+<!-- TODO: 详情见 [grid 元素属性](./grid_elements.md) -->
 
