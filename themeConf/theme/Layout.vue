@@ -7,6 +7,29 @@ import Gallery from "./Viewer/Gallery.vue";
 
 const { Layout } = DefaultTheme;
 
+let keystrokes: string[] = [];
+document.addEventListener("keydown", (e) => {
+  if (e.key.charCodeAt(0) < 97 || e.key.charCodeAt(0) > 122) {
+    keystrokes = [];
+    return;
+  }
+  keystrokes.push(e.key);
+  const keys: string = keystrokes.join("");
+  if (keys === "cd") {
+    back();
+  } else if (keys === "ga") {
+    location.href = '/archive'
+  } else if (keys === "gt") {
+    location.href = '/tags'
+  } else if (keys === 'gh') {
+    location.href = '/'
+  }
+
+  if (keystrokes.length >= 2) {
+    keystrokes = [];
+  }
+});
+
 function back() {
   history.back();
 }

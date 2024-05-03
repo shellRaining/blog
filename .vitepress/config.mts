@@ -7,7 +7,9 @@ export default defineConfig({
   lang: "zh-cn",
   description: "A VitePress Site",
   themeConfig: {
-    logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",
+    // logo: "https://raw.githubusercontent.com/shellRaining/img/main/head/keqing.jpeg",
+    logo: { src: "favicon.ico", width: 24, height: 24 },
+
     search: {
       provider: "local",
       // provider: "algolia",
@@ -33,8 +35,8 @@ export default defineConfig({
     ],
     postsPerPage: 10,
   },
-  sitemap:{
-    hostname: "https://blog-shell-raining.vercel.app"
+  sitemap: {
+    hostname: "https://blog-shell-raining.vercel.app",
   },
   markdown: {
     config: (md) => {

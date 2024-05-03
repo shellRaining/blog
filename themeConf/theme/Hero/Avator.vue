@@ -5,7 +5,7 @@ const { theme } = useData();
 
 <template>
   <div class="content">
-    <img :src="theme.logo" alt="avator" width="135" height="135" class="avator" />
+    <img :src="theme.logo.src" alt="avator" width="135" height="135" class="avator" />
   </div>
 </template>
 
