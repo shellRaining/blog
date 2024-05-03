@@ -4,31 +4,9 @@ import Hero from "./Hero/Hero.vue";
 import Page from "./Home/PostsLists.vue";
 import Title from "./Doc/Title.vue";
 import Gallery from "./Viewer/Gallery.vue";
+import KeyShortcuts from "./KeyShortcuts.vue";
 
 const { Layout } = DefaultTheme;
-
-let keystrokes: string[] = [];
-document.addEventListener("keydown", (e) => {
-  if (e.key.charCodeAt(0) < 97 || e.key.charCodeAt(0) > 122) {
-    keystrokes = [];
-    return;
-  }
-  keystrokes.push(e.key);
-  const keys: string = keystrokes.join("");
-  if (keys === "cd") {
-    back();
-  } else if (keys === "ga") {
-    location.href = '/archive'
-  } else if (keys === "gt") {
-    location.href = '/tags'
-  } else if (keys === 'gh') {
-    location.href = '/'
-  }
-
-  if (keystrokes.length >= 2) {
-    keystrokes = [];
-  }
-});
 
 function back() {
   history.back();
@@ -53,6 +31,9 @@ function back() {
     <template #home-hero-before><Hero /> </template>
     <template #home-features-after> <Page /></template>
   </Layout>
+  <ClientOnly>
+    <KeyShortcuts />
+  </ClientOnly>
 </template>
 
 <style scoped>

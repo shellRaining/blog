@@ -25,12 +25,14 @@ function updatePostList(pageIdx: number) {
 <template>
   <div>
     <ul class="posts-ul__list">
-      <PostCard
-        class="posts-li__item"
-        v-for="post in curPosts"
-        :post="post"
-        :key="post.url"
-      />
+      <li>
+        <PostCard
+          class="posts-li__item"
+          v-for="post in curPosts"
+          :post="post"
+          :key="post.url"
+        />
+      </li>
     </ul>
     <ClientOnly>
       <Pagination
