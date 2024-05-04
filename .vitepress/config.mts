@@ -8,9 +8,14 @@ export default defineConfig({
   description: "A VitePress Site",
   themeConfig: {
     logo: { src: "favicon.ico", width: 24, height: 24 },
-
     search: {
-      provider: "local",
+      // provider: "local",
+      provider: "algolia",
+      options: {
+        appId: "HXS18HBH21",
+        apiKey: "eb2bff1bf9a484c2528c39569c22dd27",
+        indexName: "shellraining",
+      },
     },
     nav: [
       {
