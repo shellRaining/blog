@@ -7,7 +7,7 @@ export default defineConfig({
   lang: "zh-cn",
   description: "A VitePress Site",
   themeConfig: {
-    logo: { src: "favicon.ico", width: 24, height: 24 },
+    logo: { src: "/favicon.ico", width: 24, height: 24 },
     search: {
       // provider: "local",
       provider: "algolia",
