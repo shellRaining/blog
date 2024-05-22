@@ -30,5 +30,39 @@ date: 2024-03-13
 有关 `DOMContentLoaded` 事件，可以看[这里](../browser/page_life_cycle.md#domcontentloaded)
 
 ::: tip
-defer 虽说会按照执行顺序执行，但是测试并不是这样的
+defer 虽说会按照执行顺序执行（并且我自己的实验结果也是这样），但是有的博主说不是这样的，所以可能要根据不同浏览器差异来看
 :::
+
+## 实验
+
+```html
+<body>
+  <script>
+    console.log("head");
+    const start = window.performance.now();
+    addEventListener("DOMContentLoaded", () => {
+      console.log("DOMContentLoaded", window.performance.now() - start);
+      const p = document.getElementById("p");
+      p.textContent = "b";
+    });
+  </script>
+  <h1>defer</h1>
+  <p id="p">a</p>
+  <script src="script.js" defer></script>
+  <script src="script2.js" defer></script>
+</body>
+```
+
+使用浏览器打开上面的页面，会停顿两秒钟左右，然后依次输出：
+
+```plaintext
+head
+script.js:2 script.js loaded
+script.js:9 script.js finished
+script2.js:1 script2.js loaded
+（索引）:13 DOMContentLoaded 2120.7000000178814
+```
+
+我有点好奇为什么会停顿两秒钟，而不是先出现 `a`，两秒钟后再出现 `b`，这个是一个可以优化的地方，但应该如何做呢？又或者说，在扫描到 script 标签的时候，其实 DOM 还没有解析完成，导致了被阻塞的事情，我更倾向这种推测
+
+同时我还测试了一下，如果将 defer 改为 async，那么会先输出 `a`，然后两秒后输出 `b`，这个是符合预期的，并且 script2.js 会在 script.js 之前输出，这个也是符合预期的

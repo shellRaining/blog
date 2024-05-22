@@ -147,3 +147,124 @@ let x = 1 // no
 ::: warning
 为什么不可以去掉 `name: (identifier)`，去掉以后匹配会扩大到所有变量声明
 :::
+
+### 匿名节点查询
+
+我们有时候想要找到一个二元表达式，但是不关心这个表达式的左右子节点是什么，只需要满足是全等就可以，这时候我们可以使用匿名节点，比如下面这个查询
+
+```plaintext
+(binary_expression
+  operator: "==="
+) @bin
+```
+
+就可以匹配（这里的 operator 是一个字段，但其实可以不用写）
+
+```javascript
+a === 3 // yes
+b !== c // no
+a == 1 // no
+```
+
+### 捕获
+
+我们可以使用 `@` 符号接上一个名字来捕获一个匹配的节点列表，比如我们上面所有的查询（S-expression）后面都有一个 `@xxx`，这个 `xxx` 就是捕获的名字，我们可以使用这个名字来获取匹配的节点列表。我们为其赋予了名字，这样我们就可以在后续的操作中使用这个名字来获取匹配的节点列表。
+
+### 量词操作符
+
+我们可以在 S-expression 后面添加量词操作符（* + 或者 ?，用法同正则表达式）来匹配多个节点，比如下面这个查询
+
+```plaintext
+(function_declaration
+  (formal_parameters
+    (identifier)*
+  ) @params
+)
+```
+
+这个查询的意思是找到一个函数声明，这个函数声明的参数列表中有零个及以上标识符，这样我们就可以匹配下面的两个函数声明中的参数列表（注意包括逗号）
+
+
+```javascript
+function foo(a, b, c) {
+  return a + b + c;
+}
+
+function bar() {
+  return
+}
+```
+
+下面这个查询将会匹配所有的函数调用，不管有没有参数，如果有参数，我们就使用 `the-string-arg` 名称来捕获调用的参数
+
+```plaintext
+(call_expression
+  function: (identifier) @the-function
+  arguments: (arguments (string)? @the-string-arg))
+```
+
+### 捕获组
+
+我们可以使用一个括号来将多个表达式组合在一起，这样就可以匹配多个相邻的节点（同时可以结合量词操作符），比如下面这个查询
+
+```plaintext
+(
+  (comment)
+  (function_declaration)
+)
+```
+
+可以用来匹配后边是 function_declaration 的 comment（注意只匹配 comment，function_declaration 没有被包含在选中的组里）
+
+### 可选列表
+
+我们可以使用方括号将一些 S-expression 围起来（类似 JavaScript 正则表达式那样），表示可选的捕获列表，比如
+
+```plaintext
+[
+ "let"
+ "const"
+] @keyword
+```
+
+就可以匹配所有的 `let` 和 `const` 单词
+
+### 通配符节点
+
+类似正则表达式的 `.`，treesitter query 中类似的节点为 `_` 匿名节点，`(_)` 非匿名节点
+
+### 锚点
+
+锚点类似正则表达式中的 `^ 和 $`，但是稍有不同，我们如果想要匹配一个数组中的第一个节点，可以这样写 query，将锚点 `.` 放在要匹配元素的前面
+
+```plaintext
+(array . (number) @first-element)
+```
+
+他就可以匹配 `[1, 2, 3]` 中的 `1`。同理如果想要匹配最后一个元素，放在匹配元素的后面就可以。
+
+### 谓词
+
+如果想要匹配一个对象中 `key` 和 `value` 相同的部分，我们无法通过之前的手段来获取响应的节点，因为没有一个 `equal` 的操作符，而谓词补充了这一点。
+
+首先说谓词的格式，他是类似 `#name?` 这样的形式，常用的谓词有 `#eq?`，`#not-eq?`，`#any-eq?`，`#any-not-eq?`，`#match?`，`#not-match?`
+
+比如上面的需求，我们可以这样写 query
+
+```plaintext
+(pair
+  key: (property_identifier) @key
+  value: (identifier) @value
+  (#eq? @key @value)
+) @res
+```
+
+这里的 res 就是最后捕获的结果就是
+
+```javascript
+const obj = {
+  a: a, // yes
+  b: b, // yes
+  c: 1
+};
+```
