@@ -139,34 +139,6 @@ function throttle(fn, delay) {
 
 这种方式的弊端则是，它比上面的两种方式开销大概大一倍，而且第二次和第三次输出之间的间隔变得很小
 
-### 使用两个参数控制是否首次和尾次执行
-
-```javascript
-function throttle(func, limit, first, end) {
-  let waiting = false;
-  let scheduled = false;
-
-  return function () {
-    if (!waiting) {
-      if (first) {
-        func.apply(this, arguments);
-        first = false
-      }
-      waiting = true;
-      setTimeout(() => {
-        waiting = false;
-        if (scheduled && end) {
-          func.apply(this, arguments);
-          scheduled = false;
-        }
-      }, limit);
-    } else {
-      scheduled = true;
-    }
-  };
-}
-```
-
 ::: warning
 这里其实可以出一个考题，是我无意中发现的
 
