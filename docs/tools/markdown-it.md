@@ -7,7 +7,7 @@ date: 2024-01-30
 
 ## markdown-it-sub
 
-使用方式,通过默认导出
+使用方式，通过默认导出
 
 ```javascript
 const sub = require('markdown-it-sub')
