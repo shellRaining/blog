@@ -11,7 +11,7 @@ date: 2024-05-30
 UTF-8 编码的字符是有一定规律的，首先一个 UTF-8 字符可能有 `1-4` 字节的长度。对于其中的一个字节 b
 
 - 如果 b 首位为 0，则其为单字节字符，即 `0 <= charCodeAt(b) <= 127`，可以用来兼容 ASCII 码
-- 如果 b 首位为 1，第二位为 0，则其为多字节字符中的其中一个字节，同时还有下面细分的规则
+- 如果 b 首位为 1，第二位为 0，则其为多字节字符中的其中一个字节（不包含首字节）。而对于其首字节，有下面细分的规则
   - 如果 b 符合 `110X XXXXX`，表示这是一个两字节字符的第一个字节
   - 如果 b 符合 `1110 XXXXX`，表示这是一个三字节字符的第一个字节
   - 如果 b 符合 `1111 0XXXX`，表示这是一个四字节字符的第一个字节
@@ -37,7 +37,7 @@ function utf8Split(inputstr)
         elseif byte >= 192 and byte <= 223 then -- 0xc0 to 0xdf
             table.insert(list, string.sub(inputstr, point, point + 1))
             point = point + 2
-        elseif byte >= 224 and byte <= 239 then -- 0xd0 to 0xdf
+        elseif byte >= 224 and byte <= 239 then -- 0xe0 to 0xef
             table.insert(list, string.sub(inputstr, point, point + 2))
             point = point + 3
         elseif byte >= 240 and byte <= 247 then -- 0xf0 to 0xf7

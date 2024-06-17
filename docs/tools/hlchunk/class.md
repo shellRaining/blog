@@ -1,3 +1,11 @@
+---
+title: hlchunk 对类的实现
+tag:
+  - tools
+  - hlchunk
+date: 2024-06-16
+---
+
 ## hlchunk 中对于类的实现
 
 由于 `hlchunk` 更像是一堆 `mod` 实现的集合体，因此设置一个 `BaseMod` 显得比较合理，但同时 `Lua` 不具备完善的 `class` 机制，因此需要我们手动实现一个能够继承的类，使用方式的伪代码为
