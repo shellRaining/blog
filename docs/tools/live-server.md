@@ -151,13 +151,41 @@ wss.on("connection", (ws) => {
   socket.onmessage = function (msg) {
     if (msg.data == "reload") {
       location.reload();
-    } else if (msg.data == "refreshcss") console.log("refreshcss");
+    } else if (msg.data == "refreshcss") {
+      const sheets = document.querySelectorAll("link");
+      const headEl = document.querySelector("head");
+      for (const sheet of sheets) {
+        sheet.remove()
+        const rel = sheet.rel;
+        if (
+          sheet.href &&
+          (typeof rel !== "string" ||
+            rel.length === 0 ||
+            rel.toLowerCase() === "stylesheet")
+        ) {
+          const url = sheet.href.replace(/(&|\?)_cacheOverride=\d+/, "");
+          console.log(url);
+          sheet.href =
+            url +
+            (url.indexOf("?") >= 0 ? "&" : "?") +
+            "_cacheOverride=" +
+            new Date().valueOf();
+          headEl.append(sheet);
+        }
+      }
+    }
   };
   console.log("Live reload enabled.");
 </script>
 ```
 
-这段代码创建了一个 `WebSocket` 连接在 `ws://127.0.0.1:8080/` 地址上，然后接受指令并执行刷新的动作。
+这段代码创建了一个 `WebSocket` 连接在 `ws://127.0.0.1:8080/` 地址上，然后接受指令并执行对应的刷新动作。
+
+如果是非 `css` 类型文件的变更，我们直接调用 `location.reload()` 即可，如果是 `css` 类型的文件，会做如下的动作：
+
+1. 找出当前文档中所有的外部 `link` 标签，将其从 `DOM` 中移除
+2. 对所有 `link` 标签进行遍历，如果是 CSS 类型的，我们重新设置他的 `href`，加上一个日期的 `query`，来使之缓存失效，重新发送 `get` 请求来获取 `CSS` 文件
+3. 将 `link` 标签对应的 `DOM` 元素重新加入到文档中。
 
 ## 总结
 
