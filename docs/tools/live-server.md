@@ -87,7 +87,7 @@ server
 
 ---
 
-任务三实际上就是上面的 `file = inject(file);` 这段代码，我们会在该文件中注入一个 `script` 标签
+任务三实际上就是上面的 `file = inject(file);` 这段代码，我们会在该文件中注入一个 `script` 标签 
 
 ```JavaScript
 function inject(file) {
