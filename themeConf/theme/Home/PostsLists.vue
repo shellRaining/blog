@@ -34,14 +34,12 @@ function updatePostList(pageIdx: number) {
         />
       </li>
     </ul>
-    <ClientOnly>
-      <Pagination
-        class="posts-pagination"
-        :pageNum="totalPage"
-        :curPage="curPage"
-        @page-changed="updatePostList"
-      />
-    </ClientOnly>
+    <Pagination
+      class="posts-pagination"
+      :pageNum="totalPage"
+      :curPage="curPage"
+      @page-changed="updatePostList"
+    />
   </div>
 </template>
 

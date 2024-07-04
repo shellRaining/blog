@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted } from "vue";
+import { useRouter } from "vitepress";
 
 const props = defineProps<{
   pageNum: number;
@@ -8,33 +9,29 @@ const props = defineProps<{
 const emit = defineEmits<{
   pageChanged: [pageIdx: number];
 }>();
+const router = useRouter();
 
-function handlePopState() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const pageIdx = Number(urlParams.get("page")) || 1;
+router.onAfterRouteChanged = function (to) {
+  const fakeHost = "http://a.com";
+  const url = new URL(to, fakeHost);
+  const params = new URLSearchParams(url.search);
+  const pageIdx = Number(params.get("page")) || 1;
   emit("pageChanged", pageIdx);
-}
-
+};
 onMounted(() => {
-  // set route when first open the page
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(location.search);
   const pageIdx = Number(urlParams.get("page")) || 1;
-  emit("pageChanged", pageIdx);
-  window.addEventListener("popstate", handlePopState);
+  go(pageIdx);
 });
 
-onUnmounted(() => {
-  window.removeEventListener("popstate", handlePopState);
-});
 function go(pageIdx: number) {
   if (pageIdx < 1 || pageIdx > props.pageNum) {
     return;
   }
-  emit("pageChanged", pageIdx);
   // update the page route, like ?page=1
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(location.search);
   urlParams.set("page", String(pageIdx));
-  window.history.pushState({}, "", `${window.location.pathname}?${urlParams}`);
+  router.go(`${location.pathname}?${urlParams}`);
 }
 </script>
 
