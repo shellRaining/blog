@@ -36,7 +36,10 @@ export default defineConfig({
   head: [
     [
       "script",
-      { async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-MRR1SRZVFY" },
+      {
+        async: "",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-MRR1SRZVFY",
+      },
     ],
     [
       "script",
@@ -47,6 +50,9 @@ export default defineConfig({
       gtag('config', 'G-MRR1SRZVFY');`,
     ],
   ],
+  sitemap: {
+    hostname: "https://shellraining.top",
+  },
   markdown: {
     config: (md) => {
       md.use(markdownItSub);
