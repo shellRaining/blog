@@ -1,6 +1,14 @@
-import { defineConfig } from "vitepress";
+import {
+  DefaultTheme,
+  UserConfig,
+  defineConfig as defineDefaultConfig,
+} from "vitepress";
 import markdownItSub from "markdown-it-sub";
 import markdownItWikilinksFn from "markdown-it-wikilinks";
+
+function defineConfig<T extends UserConfig<DefaultTheme.Config>>(conf: T) {
+  return defineDefaultConfig(conf);
+}
 
 export default defineConfig({
   title: "blog",
