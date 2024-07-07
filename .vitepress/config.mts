@@ -42,6 +42,8 @@ export default defineConfig({
     postsPerPage: 10,
   },
   head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["link", { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" }],
     [
       "script",
       {
