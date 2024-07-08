@@ -2,6 +2,4 @@
 layout: page
 ---
 
-<ClientOnly>
-  <Tags></Tags>
-</ClientOnly>
+<Tags></Tags>
