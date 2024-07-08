@@ -1,11 +1,11 @@
 ---
 title: vitepress 配置文件的工作流程
 tag:
-  - 
+  - vitepress
 date: 2024-07-07
 ---
 
-vitepress 的配置文件是位于 `.vitepress/config.mts` 下的，我们需要在这个文件中默认导出一个 `UserConfig` 类型的对象，但是这个配置文件是如何反映到客户端上的呢？我们从零开始看一下。
+vitepress 的配置文件是位于 `.vitepress/config.ts` 下的，我们需要在这个文件中默认导出一个 `UserConfig` 类型的对象，但是这个配置文件是如何反映到客户端上的呢？我们从零开始看一下。
 
 在开发阶段，我们首先输入命令 `pnpm run docs:dev` 启动一个开发服务器，然后在浏览器打开首页，这个过程向服务器请求文件的顺序为：
 

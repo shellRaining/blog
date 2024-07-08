@@ -1,6 +1,0 @@
----
-layout: page
----
-
-<Archive></Archive>
-
