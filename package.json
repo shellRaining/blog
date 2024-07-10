@@ -8,14 +8,15 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
+    "@antv/g2plot": "^2.4.31",
     "dayjs": "latest",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-wikilinks": "^1.4.0",
     "viewerjs": "^1.11.6"
   },
   "devDependencies": {
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.3",
     "vitepress": "latest",
-    "vue": "^3.4.26"
+    "vue": "^3.4.31"
   }
 }

@@ -69,4 +69,9 @@ export default defineConfig({
       md.use(markdownItWikilinksFn());
     },
   },
+  vite: {
+    ssr: {
+      noExternal: ["@antv/g2plot"]
+    }
+  }
 });
