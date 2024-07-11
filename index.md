@@ -1,4 +1,4 @@
 ---
 layout: home
-postsPerPage: 10
+postsPerPage: 5
 ---

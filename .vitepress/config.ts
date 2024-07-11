@@ -1,9 +1,13 @@
 import { defineConfig } from "vitepress";
+import UnoCSS from 'unocss/vite'
 
 export default defineConfig({
   title: "blog",
   lang: "zh-cn",
   description: "A VitePress Site",
+  vite: {
+    plugins: [UnoCSS()]
+  },
   themeConfig: {
     logo: { src: "/favicon.ico", width: 24, height: 24 },
     search: {
@@ -19,14 +23,14 @@ export default defineConfig({
         text: "🏡Blogs",
         link: "/",
       },
-      {
-        text: "🔖Tags",
-        link: "/tags",
-      },
-      {
-        text: "📃Archive",
-        link: "/archive",
-      },
+      // {
+      //   text: "🔖Tags",
+      //   link: "/tags",
+      // },
+      // {
+      //   text: "📃Archive",
+      //   link: "/archive",
+      // },
     ],
   },
   head: [
