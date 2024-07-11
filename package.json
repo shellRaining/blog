@@ -9,12 +9,9 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "dayjs": "latest",
-    "viewerjs": "^1.11.6"
+    "shellraining-theme": "link:../themeConf/theme"
   },
   "devDependencies": {
-    "typescript": "^5.5.3",
-    "vitepress": "latest",
-    "vue": "^3.4.31"
+    "vitepress": "^1.3.0"
   }
 }
