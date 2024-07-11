@@ -8,7 +8,6 @@ const heroName = ref("始不垂翅，终能奋翼");
 <template>
   <Avator class="hero_img" />
   <div class="hero">
-    <div class="m-1">hello</div>
     <h1 class="hero__title">{{ heroName }}</h1>
     <p class="hero__description">shellRaining blog</p>
   </div>
