@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { withBase } from "vitepress";
-import { data as posts, BlogPost } from "../posts.data.mts";
+import { data as posts, BlogPost } from "../posts.data.ts";
 import dayjs from "dayjs";
 
 function initTags(posts: BlogPost[]): Map<string, BlogPost[]> {

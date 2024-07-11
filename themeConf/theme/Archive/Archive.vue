@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { data as posts } from "../posts.data.mts";
+import { data as posts } from "../posts.data.ts";
 // TODO: add more feature
 </script>
 

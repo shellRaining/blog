@@ -1,40 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Avator from "./Avator.vue";
 
 const heroName = ref("始不垂翅，终能奋翼");
 const container = ref<HTMLElement | null>(null);
-onMounted(() => {
-  import("@antv/g2plot").then(({ WordCloud }) => {
-    fetch("https://gw.alipayobjects.com/os/antfincdn/jPKbal7r9r/mock.json")
-      .then((res) => res.json())
-      .then((data) => {
-        if (!container.value) {
-          return;
-        }
-        const wordCloud = new WordCloud(container.value, {
-          data,
-          wordField: "x",
-          weightField: "value",
-          color: "#122c6a",
-          wordStyle: {
-            fontFamily: "Verdana",
-            fontSize: [24, 80],
-          },
-          interactions: [{ type: "element-active" }],
-          state: {
-            active: {
-              style: {
-                lineWidth: 3,
-              },
-            },
-          },
-        });
-
-        wordCloud.render();
-      });
-  });
-});
 </script>
 
 <template>

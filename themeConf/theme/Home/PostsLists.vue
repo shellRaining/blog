@@ -1,16 +1,20 @@
 <script lang="ts" setup>
-import { data as posts } from "../posts.data.mts";
+import { data } from "../posts.data.ts";
 import PostCard from "./PostCard.vue";
 import Pagination from "./Pagination.vue";
-import { useData } from "vitepress";
+import { useRoute } from "vitepress";
 import { ref } from "vue";
 
-const { theme } = useData();
+const route = useRoute();
+
+
+const posts = data.filter(({frontmatter}) => {
+  return Object.keys(frontmatter).length !== 0
+})
+const postsPerPage = route.data.frontmatter.postsPerPage || 5;
+const totalPage = Math.ceil(posts.length / postsPerPage);
 
 const curPage = ref(1);
-const postNum = ref(posts.length);
-const postsPerPage = theme.value.postsPerPage || 5;
-const totalPage = Math.ceil(postNum.value / postsPerPage);
 const curPosts = ref(posts.slice(0, postsPerPage));
 
 function updatePostList(pageIdx: number) {

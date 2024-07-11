@@ -1,14 +1,4 @@
-import {
-  DefaultTheme,
-  UserConfig,
-  defineConfig as defineDefaultConfig,
-} from "vitepress";
-import markdownItSub from "markdown-it-sub";
-import markdownItWikilinksFn from "markdown-it-wikilinks";
-
-function defineConfig<T extends UserConfig<DefaultTheme.Config>>(conf: T) {
-  return defineDefaultConfig(conf);
-}
+import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "blog",
@@ -17,7 +7,6 @@ export default defineConfig({
   themeConfig: {
     logo: { src: "/favicon.ico", width: 24, height: 24 },
     search: {
-      // provider: "local",
       provider: "algolia",
       options: {
         appId: "HXS18HBH21",
@@ -39,11 +28,16 @@ export default defineConfig({
         link: "/archive",
       },
     ],
-    postsPerPage: 10,
   },
   head: [
     ["link", { rel: "icon", href: "/favicon.ico" }],
-    ["link", { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" }],
+    [
+      "link",
+      {
+        rel: "stylesheet",
+        href: "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css",
+      },
+    ],
     [
       "script",
       {
@@ -63,15 +57,4 @@ export default defineConfig({
   sitemap: {
     hostname: "https://shellraining.top",
   },
-  markdown: {
-    config: (md) => {
-      md.use(markdownItSub);
-      md.use(markdownItWikilinksFn());
-    },
-  },
-  vite: {
-    ssr: {
-      noExternal: ["@antv/g2plot"]
-    }
-  }
 });
