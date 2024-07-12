@@ -38,5 +38,3 @@ const groupedPosts = posts.reduce(
     </ul>
   </div>
 </template>
-
-<style scoped></style>

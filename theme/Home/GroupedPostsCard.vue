@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ContentData } from "vitepress";
 import PostItem from "./PostItem.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import gsap from "gsap";
 
 const props = defineProps<{
@@ -33,11 +33,10 @@ function enter(element: Element, done: any) {
   });
 }
 
-onMounted(() => {
-  if (!foldEl.value) return;
+if (foldEl.value) {
   const ulEl = foldEl.value;
   foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
-});
+}
 </script>
 
 <template>
