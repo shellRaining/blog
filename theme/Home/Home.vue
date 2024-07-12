@@ -29,26 +29,14 @@ const groupedPosts = posts.reduce(
       shellRaining's blog
     </h1>
 
-    <TransitionGroup name="list" tag="ul">
+    <ul>
       <li p-2 v-for="(posts, date) in groupedPosts" :key="date">
-        <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
+        <ClientOnly>
+          <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
+        </ClientOnly>
       </li>
-    </TransitionGroup>
+    </ul>
   </div>
 </template>
 
-<style scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-.list-leave-active {
-  position: absolute;
-}
-</style>
+<style scoped></style>

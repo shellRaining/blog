@@ -11,6 +11,9 @@ importers:
       dayjs:
         specifier: latest
         version: 1.11.11
+      gsap:
+        specifier: ^3.12.5
+        version: 3.12.5
       viewerjs:
         specifier: ^1.11.6
         version: 1.11.6
@@ -918,6 +921,9 @@ packages:
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
+
+  gsap@3.12.5:
+    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
 
   gzip-size@6.0.0:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
@@ -2296,6 +2302,8 @@ snapshots:
       is-glob: 4.0.3
 
   globals@11.12.0: {}
+
+  gsap@3.12.5: {}
 
   gzip-size@6.0.0:
     dependencies:
