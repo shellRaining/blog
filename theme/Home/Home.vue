@@ -24,17 +24,37 @@ const groupedPosts = posts.reduce(
 </script>
 
 <template>
-  <div mx-auto max-w-md>
-    <h1 dark:text-color-white text="2xl color-black align-center">
-      shellRaining's blog
-    </h1>
+  <article class="doc">
+    <h1 class="doc-head">shellRaining's blog</h1>
 
     <ul>
-      <li p-2 v-for="(posts, date) in groupedPosts" :key="date">
+      <li class="grouped-posts" v-for="(posts, date) in groupedPosts" :key="date">
         <ClientOnly>
           <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
         </ClientOnly>
       </li>
     </ul>
-  </div>
+  </article>
 </template>
+
+<style scoped>
+.doc {
+  margin: auto;
+  max-width: 32rem;
+
+  .doc-head {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: black;
+    text-align: center;
+
+    .dark & {
+      color: white;
+    }
+  }
+
+  .grouped-posts {
+    padding: 0.5rem;
+  }
+}
+</style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ContentData } from "vitepress";
 import PostItem from "./PostItem.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import gsap from "gsap";
 
 const props = defineProps<{
@@ -25,29 +25,25 @@ function beforeEnter(element: Element) {
 function enter(element: Element, done: any) {
   const el = element as HTMLLIElement;
   gsap.to(el, {
-    duration: 0.2,
+    duration: 0.1,
     onComplete: done,
     opacity: 1,
     x: 0,
-    delay: parseFloat(el.dataset.index!) * 0.05,
+    delay: parseFloat(el.dataset.index!) * 0.03,
   });
 }
 
-if (foldEl.value) {
-  const ulEl = foldEl.value;
-  foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
-}
+onMounted(() => {
+  if (foldEl.value) {
+    const ulEl = foldEl.value;
+    foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
+  }
+});
 </script>
 
 <template>
-  <section p-2 relative>
+  <section>
     <header
-      px-2
-      font-bold
-      text-2xl
-      cursor-pointer
-      select-none
-      rounded-md
       :class="{ 'header-hidden': !showList }"
       @mouseover="showChunk = true"
       @mouseleave="showChunk = false"
@@ -63,10 +59,9 @@ if (foldEl.value) {
     ></div>
 
     <Transition name="fold">
-      <ul ref="foldEl" overflow-hidden v-show="showList">
+      <ul ref="foldEl" v-show="showList">
         <TransitionGroup appear @before-enter="beforeEnter" @enter="enter">
           <li
-            m-2
             v-for="(post, index) in props.posts"
             :key="post.url"
             :data-index="index"
@@ -80,6 +75,29 @@ if (foldEl.value) {
 </template>
 
 <style scoped>
+section {
+  position: relative;
+  padding: 0.5rem;
+
+  & > header {
+    padding: 0 0.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 0.4rem;
+  }
+
+  & > ul {
+    overflow: hidden;
+
+    & > li {
+      margin: 0.5rem;
+    }
+  }
+}
+
 .fold-enter-from,
 .fold-leave-to {
   height: 0;
