@@ -40,13 +40,13 @@ date: 2024-06-29
 
 第一个参数没有什么好说的，后面的 `replacement` 有一些特殊用法。
 
-- `$&` 用来插入被匹配到的字符串，比如 
+- `$&` 用来插入被匹配到的字符串，比如
 
   ```JavaScript
   alert( "I love HTML".replace(/HTML/, "$& and JavaScript") ); // I love HTML and JavaScript
   ```
 
-- ``$ˋ`` 用来匹配被替换文本之前的文本，比如
+- `$ˋ` 用来匹配被替换文本之前的文本，比如
 
   ```JavaScript
   alert( "I love HTML".replace(/HTML/, "$` and JavaScript") ); // I love I love  and JavaScript
@@ -60,9 +60,9 @@ date: 2024-06-29
 
 - `$$` 用来插入字符 `$`
 
-  #### `regex.match(str)`
+#### `regex.match(str)`
 
-  用来检测传入字符串是否满足该正则规则，返回一个布尔值
+用来检测传入字符串是否满足该正则规则，返回一个布尔值
 
 ## 字符类
 

@@ -4,7 +4,6 @@ tag:
   - tools
   - treesitter
 date: 2024-05-18
-outline: [2, 3]
 ---
 
 ## 什么是 treesitter
@@ -129,10 +128,10 @@ CallExpressionNode {
 我们可以使用 `!` 符号来表示否定，使用方法是放到一个字段名前面，比如下面这个查询
 
 ```plaintext
-(lexical_declaration 
-	(variable_declarator
-    	name: (identifier)
-    	!value
+(lexical_declaration
+  (variable_declarator
+      name: (identifier)
+      !value
     ) @var
 ) @decl
 ```
@@ -140,8 +139,8 @@ CallExpressionNode {
 我们就是为了找到一个词法声明，并且本身是一个变量声明，但是这个变量声明没有进行初始化，这样我们就可以匹配
 
 ```javascript
-let x // yes
-let x = 1 // no
+let x; // yes
+let x = 1; // no
 ```
 
 ::: warning
@@ -161,9 +160,9 @@ let x = 1 // no
 就可以匹配（这里的 operator 是一个字段，但其实可以不用写）
 
 ```javascript
-a === 3 // yes
-b !== c // no
-a == 1 // no
+a === 3; // yes
+b !== c; // no
+a == 1; // no
 ```
 
 ### 捕获
@@ -172,7 +171,7 @@ a == 1 // no
 
 ### 量词操作符
 
-我们可以在 S-expression 后面添加量词操作符（* + 或者 ?，用法同正则表达式）来匹配多个节点，比如下面这个查询
+我们可以在 S-expression 后面添加量词操作符（\* + 或者 ?，用法同正则表达式）来匹配多个节点，比如下面这个查询
 
 ```plaintext
 (function_declaration
@@ -184,14 +183,13 @@ a == 1 // no
 
 这个查询的意思是找到一个函数声明，这个函数声明的参数列表中有零个及以上标识符，这样我们就可以匹配下面的两个函数声明中的参数列表（注意包括逗号）
 
-
 ```javascript
 function foo(a, b, c) {
   return a + b + c;
 }
 
 function bar() {
-  return
+  return;
 }
 ```
 
@@ -265,6 +263,6 @@ function bar() {
 const obj = {
   a: a, // yes
   b: b, // yes
-  c: 1
+  c: 1,
 };
 ```

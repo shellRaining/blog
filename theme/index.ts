@@ -1,12 +1,14 @@
 import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme-without-fonts";
 import Layout from "./Layout.vue";
+import Gallery from "./Gallery/Gallery.vue";
 
-import "./fonts.css";
-import "./custom.css";
-import 'virtual:uno.css'
+import "./styles/custom.css";
 
 export default {
   extends: DefaultTheme,
   Layout,
+  enhanceApp({ app }) {
+    app.component("Gallery", Gallery);
+  },
 } satisfies Theme;

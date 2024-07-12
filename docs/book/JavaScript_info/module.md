@@ -15,9 +15,9 @@ date: 2024-06-29
 ```html
 <!doctype html>
 <script type="module">
-  import {sayHi} from './say.js';
+  import { sayHi } from "./say.js";
 
-  document.body.innerHTML = sayHi('John');
+  document.body.innerHTML = sayHi("John");
 </script>
 ```
 
@@ -30,7 +30,7 @@ date: 2024-06-29
 3. `module` 模块在文档中是 `defer` 加载的（在不加 `async` 特性的情况下），也就是在文档加载后，`DOMContentLoaded` 之前加载。
 4. 拥有 `import.meta` 作为各种元信息，比如 `import.meta.dirname` 就相当于 `node` 环境下的 `__dirname`
 
-----------
+---
 
 对于第二点，实际上还会引出 `import` 和 `require` 的区别，可以将 `import` 想象为获取的是模块内容的引用，因此其他文件对其的更改也可以反映在本文件中。而 `require` 实际上导入的是一个新构造的对象，我们获取到的值只是一层浅拷贝，例子如下
 

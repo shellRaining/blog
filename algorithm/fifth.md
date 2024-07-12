@@ -85,7 +85,7 @@ var subarraySum = function (nums, k) {
 }
 ```
 
-想到这个方法前我看了提示，想到了 `S(i, j) = prefixSum(j) - prefixSum[i - 1]`，然后打算遍历所有的前缀和，查看这个前缀和加上 `k` 后是否存在（如果存在，那么我们的 `res` 就加上满足条件的个数）。
+想到这个方法前我看了提示，想到了 `S(i, j) = prefixSum[j] - prefixSum[i - 1]`，然后打算遍历所有的前缀和，查看这个前缀和加上 `k` 后是否存在（如果存在，那么我们的 `res` 就加上满足条件的个数）。
 
 具体的代码流程是，首先计算出前缀和（我这里不包含 `prefixSum[0] = 0` 这个新加入的条目，因为当时没有学相关知识），然后将每个前缀和的位置加入哈希表。比如：
 
@@ -124,3 +124,223 @@ var subarraySum = function (nums, k) {
 2. 边遍历边加入哈希
 
 第一个就不讲了，看第二个，首先我们知道 `S(i, j) = k` 可以转化为 `S(i) = S(j + 1) - k`，那么可以用 `j` 来遍历，然后遍历的同时从哈希表中查看 `cnt[S[j + 1] - k]` 的个数，同时为了保证 `k = 0` 时不出现 `S(i) - S(i) = 0` 这样的惨剧，我们把 `hash.set`放在迭代的最后面。
+
+---
+
+再次更新，因为看到这道题又做错了。注意点为
+
+1. 这个数组不是单调数组，而且还有负数
+2. 前缀和已经不是问题了，但没考虑到对一个 `sub` 来说，可能有多个匹配的位置，比如 `[1,-1,0]`，若要求和为 0，他的前缀和为 `[0, 1, 0, 0]`，当遍历到最后一个项的时候，存在 `p[3] - [0] = 0` 和 `p[3] - p[2] = 0` 这两种可能，因此需要一个哈希表来记录同一个前缀和出现的次数。
+
+## [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+### 暴力做法
+
+```javascript
+var maxSlidingWindow = function (nums, k) {
+  const len = nums.length;
+  function max(start, end) {
+    let res = Number.MIN_SAFE_INTEGER;
+    while (start < end) {
+      res = nums[start] > res ? nums[start] : res;
+      start++;
+    }
+    return res;
+  }
+  const res = [max(0, k)];
+
+  for (let i = 1; i <= len - k; i++) {
+    if (res[i - 1] === nums[i - 1]) {
+      res.push(max(i, i + k));
+    } else {
+      res.push(Math.max(res[i - 1], nums[i + k - 1]));
+    }
+  }
+
+  return res;
+};
+```
+
+虽然有所改进，但本质上还是一个 `n^2` 的算法，没什么好讲的
+
+### 单调队列
+
+```javascript
+var maxSlidingWindow = function (nums, k) {
+  const len = nums.length;
+  const q = [];
+  const res = [];
+  for (let i = 0; i < len; i++) {
+    while (q.length && nums[q[q.length - 1]] < nums[i]) q.pop();
+    q.push(i);
+    if (i - q[0] + 1 > k) q.shift();
+    if (i >= k - 1) res.push(nums[q[0]]);
+  }
+  return res;
+};
+```
+
+单调队列中存储的是下标，这些下标对应的数值是降序排列。我们遍历所有的数字，记正在遍历的数字为 cur，下标为 idx，我们先找出单调队列中所有小于 cur 的数字，将其 pop 出去，然后将 cur 推到单调队列中，比如 `[4, 2, 1]` 面对 3，会依次 pop 出 1 和 2，然后推进 3，最终变成 `[4, 3]`。
+
+然后如果当前单调队列中表示的最大值的下标超过了题目给定的窗口范围，我们就将其 shift 出去，让下一个值作为新的最大值，并且最终推送到结果数组中（需要保证窗口已经形成）。
+
+## [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+```javascript
+var minWindow = function (s, t) {
+  const sf = new Array(128).fill(0)
+  const tf = new Array(128).fill(0)
+  for (const c of t) tf[c.charCodeAt(0)]++
+  const len = s.length
+  function cover() { return sf.every((v, i) => v >= tf[i])
+
+  let l = 0, r = 0
+  let minLen = Number.MAX_SAFE_INTEGER
+  let resIdx = 0
+  while (r <= len) {
+    if (cover()) {
+      if (minLen > r - l) {
+        minLen = r - l
+        resIdx = l
+      }
+      sf[s[l].charCodeAt(0)]--
+      l++
+    } else {
+      sf[s[r]?.charCodeAt(0)]++
+      r++
+    }
+  }
+  return minLen === Number.MAX_SAFE_INTEGER ? "" : s.slice(resIdx, resIdx+minLen)
+};
+```
+
+这道题还是子串类型，也还是过不去，一开始隐约有滑动窗口的感觉，但实现到代码上就稀烂了，写了两层 while 循环。后面看了解答确信是双指针（滑动窗口），就按照套路去写，也确实没有问题。需要注意点有
+
+1. 滑动窗口我们每次只需要处理一格就可以
+2. 区间选择上统一遵循左闭右开，但是这样就会导致 `r == len` 的时候，我们仍然保持 cover 的状态，但结果可能不是最优解，还需要继续把 l 指针向右移动，因此循环的条件就变成了 `while(r <= len)`，以保证可以继续循环下去。但这还带来了新的问题，如果此时不匹配，那么就会执行 else 语句中的自增操作，会触发 undefined 报错，因此用可选链操作符来避免此行为。
+3. 我们最后要返回一个最小长度，因此初始值选择最大安全整数，同时还有没有匹配子串的情况，最后一行返回代码就是用来解决这个问题的。
+
+这道题实质上是 [209. 长度最小的子数组](./once.md#_209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84) 的翻版，可以先看他熟悉一下。
+
+## [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+
+### 暴力做法
+
+```javascript
+var largestRectangleArea = function (heights) {
+  const n = heights.length;
+  let res = 0;
+  let curArea = 0;
+  for (let i = 0; i < n; i++) {
+    const minH = [];
+    minH[i] = heights[i];
+    for (let j = i + 1; j < n; j++) {
+      minH[j] = Math.min(minH[j - 1], heights[j]);
+    }
+    for (let j = i; j < n; j++) {
+      curArea = (j - i + 1) * minH[j];
+      res = Math.max(res, curArea);
+    }
+  }
+  return res;
+};
+```
+
+使用了一点优化空间的技巧，没有一开始计算全部的 `minH`，是在遍历时候才开始计算，但整体的时间复杂度还是 `n^2`，没法过测试。
+
+### 单调栈
+
+```javascript
+var largestRectangleArea = function (heights) {
+  const n = heights.length;
+  const stk = [];
+  const lIdx = new Array(n).fill(-1);
+  const rIdx = new Array(n).fill(n);
+  let res = 0;
+  for (let i = 0; i < n; i++) {
+    const h = heights[i];
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop();
+    if (stk.length) lIdx[i] = stk[stk.length - 1];
+    stk.push(i);
+  }
+  stk.length = 0;
+  for (let i = n - 1; i >= 0; i--) {
+    const h = heights[i];
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop();
+    if (stk.length) rIdx[i] = stk[stk.length - 1];
+    stk.push(i);
+  }
+  for (let i = 0; i < n; i++) {
+    const h = heights[i];
+    res = Math.max(res, h * (rIdx[i] - lIdx[i] - 1));
+  }
+  return res;
+};
+```
+
+还是看解析才过的，甚至看完解析后还是做不出来，因为没有考虑好单调栈的单调性。我最开始想着应该用单调递减栈，比如 `heights = [2,1,5,6,2,3]`，每次碰到比栈顶大的元素就出栈，并且记录当前元素的 lIdx，但是第五个元素就无法获知自己左边比自己小的元素信息了，所以有了 `lIdx[4] = -1` 这个错误。
+
+换成递增栈后，每个元素在进栈前，都会记录自己的 lIdx，这样就可以保留左侧的信息。这道题还有一些注意点
+
+1. 获取的是右侧和左侧第一个小于自身的元素下标，然后通过 `r - l - 1` 来表示长度，元素自身表示高度，求得乘积。这也是为什么出栈的时候要小于等于
+2. 清空栈的时候有多种方法，比如 `splice`，重新赋值，还有设置 length，benchmark 可以看[这个帖子](https://stackoverflow.com/a/1232046/19749278)
+
+## [152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/)
+
+```javascript
+var maxProduct = function (nums) {
+  const n = nums.length;
+  const maxdp = new Array(n).fill(1);
+  const mindp = new Array(n).fill(1);
+  for (let i = 1; i <= n; i++) {
+    maxdp[i] = Math.max(
+      maxdp[i - 1] * nums[i - 1],
+      mindp[i - 1] * nums[i - 1],
+      nums[i - 1],
+    );
+    mindp[i] = Math.min(
+      maxdp[i - 1] * nums[i - 1],
+      mindp[i - 1] * nums[i - 1],
+      nums[i - 1],
+    );
+  }
+  maxdp.shift();
+  return Math.max(...maxdp);
+};
+```
+
+我倒不是很愿意把这道题放在这类，但……确实没看答案就真的不会做
+
+我们这里得保持一个 mindp 来供 maxdp 使用
+
+## [416. 分割等和子集](https://leetcode.cn/problems/partition-equal-subset-sum/)
+
+### 0-1 背包
+
+```javascript
+var canPartition = function (nums) {
+  const sum = nums.reduce((pre, cur) => pre + cur, 0);
+  if (sum % 2) return false;
+  const target = sum / 2;
+  const n = nums.length;
+  const cache = Array.from({ length: n }, () => new Array(target + 1).fill(-1));
+
+  function dfs(i, c) {
+    if (i < 0) return c === 0;
+    if (cache[i][c] !== -1) return cache[i][c];
+    if (c < nums[i]) return dfs(i - 1, c);
+    const res = dfs(i - 1, c) || dfs(i - 1, c - nums[i]);
+    cache[i][c] = res;
+    return res;
+  }
+  return dfs(n - 1, target);
+};
+```
+
+初见想不出来解法，但看到解法后，感觉思路和[目标和](https://leetcode.cn/problems/target-sum)挺相似的，都是根据题目已知信息转换成 0-1 背包典型，这里就是判断数组是否存在部分元素的和为数组和的一半，然后转换成背包写法。
+
+当然背包的写法还有多种，我这里先给出了记忆化搜索，有以下几个注意点
+
+1. 二维数组的列一共是 `target+1` 格子，而不是 `target`。要谨防越界
+2. 两个参数的函数进行记忆化的时候可以用二维数组，但是要保证传入参数不会导致 cache 越界，所以可以看到这里的 cache 是在内部函数第二行书写的
+3. 这个和完全背包不一样，完全背包是可以重复选择一个物品的，同时还有至多至少这样的分类，详情可以看 [灵茶山艾府的视频](https://www.bilibili.com/video/BV16Y411v7Y6)

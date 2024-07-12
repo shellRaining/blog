@@ -1,0 +1,45 @@
+@import "./var.css";
+
+#app {
+  min-height: 100vh;
+}
+
+:root[lang] {
+  --vp-font-family-base: "LXGW WenKai screen", sans-serif;
+  --vp-font-family-mono: "LXGW WenKai Mono", monospace;
+}
+
+.VPDoc .content main {
+  img {
+    max-width: 300px;
+    margin: 0 auto;
+    cursor: pointer;
+    object-fit: cover;
+  }
+}
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+  width: 1em;
+  height: 1em;
+  mask-size: 100% 100%;
+  color: inherit;
+  background-color: currentColor;
+}
+
+/* flyout transition */
+.flyout-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.flyout-leave-active {
+  transition: all 0.15s ease-in;
+}
+
+.flyout-enter-from,
+.flyout-leave-to {
+  opacity: 0;
+  transform: translateY(-16px);
+}

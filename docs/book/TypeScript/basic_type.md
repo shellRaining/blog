@@ -16,18 +16,18 @@ TypeScript 中的基础类型是在 JavaScript 基础上进行拓展的，包含
 
    ```typescript
    enum Foo {
-   	A = 1,
-   	B = 2,
-   	C = '3'
+     A = 1,
+     B = 2,
+     C = "3",
    }
-   const num: Foo = Foo.A
+   const num: Foo = Foo.A;
    ```
 
    其中 `Foo` 被称作联合枚举类型，他的字段 `Foo.A` 被称作联合枚举成员类型
 
 1. `字面量` 字面量类型都只有一个可能的值，即字面量本身，比如 `true`， `'hello'`
 
-______________________________________________________________________
+---
 
 这里补充一下单例类型（单元类型），因为仅包含一个可能的值，因此被称作单例类型，比如 `undefined`，`void`，`null`，`字面量` 等，实际上这个是另一个维度的分类，因此可能和上面有重叠。
 
@@ -47,7 +47,7 @@ ______________________________________________________________________
 
 在执行一些算术操作时候，也必须要先细化类型，否则会爆出编译错误。
 
-______________________________________________________________________
+---
 
 尾端类型是其他所有类型的子类型，因此尾端类型不存在一个值来表示，只有它自身可以给它赋值，即使是 `any` 类型也无法赋值给它。TypeScript 中仅有一个尾端类型 `never`。
 
@@ -71,8 +71,8 @@ ______________________________________________________________________
 
    ```typescript
    type Readonly<T> = {
-   	readonly [K in keyof T]: T[K];
-   }
+     readonly [K in keyof T]: T[K];
+   };
    ```
 
    他只可以用用在对象身上，因此定义一个只读数组的代码如下 `Readonly<number[]>`
@@ -82,7 +82,7 @@ ______________________________________________________________________
 元组是由有限个元素组成的有序列表，一个简单定义（经典元组）如下：
 
 ```typescript
-const point: [number, number] = [0, 0]
+const point: [number, number] = [0, 0];
 ```
 
 我们还可以使用问号来表示可选元素（和 JavaScript 一样），或者使用剩余元素语法：
@@ -111,18 +111,18 @@ TypeScript 中提供了多种定义对象的方法，我们先介绍三种对象
 注意这里的 `Object` 是大写的，但这并不意味着这是一个构造函数的类型，我们首先将这两个区分一下
 
 ```typescript
-const o = new Object()
-const p: Object
+const o = new Object();
+const p: Object;
 ```
 
 首先 `o` 变量他是 `Object` 的类型，而构造函数 `Object` 的类型是 `ObjectConstructor`，这个构造函数变量的定义如下：
 
 ```typescript
 interface ObjectConstructor {
-	readonly prototype: Object
-	// ...
+  readonly prototype: Object;
+  // ...
 }
-declare var Object: ObjectConstructor
+declare var Object: ObjectConstructor;
 ```
 
 可以看到 `Object` 构造函数的原型对象 `prototype` 是 `Object` 类型
@@ -131,7 +131,7 @@ declare var Object: ObjectConstructor
 
 ```typescript
 interface Object {
-	constructor: Function;
+  constructor: Function;
   toString(): string;
   valueOf(): Object;
   // ...
@@ -157,6 +157,7 @@ interface Object {
 1. 属性签名 `PropertyName: Type`，其中 `PropertyName` 也可以是一个计算属性，只需要保证类型是 `string | number | Symbol` 就可以
 
    这些属性还可以设置是否只读，是否可选这两种选项。如果一个对象至少有一个属性，并且所有的属性都是可选的，那么我们称呼他为 `弱类型`，也许这个弱类型很适合作为用户输入来表示。
+
 2. 调用签名 `{(paramList): Type}` 因为函数实质上也是一个对象（唯一区别是这个对象可以被调用），因此可以写一个调用签名来表示这个对象可以调用。而函数类型字面量实质上也与仅包含一个调用签名的对象字面量等价，前者是后者的简写罢了
 
    ```typescript
@@ -166,6 +167,7 @@ interface Object {
    ```
 
    前者的表现力更强，可以描述一个函数的更多信息，比如 vue 中就有用到这种类型声明。
+
 3. 构造签名 `new (paramList): Type` 其实同上，他也是构造函数字面量的复杂写法。
 4. 方法签名 `PropertyName(ParamList): Type` 这个和调用签名是不一样的，调用签名是描述对象本身可以被调用的形式，而方法签名描述的函数类型的属性成员。
 5. 索引签名 `[indexName: string]: Type` 这里面的 `indexName` 是索引名，但实际上并没有什么作用，真正起作用的是后面标注的索引类型 `string` 表示这个对象的索引必须是字符串类型，同理，除了字符串类型，还有数字类型可以选择
@@ -177,10 +179,10 @@ interface Object {
 我们这里不介绍基础的内容，先讲一下函数重载，先看一个实例：
 
 ```typescript
-function f(x: string): 0|1;
-function f(x: any): number
+function f(x: string): 0 | 1;
+function f(x: any): number;
 function f(x: any): any {
-	// ...
+  // ...
 }
 ```
 
@@ -192,8 +194,8 @@ function f(x: any): any {
 
 ```typescript
 {
-	(x: string): 0|1;
-	(x: any): number;
+  (x: string): 0|1;
+  (x: any): number;
 }
 ```
 
@@ -205,7 +207,7 @@ function f(x: any): any {
 
 ```typescript
 function add(this: void, x: number, y: number) {
-	this.name = 'sth' // error
+  this.name = "sth"; // error
 }
 ```
 
@@ -232,10 +234,10 @@ function add(this: void, x: number, y: number) {
 
    ```typescript
    interface A {
-   	o: {a: number}
+     o: { a: number };
    }
    interface B extends A {
-   	o: {a: number, b: number}
+     o: { a: number; b: number };
    }
    ```
 
@@ -247,13 +249,13 @@ function add(this: void, x: number, y: number) {
 
    ```typescript
    interface A {
-   	o: {a: number}
+     o: { a: number };
    }
    interface B {
-   	o: {hello: string}
+     o: { hello: string };
    }
    interface C extends A, B {
-   	o: {a: number; hello: string}
+     o: { a: number; hello: string };
    }
    ```
 
@@ -272,9 +274,13 @@ function add(this: void, x: number, y: number) {
 我们以 `JSON` 类型为例，看一下是如何使用的：
 
 ```typescript
-type Json = string | number | boolean | null
-	| { [property: string]: Json }
-	| Json[]
+type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [property: string]: Json }
+  | Json[];
 ```
 
 这里可以看到涉及了第一种和第二种情况

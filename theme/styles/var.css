@@ -1,0 +1,49 @@
+/* bg */
+:root {
+  --sr-c-bg: #ffffff;
+  --sr-c-bg-section: #f6f6f7;
+  --sr-c-bg-hover: #e9e9eb;
+  --sr-c-bg-active: #e9e9eb;
+}
+.dark {
+  --sr-c-bg: #1b1b1f;
+  --sr-c-bg-section: #202127;
+  --sr-c-bg-hover: #2b2b30;
+  --sr-c-bg-active: #2b2b30;
+}
+
+/* text */
+:root {
+  --sr-c-text: #57534e;
+  --sr-c-text-hover: #0c0a09;
+}
+.dark {
+  --sr-c-text: #a8a29e;
+  --sr-c-text-hover: #fafaf9;
+}
+
+/* border */
+:root {
+  --sr-c-border: var(--vp-c-border);
+  --sr-border: 1px solid var(--vp-c-border);
+}
+
+/* shadow */
+:root {
+  --sr-float-shadow: 0 0 5px var(--sr-c-border);
+  --sr-card-shadow: 0 0 10px var(--sr-c-border);
+}
+
+/* --------------------- tag ------------------------- */
+/* link */
+:root {
+  --sr-c-link: var(--vp-c-brand-1);
+  --sr-c-link-hover: var(--vp-c-brand-2);
+}
+
+/* button */
+:root {
+  --sr-c-btn: var(--vp-c-brand-3);
+  --sr-c-btn-hover: var(--vp-c-brand-2);
+  --sr-c-btn-active: var(--vp-c-brand-1);
+}

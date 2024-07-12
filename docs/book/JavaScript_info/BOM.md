@@ -54,7 +54,7 @@ location 最独特的点就是，它既是 window 对象的字段，也是 docum
 
 `history` 除了用来导航，还可以用来状态管理，我们常用的前端路由就是通过这个 API 来实现的。包括
 
--  `pushState(stateObject, title, url)`：该方法会推入一个新的历史记录（即改变 `location.href`，并且不向服务器发送请求），第三个参数是我们会实际使用的，代表推入的相对路径地址；第二个参数 `title` 并没有被使用，因此可以随便传入信息；第一个参数可以传入一个状态对象，以便使用 `back` 或者 `forward` 来恢复现场，比如在调用该函数时先存储当前的页面 `scrollY` 状态，后面恢复浏览的进度。
+- `pushState(stateObject, title, url)`：该方法会推入一个新的历史记录（即改变 `location.href`，并且不向服务器发送请求），第三个参数是我们会实际使用的，代表推入的相对路径地址；第二个参数 `title` 并没有被使用，因此可以随便传入信息；第一个参数可以传入一个状态对象，以便使用 `back` 或者 `forward` 来恢复现场，比如在调用该函数时先存储当前的页面 `scrollY` 状态，后面恢复浏览的进度。
 - `replaceState(stateObject, title)`：该方法会直接覆盖当前的状态，不会新建一个历史记录。
 
 ---
@@ -63,4 +63,3 @@ location 最独特的点就是，它既是 window 对象的字段，也是 docum
 
 1. 在使用这两个方法的时候， 一定要确保推入的历史记录（URL）对应着服务器上的一个真实物理 URL，否则刷新的时候会出现 404 错误。所有的 SPA 应用都应该注意这一点。
 2. 我们还需要注意 `location.href` 和 `history.pushState()` 是有区别的，后者更适合同源页面的跳转，还有更改 `hash` 不会触发 `hashChange` 事件。
-

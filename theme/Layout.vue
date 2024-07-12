@@ -1,52 +1,23 @@
 <script setup lang="ts">
-import DefaultTheme from "vitepress/theme";
-import Hero from "./Hero/Hero.vue";
-import Page from "./Home/PostsLists.vue";
+import DefaultTheme from "vitepress/theme-without-fonts";
 import Title from "./Doc/Title.vue";
-import Gallery from "./Viewer/Gallery.vue";
+import Viewer from "./Viewer/Viewer.vue";
+import Home from "./Home/Home.vue";
+import AppearanceSwitcher from "./Home/AppearanceSwitcher.vue";
 
 const { Layout } = DefaultTheme;
 </script>
 
 <template>
+  <AppearanceSwitcher />
   <Layout>
-    <!-- doc list -->
     <template #doc-before>
       <Title />
-      <!-- <Category /> -->
-      <Gallery />
+      <ClientOnly><Viewer /></ClientOnly>
     </template>
 
-    <!-- hero part -->
-    <template #home-hero-before><Hero /> </template>
-    <template #home-features-after><Page /></template>
+    <template #home-features-after>
+      <Home />
+    </template>
   </Layout>
 </template>
-
-<style scoped>
-button {
-  color: var(--custom-c-btn);
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
-  position: relative;
-}
-
-button::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--custom-c-btn);
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-
-button:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-</style>
