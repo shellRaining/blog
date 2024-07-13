@@ -4,6 +4,11 @@ export default defineConfig({
   title: "blog",
   lang: "zh-cn",
   description: "A VitePress Site",
+  vite: {
+    build: {
+      target: "es2020",
+    },
+  },
   themeConfig: {
     logo: { src: "/favicon.ico", width: 24, height: 24 },
     search: {

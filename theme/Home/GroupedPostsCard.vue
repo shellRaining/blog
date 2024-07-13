@@ -25,11 +25,11 @@ function beforeEnter(element: Element) {
 function enter(element: Element, done: any) {
   const el = element as HTMLLIElement;
   gsap.to(el, {
-    duration: 0.1,
+    duration: 1,
     onComplete: done,
     opacity: 1,
     x: 0,
-    delay: parseFloat(el.dataset.index!) * 0.03,
+    delay: parseFloat(el.dataset.index!) * 0.1,
   });
 }
 

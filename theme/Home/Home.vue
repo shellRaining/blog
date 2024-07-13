@@ -28,7 +28,11 @@ const groupedPosts = posts.reduce(
     <h1 class="doc-head">shellRaining's blog</h1>
 
     <ul>
-      <li class="grouped-posts" v-for="(posts, date) in groupedPosts" :key="date">
+      <li
+        class="grouped-posts"
+        v-for="(posts, date) in groupedPosts"
+        :key="date"
+      >
         <ClientOnly>
           <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
         </ClientOnly>
@@ -39,7 +43,7 @@ const groupedPosts = posts.reduce(
 
 <style scoped>
 .doc {
-  margin: auto;
+  margin: 20px auto;
   max-width: 32rem;
 
   .doc-head {
@@ -56,5 +60,11 @@ const groupedPosts = posts.reduce(
   .grouped-posts {
     padding: 0.5rem;
   }
+}
+
+.box {
+  position: absolute;
+  left: 50%;
+  height: 100px;
 }
 </style>
