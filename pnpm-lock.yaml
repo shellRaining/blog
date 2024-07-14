@@ -18,6 +18,9 @@ importers:
         specifier: ^1.11.6
         version: 1.11.6
     devDependencies:
+      '@types/dom-view-transitions':
+        specifier: ^1.0.4
+        version: 1.0.4
       typescript:
         specifier: ^5.4.5
         version: 5.5.3
@@ -361,6 +364,9 @@ packages:
 
   '@shikijs/transformers@1.10.3':
     resolution: {integrity: sha512-MNjsyye2WHVdxfZUSr5frS97sLGe6G1T+1P41QjyBFJehZphMcr4aBlRLmq6OSPBslYe9byQPVvt/LJCOfxw8Q==}
+
+  '@types/dom-view-transitions@1.0.4':
+    resolution: {integrity: sha512-oDuagM6G+xPLrLU4KeCKlr1oalMF5mJqV5pDPMDVIEaa8AkUW00i6u+5P02XCjdEEUQJC9dpnxqSLsZeAciSLQ==}
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -924,6 +930,8 @@ snapshots:
   '@shikijs/transformers@1.10.3':
     dependencies:
       shiki: 1.10.3
+
+  '@types/dom-view-transitions@1.0.4': {}
 
   '@types/estree@1.0.5': {}
 
