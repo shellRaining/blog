@@ -9,12 +9,14 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.11.0",
     "dayjs": "latest",
     "gsap": "^3.12.5",
     "viewerjs": "^1.11.6"
   },
   "devDependencies": {
     "@types/dom-view-transitions": "^1.0.4",
+    "@types/node": "^20.14.10",
     "typescript": "^5.4.5",
     "vitepress": "^1.3.0",
     "vue": "^3.4.26"

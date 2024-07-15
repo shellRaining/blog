@@ -112,9 +112,9 @@ section {
 }
 
 .header-hidden {
-  background-color: #e5e5e5;
+  background-color: #e5e5e5aa;
   .dark & {
-    background-color: #262626;
+    background-color: #262626aa;
   }
 }
 
