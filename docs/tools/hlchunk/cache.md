@@ -1,5 +1,5 @@
 ---
-title: chunk 的动画效果原理及实现方式
+title: chunk 的缓存实现
 tag:
   - tools
   - hlchunk
@@ -48,7 +48,7 @@ function Cache:clear(...)
 end
 ```
 
-我们每次在 `get`，`set` 或者 `has` 的时候，都会传入指定 `level` 数目的 `key`，因此这是一个可以抽象出来的过程。
+我们每次在 `get`，`set` 或者 `has` 的时候，都会传入一个参数 `value`，用来表示数目为 `level` 的 `key`，并且按照这些 `key` 依次索引，直到找到想要的值，因此这是一个可以抽象出来的过程。
 
 ```lua
 local function navigateCache(cache, values, createIfMissing, setValue)
@@ -75,4 +75,4 @@ local function navigateCache(cache, values, createIfMissing, setValue)
 end
 ```
 
-并且根据不同的需求（比如如果没有找到，是否应该创建一个新的表），或者即将设置的 `value`。
+除了上面提到的 `values` 参数，我们还可以设置 `createIfMissing` 这个 flag 标志，用来表示如果在查找中没有找到某个 key，是否设置一个对应的空对象。比如我们一个空对象 `o` 中查找 `bufnr = 1，lnum = 3` 的时候，首先发现 `o[1] = nil`，于是设置 `o[1] = {}`，随即查询 `o[1][3]`，也发现为 nil，就创建 `o[1][3] = {}`，最终 `o` 会变成 `{ [1] = { [3] = {} } }`。

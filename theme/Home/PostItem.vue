@@ -1,14 +1,34 @@
 <script lang="ts" setup>
 import type { ContentData } from "vitepress";
-import { withBase } from "vitepress";
+import { useRouter, withBase } from "vitepress";
 
 defineProps<{ post: ContentData }>();
+
+const router = useRouter();
+
+function changeRoute(e: MouseEvent, to: string) {
+  if (document.startViewTransition) {
+    e.stopPropagation();
+    // to avoid animation confict with the global transition
+    const VPContentEl = document.querySelector(".VPContent")! as HTMLElement;
+    VPContentEl.style.setProperty("view-transition-name", "route");
+    const transition = document.startViewTransition(async () => {
+      await router.go(to);
+    });
+    transition.finished.then(() => {
+      VPContentEl.style.removeProperty("view-transition-name");
+    });
+  }
+}
 </script>
 
 <template>
-  <a class="post-title" :href="withBase(post.url)">{{
-    post.frontmatter.title
-  }}</a>
+  <a
+    class="post-title"
+    :href="withBase(post.url)"
+    @click="(e) => changeRoute(e, post.url)"
+    >{{ post.frontmatter.title }}</a
+  >
 </template>
 
 <style scoped>
@@ -32,5 +52,34 @@ defineProps<{ post: ContentData }>();
   &:hover {
     color: #fafaf9; /* stone-50 */
   }
+}
+</style>
+
+<style>
+@keyframes shift-to-left {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+}
+@keyframes push-from-right {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+::view-transition-old(route) {
+  animation: shift-to-left 0.3s linear;
+}
+::view-transition-new(route) {
+  animation: push-from-right 0.3s linear;
 }
 </style>
