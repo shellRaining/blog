@@ -25,6 +25,7 @@ export default defineConfig({
         link: "/",
       },
     ],
+    outline: "deep",
   },
   appearance: false,
   head: [

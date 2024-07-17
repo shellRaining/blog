@@ -71,3 +71,11 @@ export function initData(route: Route): VitePressData {
 ```
 
 并最终将这个返回的对象作为一个 symbol 注入到创建的 app 中。
+
+## 总结
+
+从用户打开浏览器并且输入 `localhost:5173` 后，浏览器首先请求了一个 `index.html`，并且执行其中的脚本，引入了 `client/app/app.js` 和 `client/app/data.js`。
+
+在执行 `data.js` 的过程中，浏览器会解析一个 `import siteData from '@siteData'` 引入指令，开发服务器接收到 `@site` 的请求，会交由 `VitepressPlugin` 进行处理，并最终返回被序列化后的用户配置数据，并且包含一个反序列化的函数。
+
+客户端接收到用户数据后，将其赋值给 `siteData` 变量，并最终通过 vue 的 `provide` API 将其注入到第一步创建的 APP 中，从而可以使用 `useData` 来引入用户的配置数据。
