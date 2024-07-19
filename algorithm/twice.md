@@ -175,3 +175,78 @@ var wordBreak = function (s, wordDict) {
 ```
 
 我们从上面的暴力做法中可以隐约看到一个等式，`dp[i] = dp[i - len(suitStr)]`，其中 `dp[i]` 表示字符数为 `i` 时候是否可以拆分。如果可以拆分，我们就不考虑后面的单词了。所以 `if(dp[i]) break` 很有必要。
+
+## [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+
+这是七月十九号百度一面的面试题，被面试官评价做的一坨……但最后还是过了，可以说是缺乏训练的典范
+
+```javascript
+var merge = function (intervals) {
+  intervals.sort((x, y) => x[0] - y[0])
+  const res = [intervals[0]]
+  for (let i = 1; i < intervals.length; i++) {
+    const item = intervals[i]
+    const top = res[res.length - 1]
+    if (item[0] > top[1]) {
+      res.push(item)
+    } else {
+      top[1] = Math.max(top[1], item[1])
+    }
+  }
+  return res
+}
+```
+
+我最开始在做的时候只考虑到了排序后遍历所有 interval 子项，如果没有重合就直接插入到结果数组中，有重合就找到更改位置，然后对指定位置的数组进行合并。但是忽略了一个情况，即我们 `res` 数组其实本身也是和 `arr` 一样有序，去寻找重合位置本身是浪费时间的行为，直接获取 `res` 最后一项，然后进行比较合并即可。
+
+### 附赠题一
+
+再附赠面试第二题，寻找一个字符串中括号内的数字。比如 `123abc(123)abc(abc),(456)` 我们应当返回 `[123, 456]`
+
+```javascript
+function match(s) {
+  const res = [];
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === "(") {
+      const nextIdx = s.indexOf(")", i);
+      if (nextIdx === -1) {
+        return res;
+      } else {
+        const substr = s.slice(i+1, nextIdx)
+        if (substr.match(/^\d+$/)) { // 这里也可以 re.test 这个函数
+          res.push(Number(substr))
+        }
+        i = nextIdx + 1;
+      }
+    }
+  }
+  return res;
+}
+```
+
+这是使用了暴力的解法，但是还可以使用 JavaScript 的正则表达式捕获组来直接完成
+
+```javascript
+function match(s) {
+  const re = /\((\d+)\)/g;
+  const res = s.matchAll(re); // ...
+}
+```
+
+注意这里的正则表达式不是 `/.*\((\d+)).*/`，因为 JavaScript 默认是贪婪匹配，如果使用 `.*` 会导致所有的字符被消耗殆尽，导致只能匹配到回溯时候的 `456`。
+
+### 附赠题二
+
+他问了 `bigInt` 可能会在什么情况下使用
+
+```javascript
+const nval1 = 9007199254740991 + 1
+const nval2 = 9007199254740991 + 2
+nval1 === nval2 // true
+const bval1 =  9007199254740991n + 1n
+const bval2 =  9007199254740991n + 2n
+bval1 === bval2 // false
+```
+
+在 `SAFE VALUE` 之外进行计算，很有可能导致错误，这是因为 JavaScript 使用 IEEE754 来表示浮点数，阶码十一位，尾数五十二位

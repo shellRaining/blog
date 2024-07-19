@@ -3,6 +3,7 @@ title: Vitepress 路由实现
 tag:
   - vitepress
 date: 2024-07-02
+collection: vitepress
 ---
 
 ## 前置流程

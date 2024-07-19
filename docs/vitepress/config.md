@@ -3,6 +3,7 @@ title: vitepress 配置文件的工作流程
 tag:
   - vitepress
 date: 2024-07-07
+collection: vitepress
 ---
 
 vitepress 的配置文件是位于 `.vitepress/config.ts` 下的，我们需要在这个文件中默认导出一个 `UserConfig` 类型的对象，但是这个配置文件是如何反映到客户端上的呢？我们从零开始看一下。
