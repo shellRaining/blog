@@ -85,7 +85,7 @@ var subarraySum = function (nums, k) {
 }
 ```
 
-想到这个方法前我看了提示，想到了 `S(i, j) = prefixSum(j) - prefixSum[i - 1]`，然后打算遍历所有的前缀和，查看这个前缀和加上 `k` 后是否存在（如果存在，那么我们的 `res` 就加上满足条件的个数）。
+想到这个方法前我看了提示，想到了 `S(i, j) = prefixSum[j] - prefixSum[i - 1]`，然后打算遍历所有的前缀和，查看这个前缀和加上 `k` 后是否存在（如果存在，那么我们的 `res` 就加上满足条件的个数）。
 
 具体的代码流程是，首先计算出前缀和（我这里不包含 `prefixSum[0] = 0` 这个新加入的条目，因为当时没有学相关知识），然后将每个前缀和的位置加入哈希表。比如：
 
@@ -124,3 +124,62 @@ var subarraySum = function (nums, k) {
 2. 边遍历边加入哈希
 
 第一个就不讲了，看第二个，首先我们知道 `S(i, j) = k` 可以转化为 `S(i) = S(j + 1) - k`，那么可以用 `j` 来遍历，然后遍历的同时从哈希表中查看 `cnt[S[j + 1] - k]` 的个数，同时为了保证 `k = 0` 时不出现 `S(i) - S(i) = 0` 这样的惨剧，我们把 `hash.set`放在迭代的最后面。
+
+---
+
+再次更新，因为看到这道题又做错了。注意点为
+
+1. 这个数组不是单调数组，而且还有负数
+2. 前缀和已经不是问题了，但没考虑到对一个 `sub` 来说，可能有多个匹配的位置，比如 `[1,-1,0]`，若要求和为 0，他的前缀和为 `[0, 1, 0, 0]`，当遍历到最后一个项的时候，存在 `p[3] - [0] = 0` 和 `p[3] - p[2] = 0` 这两种可能，因此需要一个哈希表来记录同一个前缀和出现的次数。
+
+## [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+### 暴力做法
+
+```javascript
+var maxSlidingWindow = function (nums, k) {
+  const len = nums.length
+  function max(start, end) {
+    let res = Number.MIN_SAFE_INTEGER
+    while (start < end) {
+      res = nums[start] > res ? nums[start] : res
+      start++
+    }
+    return res
+  }
+  const res = [max(0, k)]
+
+  for (let i = 1; i <= len - k; i++) {
+    if (res[i - 1] === nums[i - 1]) {
+      res.push(max(i, i + k))
+    } else {
+      res.push(Math.max(res[i - 1], nums[i + k - 1]))
+    }
+  }
+
+  return res
+};
+```
+
+虽然有所改进，但本质上还是一个 `n^2` 的算法，没什么好讲的
+
+### 单调队列
+
+```javascript
+var maxSlidingWindow = function (nums, k) {
+  const len = nums.length
+  const q = []
+  const res = []
+  for (let i = 0; i < len; i++) {
+    while (q.length && nums[q[q.length - 1]] < nums[i]) q.pop()
+    q.push(i)
+    if (i - q[0] + 1 > k) q.shift()
+    if (i >= k - 1) res.push(nums[q[0]])
+  }
+  return res
+};
+```
+
+单调队列中存储的是下标，这些下标对应的数值是降序排列。我们遍历所有的数字，记正在遍历的数字为 cur，下标为 idx，我们先找出单调队列中所有小于 cur 的数字，将其 pop 出去，然后将 cur 推到单调队列中，比如 `[4, 2, 1]` 面对 3，会依次 pop 出 1 和 2，然后推进 3，最终变成 `[4, 3]`。
+
+然后如果当前单调队列中表示的最大值的下标超过了题目给定的窗口范围，我们就将其 shift 出去，让下一个值作为新的最大值，并且最终推送到结果数组中（需要保证窗口已经形成）。
