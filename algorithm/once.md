@@ -305,3 +305,172 @@ var findAnagrams = function (s, p) {
 2. `equal` 函数是通过 `every` 函数实现的，因此可以重视一下这些新的 ES 函数
 3. 使用 for in 遍历的时候确实会遍历原型对象，但是要注意只会遍历所有**可枚举对象**，我们自己设置的 key 都是可枚举的，而比方说 `Array.prototype` 上的方法都是不可枚举的，故不会遍历出来。
 4. 我们可以首先将 0 号位进行判断，然后进行增减的操作。
+
+## [209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
+```javascript
+var minSubArrayLen = function (target, nums) {
+  let l = 0
+  let r = 0
+  let sum = 0
+  let res = Number.MAX_SAFE_INTEGER
+  while (r <= nums.length) {
+    if (sum < target ) sum += nums[r++]
+    else {
+      res = Math.min(res, r - l)
+      sum -= nums[l++]
+    }
+  }
+  return res === Number.MAX_SAFE_INTEGER ? 0 : res
+};
+```
+
+思路就是最简单的双指针滑动窗口，唯一要注意的是左闭右开和 while 循环的退出范围
+
+## [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
+
+```javascript
+var maxSubArray = function (nums) {
+  const len = nums.length
+  const dp = new Array(len + 1)
+  dp[0] = Number.MIN_SAFE_INTEGER
+
+  for (let i = 1; i <= len; i++) {
+    dp[i] = Math.max(dp[i - 1] + nums[i - 1], nums[i - 1])
+  }
+  return Math.max(...dp)
+};
+```
+
+我记得这是数据结构课程的教科书的第一节内容，应该给出了一个叫做联机算法的解决方案。但这道题还可以用动态规划来做，首先要找到一个成立的递推关系，我们记包含第 i 个元素时能取到的最大值为 `dp[i]`，那么就有 `dp[i] = Math.max(dp[i-1] + num[i], num[i])`。这个关系式看着简单，但想要找出来还是得有经验才行。
+
+看递推关系 `dp[i]` 只和 `dp[i-1]` 有关，因此可以用滚动变量来优化，我猜测联机算法就是这样的。
+
+## [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
+
+```javascript
+var rotate = function (nums, k) {
+  function reverse(i, j) {
+    while (i < j) {
+      [nums[i], nums[j]] = [nums[j], nums[i]]
+      i++, j--
+    }
+  }
+  const len = nums.length
+  k %= len
+  reverse(0, len - 1)
+  reverse(0, k - 1)
+  reverse(k, len - 1)
+};
+```
+
+这是一道死记硬背的题目……唯一要注意的点是 k 可能大于数组长度，要取余操作。
+
+## [238. 除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
+
+```javascript
+var productExceptSelf = function (nums) {
+  const len = nums.length
+  const lm = new Array(len).fill(1)
+  const rm = new Array(len).fill(1)
+  for (let i = 1; i < len; i++) { lm[i] = lm[i - 1] * nums[i - 1] }
+  for (let i = len - 2; i >= 0; i--) { rm[i] = rm[i + 1] * nums[i + 1] }
+  return lm.map((v, i) => v * rm[i])
+};
+```
+
+前缀和经典题目
+
+## [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
+
+```javascript
+function setZeroes(matrix) {
+  const m = matrix.length;
+  const n = matrix[0].length;
+  const point = [];
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] === 0) point.push([i, j]);
+    }
+  }
+
+  point.forEach(([x, y]) => {
+    for (let i = 0; i < m; i++) matrix[i][y] = 0;
+    for (let i = 0; i < n; i++) matrix[x][i] = 0;
+  });
+}
+```
+
+最简单的办法用一个状态数组存储所有为 0 的位置，然后第二次遍历解决
+
+但是题解还给出了一个常数空间的方法，我们可以利用 `matrix[0]` 和 `matrix[0][k]` 来存储当前列和行是否有 0，如果第二次遍历的时候看见了 0，则对当前单元格变 0 处理。当然这样还会导致第一行第一列数据不准确，因此需要两个额外变量存储他们是否包含 0，最后统一处理。
+
+## [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+```javascript
+var spiralOrder = function (matrix) {
+  const row = matrix.length
+  const col = matrix[0].length
+  let l = 0, r = col - 1, t = 0, b = row - 1
+  const res = []
+  while (true) {
+    for (let i = l; i <= r; i++) res.push(matrix[t][i])
+    if (++t > b) break
+    for (let i = t; i <= b; i++) res.push(matrix[i][r])
+    if (--r < l) break
+    for (let i = r; i >= l; i--) res.push(matrix[b][i])
+    if (--b < t) break
+    for (let i = b; i >= t; i--) res.push(matrix[i][l])
+    if (++l > r) break
+  }
+  return res
+};
+```
+
+感觉还是一个套路题，我们用 `l r t b` 来表示四周的墙壁，每次都遍历一堵墙壁，然后将这堵墙壁靠内部移动，之后进行一次判断，如果对向的两堵墙壁错开了，表示流程结束。
+
+## [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+```javascript
+var rotate = function (matrix) {
+  const n = matrix.length
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++)
+    [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+  for (let j = 0; j < n / 2; j++) for (let i = 0; i < n; i++)
+    [matrix[i][j], matrix[i][n - j - 1]] = [matrix[i][n - j - 1], matrix[i][j]]
+}
+```
+
+我很讨厌的一道题，应该就是一个普通的体力活题目
+
+这道题的解法就是先进行矩阵转置，然后左右对称的两列互换。
+
+## [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/)
+
+```javascript
+var isValid = function (s) {
+  const list = Array.from(s)
+  const stk = []
+  function isLeft(c) { return c === '(' || c === '{' || c === '[' }
+  function match(lc, rc) {
+    if (lc === '(') return rc === ')'
+    if (lc === '{') return rc === '}'
+    if (lc === '[') return rc === ']'
+    return false
+  }
+  for (const c of list) {
+    if (isLeft(c)) stk.push(c)
+    else {
+      if (!match(stk[stk.length - 1], c)) return false
+      stk.pop()
+    }
+  }
+  return stk.length === 0;
+}
+```
+
+最简单的栈的解法，不过有一些小知识点。ASCII 码表中只有小括号是紧邻着的（40 41），中括号和大括号都是中间隔一个符号（91 93）（123 125）
+
+
+

@@ -187,11 +187,8 @@ var merge = function (intervals) {
   for (let i = 1; i < intervals.length; i++) {
     const item = intervals[i]
     const top = res[res.length - 1]
-    if (item[0] > top[1]) {
-      res.push(item)
-    } else {
-      top[1] = Math.max(top[1], item[1])
-    }
+    if (item[0] <= top[1]) top[1] = Math.max(top[1], item[1])
+    else res.push(item)
   }
   return res
 }
@@ -250,3 +247,81 @@ bval1 === bval2 // false
 ```
 
 在 `SAFE VALUE` 之外进行计算，很有可能导致错误，这是因为 JavaScript 使用 IEEE754 来表示浮点数，阶码十一位，尾数五十二位
+
+## [155. 最小栈](https://leetcode.cn/problems/min-stack/)
+
+```javascript
+var MinStack = function () {
+  this.stk = []
+  this.helper = [Number.MAX_SAFE_INTEGER]
+};
+MinStack.prototype.push = function (val) {
+  this.stk.push(val)
+  this.helper.push(Math.min(this.helper[this.helper.length - 1], val))
+};
+MinStack.prototype.pop = function () {
+  this.stk.pop()
+  this.helper.pop()
+};
+MinStack.prototype.top = function () {
+  return this.stk[this.stk.length - 1]
+};
+MinStack.prototype.getMin = function () {
+  return this.helper[this.helper.length - 1]
+}
+```
+
+这道题我最开始想着要通过一个最小堆来配合栈使用，但是答案挺有意思，他用一个辅助栈来对应原栈中每个位置的最小值
+
+## [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
+
+### 暴力解法
+
+```javascript
+var dailyTemperatures = function (temperatures) {
+  const n = temperatures.length
+  const res = new Array(n).fill(0)
+  for (let i = 0; i < n; i++) {
+    if(res[i] !== 0) continue
+    for (let j = i + 1; j < n; j++) {
+      const ti = temperatures[i]
+      const tj = temperatures[j]
+      if(ti < tj) {
+        for(let k = i; k < j ;k++){
+          const tk = temperatures[k]
+          if((tk < tj && tk >= ti)) {
+            res[k] = j - k
+          }
+        }
+        break
+      }
+    }
+  }
+  return res
+};
+```
+
+通过二层循环找到最终的答案，但是有一点小优化，每当找到结果时候，再重新遍历一次，将所有大于 i 小于 j 温度的下标赋值，可以避免重复计算。但整体的时间复杂度还是 `n^2`
+
+```javascript
+var dailyTemperatures = function (temperatures) {
+  const n = temperatures.length
+  const res = new Array(n).fill(0)
+  const stk = []
+  for (let i = 0; i < n; i++) {
+    const ti = temperatures[i]
+    while (stk.length && temperatures[stk[stk.length - 1]] < ti) {
+      const idx = stk.pop()
+      res[idx] = i - idx
+    }
+    stk.push(i)
+  }
+  return res
+};
+```
+
+通过单调栈来解决，这个单调栈是递减的，每当看到比栈顶大的元素，我们就让栈内比该元素小的所有元素都出栈，并为他们赋值答案，然后将该元素推入栈中，始终保持栈内的有序。遍历完所有元素后，栈内必定留存一些还没出栈的元素，表示没有比他们大的，因此直接赋值为 0 即可。
+
+这里有个有意思的观察，栈内存储的是元素的下标，而不是元素本身，这样相当于多存储了一个信息，可以用来做很多事。相似的题目可以看
+
+- [滑动窗口最大值](./fifth#_239-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC)

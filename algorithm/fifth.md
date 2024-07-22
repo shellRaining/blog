@@ -183,3 +183,41 @@ var maxSlidingWindow = function (nums, k) {
 单调队列中存储的是下标，这些下标对应的数值是降序排列。我们遍历所有的数字，记正在遍历的数字为 cur，下标为 idx，我们先找出单调队列中所有小于 cur 的数字，将其 pop 出去，然后将 cur 推到单调队列中，比如 `[4, 2, 1]` 面对 3，会依次 pop 出 1 和 2，然后推进 3，最终变成 `[4, 3]`。
 
 然后如果当前单调队列中表示的最大值的下标超过了题目给定的窗口范围，我们就将其 shift 出去，让下一个值作为新的最大值，并且最终推送到结果数组中（需要保证窗口已经形成）。
+
+## [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+```javascript
+var minWindow = function (s, t) {
+  const sf = new Array(128).fill(0)
+  const tf = new Array(128).fill(0)
+  for (const c of t) tf[c.charCodeAt(0)]++
+  const len = s.length
+  function cover() { return sf.every((v, i) => v >= tf[i]) 
+  
+  let l = 0, r = 0
+  let minLen = Number.MAX_SAFE_INTEGER
+  let resIdx = 0
+  while (r <= len) {
+    if (cover()) {
+      if (minLen > r - l) {
+        minLen = r - l
+        resIdx = l
+      }
+      sf[s[l].charCodeAt(0)]--
+      l++
+    } else {
+      sf[s[r]?.charCodeAt(0)]++
+      r++
+    }
+  }
+  return minLen === Number.MAX_SAFE_INTEGER ? "" : s.slice(resIdx, resIdx+minLen)
+};
+```
+
+这道题还是子串类型，也还是过不去，一开始隐约有滑动窗口的感觉，但实现到代码上就稀烂了，写了两层 while 循环。后面看了解答确信是双指针（滑动窗口），就按照套路去写，也确实没有问题。需要注意点有
+
+1. 滑动窗口我们每次只需要处理一格就可以
+2. 区间选择上统一遵循左闭右开，但是这样就会导致 `r == len` 的时候，我们仍然保持 cover  的状态，但结果可能不是最优解，还需要继续把 l 指针向右移动，因此循环的条件就变成了 `while(r <= len)`，以保证可以继续循环下去。但这还带来了新的问题，如果此时不匹配，那么就会执行 else 语句中的自增操作，会触发 undefined 报错，因此用可选链操作符来避免此行为。
+3. 我们最后要返回一个最小长度，因此初始值选择最大安全整数，同时还有没有匹配子串的情况，最后一行返回代码就是用来解决这个问题的。
+
+这道题实质上是 [209. 长度最小的子数组](./once.md#_209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84) 的翻版，可以先看他熟悉一下。
