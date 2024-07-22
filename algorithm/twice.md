@@ -325,3 +325,30 @@ var dailyTemperatures = function (temperatures) {
 这里有个有意思的观察，栈内存储的是元素的下标，而不是元素本身，这样相当于多存储了一个信息，可以用来做很多事。相似的题目可以看
 
 - [滑动窗口最大值](./fifth#_239-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC)
+
+## [322. 零钱兑换](https://leetcode.cn/problems/coin-change/)
+
+```javascript
+var coinChange = function (coins, amount) {
+  coins.sort((x, y) => x - y)
+  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER)
+  for (const v of coins) dp[v] = 1
+  for (let i = 1; i <= amount; i++) {
+    if (dp[i] < Number.MAX_SAFE_INTEGER) continue
+    let curMin = Number.MAX_SAFE_INTEGER
+    for (const coin of coins) {
+      if (coin > i) break
+      curMin = Math.min(curMin, dp[i - coin])
+    }
+    dp[i] = curMin + 1
+  }
+  dp[0] = 0
+  return dp[amount] >= Number.MAX_SAFE_INTEGER ? -1 : dp[amount]
+};
+```
+
+老对手了，这次还是吃了一次亏。因为题目要求最少的零钱兑换次数，而同时有要求不可以兑换的时候返回 -1，因此我们初始化 dp 数组的时候只能用 `Number.MAX_SAFE_INTEGER`，然后最后判断返回值是否大于等于该数值来决定最终返回值。
+
+至于为什么是大于等于，因为 `dp[i] = curMin + 1` 这段代码中，`curMin` 有可能就是 `Number.MAX_SAFE_INTEGER`，导致被算出来的 `dp[i]` 自身大于 `Number.MAX_SAFE_INTEGER`，但要注意，这种计算已经超越了 IEEE754 的表示范围，可能会涉及 BigInt 的东西。
+
+还有一点，就是题目里的硬币并不是有序的，只有调整为有序后才可以在最内层的 if 语句使用 break。

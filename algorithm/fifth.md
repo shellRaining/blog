@@ -221,3 +221,86 @@ var minWindow = function (s, t) {
 3. 我们最后要返回一个最小长度，因此初始值选择最大安全整数，同时还有没有匹配子串的情况，最后一行返回代码就是用来解决这个问题的。
 
 这道题实质上是 [209. 长度最小的子数组](./once.md#_209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84) 的翻版，可以先看他熟悉一下。
+
+## [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+
+### 暴力做法
+
+```javascript
+var largestRectangleArea = function (heights) {
+  const n = heights.length
+  let res = 0
+  let curArea = 0
+  for (let i = 0; i < n; i++) {
+    const minH = []
+    minH[i] = heights[i]
+    for (let j = i + 1; j < n; j++) {
+      minH[j] = Math.min(minH[j - 1], heights[j])
+    }
+    for (let j = i; j < n; j++) {
+      curArea = (j - i + 1) * minH[j]
+      res = Math.max(res, curArea)
+    }
+  }
+  return res
+};
+```
+
+使用了一点优化空间的技巧，没有一开始计算全部的 `minH`，是在遍历时候才开始计算，但整体的时间复杂度还是 `n^2`，没法过测试。
+
+### 单调栈
+
+```javascript
+var largestRectangleArea = function (heights) {
+  const n = heights.length;
+  const stk = []
+  const lIdx = new Array(n).fill(-1)
+  const rIdx = new Array(n).fill(n)
+  let res = 0
+  for (let i = 0; i < n; i++) {
+    const h = heights[i]
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop()
+    if (stk.length) lIdx[i] = stk[stk.length - 1]
+    stk.push(i)
+  }
+  stk.length = 0
+  for (let i = n - 1; i >= 0; i--) {
+    const h = heights[i]
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop()
+    if (stk.length) rIdx[i] = stk[stk.length - 1]
+    stk.push(i)
+  }
+  for (let i = 0; i < n; i++) {
+    const h = heights[i]
+    res = Math.max(res, h * (rIdx[i] - lIdx[i] - 1))
+  }
+  return res
+};
+```
+
+还是看解析才过的，甚至看完解析后还是做不出来，因为没有考虑好单调栈的单调性。我最开始想着应该用单调递减栈，比如 `heights = [2,1,5,6,2,3]`，每次碰到比栈顶大的元素就出栈，并且记录当前元素的 lIdx，但是第五个元素就无法获知自己左边比自己小的元素信息了，所以有了 `lIdx[4] = -1` 这个错误。
+
+换成递增栈后，每个元素在进栈前，都会记录自己的 lIdx，这样就可以保留左侧的信息。这道题还有一些注意点
+
+1. 获取的是右侧和左侧第一个小于自身的元素下标，然后通过 `r - l - 1` 来表示长度，元素自身表示高度，求得乘积。这也是为什么出栈的时候要小于等于
+2. 清空栈的时候有多种方法，比如 `splice`，重新赋值，还有设置 length，benchmark 可以看[这个帖子](https://stackoverflow.com/a/1232046/19749278)
+
+## [152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/)
+
+```javascript
+var maxProduct = function (nums) {
+  const n = nums.length
+  const maxdp = new Array(n).fill(1)
+  const mindp = new Array(n).fill(1)
+  for (let i = 1; i <= n; i++) {
+    maxdp[i] = Math.max(maxdp[i - 1] * nums[i - 1], mindp[i - 1] * nums[i - 1], nums[i - 1])
+    mindp[i] = Math.min(maxdp[i - 1] * nums[i - 1], mindp[i - 1] * nums[i - 1], nums[i - 1])
+  }
+  maxdp.shift()
+  return Math.max(...maxdp)
+}
+```
+
+我倒不是很愿意把这道题放在这类，但……确实没看答案就真的不会做
+
+我们这里得保持一个 mindp 来供 maxdp 使用

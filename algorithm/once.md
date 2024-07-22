@@ -472,5 +472,77 @@ var isValid = function (s) {
 
 最简单的栈的解法，不过有一些小知识点。ASCII 码表中只有小括号是紧邻着的（40 41），中括号和大括号都是中间隔一个符号（91 93）（123 125）
 
+## [70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/)
 
+```javascript
+var climbStairs = function (n) {
+  const dp = new Array(n + 1).fill(0)
+  dp[0] = 1
+  for (let i = 1; i <= n; i++) {
+    dp[i] = (dp[i - 1] ?? 0) + (dp[i - 2] ?? 0)
+  }
+  return dp[n]
+}
 
+```
+
+找到递推式就可以解决，`dp[i] = dp[i-1] + dp[i-2]`，但这个递推式没有解决初始态的问题，一般我们可以手算初始态，然后避免像我这样写的麻烦。
+
+## [118. 杨辉三角](https://leetcode.cn/problems/pascals-triangle/)
+
+```javascript
+var generate = function (numRows) {
+  if (numRows === 1) return [[1]]
+  const pre = generate(numRows - 1)
+  const level = pre[numRows - 2]
+  const newLevel = new Array(numRows).fill(1)
+  for (let i = 1; i < numRows - 1; i++) {
+    newLevel[i] = level[i - 1] + level[i]
+  }
+  pre.push(newLevel)
+  return pre
+}
+```
+
+虽然说是动态规划，但……我感觉只是披了层皮而已，我这里考虑使用递归解决，但实际上也可以转化成遍历
+
+## [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/)
+
+```typescript
+function numSquares(n: number): number {
+  const dp = new Array(n + 1).fill(0);
+  for (let i = 1; i <= n; i++) {
+    let min = Number.MAX_SAFE_INTEGER;
+    for (let j = 1; j * j <= i; j++) {
+      min = Math.min(min, dp[i - j * j]);
+    }
+    dp[i] = min + 1;
+  }
+  return dp[n];
+}
+```
+
+这里我写的时候使用了一个 cache 来存储完全平方数，但实际上没必要，看了我去年写的解答，很优雅
+
+## [300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+```javascript
+var lengthOfLIS = function (nums) {
+  const n = nums.length
+  const dp = new Array(n).fill(0)
+  for (let i = 1; i <= n; i++) {
+    let curMax = 0
+    for (let j = 1; j < i; j++) {
+      if (nums[j - 1] >= nums[i - 1]) continue
+      curMax = Math.max(curMax, dp[j])
+    }
+    dp[i] = curMax + 1
+  }
+  return Math.max(...dp)
+};
+```
+
+老朋友了，我记得面试时候还遇到过，递推式比较好写，讲一下这道题做的时候遇到的坑吧
+
+1. 由于 dp 数组有个 0 前缀，因此对 nums 的操作下标都是要减一的，比如 `if (nums[j - 1] >= nums[i - 1]) continue`
+2. 还有 `dp[i]` 表示的是以第 i 个元素结尾时候的最长子串，因此结果要取最大值。
