@@ -9,6 +9,7 @@ const { Layout } = DefaultTheme;
 </script>
 
 <template>
+  <ClientOnly> <AppearanceSwitcher /> </ClientOnly>
   <Layout>
     <template #doc-before>
       <Title />
@@ -16,7 +17,6 @@ const { Layout } = DefaultTheme;
     </template>
 
     <template #home-features-after>
-      <ClientOnly> <AppearanceSwitcher /> </ClientOnly>
       <Home />
     </template>
   </Layout>

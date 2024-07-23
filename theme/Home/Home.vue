@@ -33,9 +33,7 @@ const groupedPosts = posts.reduce(
         v-for="(posts, date) in groupedPosts"
         :key="date"
       >
-        <ClientOnly>
-          <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
-        </ClientOnly>
+        <GroupedPostsCard :date="date" :posts="posts"></GroupedPostsCard>
       </li>
     </ul>
   </article>
