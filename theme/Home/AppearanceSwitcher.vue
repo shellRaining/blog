@@ -2,7 +2,10 @@
 import { useDark, useToggle } from "@vueuse/core";
 import { nextTick } from "vue";
 
-const isDark = useDark();
+const isDark = useDark({
+  storageKey: "shellRaining-blog-theme",
+  initialValue: "dark",
+});
 const toggleDark = useToggle(isDark);
 
 async function toggleAppearance({ x, y }: MouseEvent) {

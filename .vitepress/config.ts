@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 
+const APPEARANCE_KEY = "shellRaining-blog-theme";
 export default defineConfig({
   title: "blog",
   lang: "zh-cn",
@@ -51,6 +52,16 @@ export default defineConfig({
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-MRR1SRZVFY');`,
+    ],
+    [
+      "script",
+      { id: "check-dark-mode" },
+      `;(() => {
+  const preference = localStorage.getItem('${APPEARANCE_KEY}')
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  if (!preference || preference === 'auto' ? prefersDark : preference === 'dark')
+    document.documentElement.classList.add('dark')
+})()`,
     ],
   ],
   sitemap: {

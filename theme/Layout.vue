@@ -9,7 +9,7 @@ const { Layout } = DefaultTheme;
 </script>
 
 <template>
-  <ClientOnly> <AppearanceSwitcher /> </ClientOnly>
+  <AppearanceSwitcher />
   <Layout>
     <template #doc-before>
       <Title />
