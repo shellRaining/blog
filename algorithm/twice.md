@@ -352,3 +352,4 @@ var coinChange = function (coins, amount) {
 至于为什么是大于等于，因为 `dp[i] = curMin + 1` 这段代码中，`curMin` 有可能就是 `Number.MAX_SAFE_INTEGER`，导致被算出来的 `dp[i]` 自身大于 `Number.MAX_SAFE_INTEGER`，但要注意，这种计算已经超越了 IEEE754 的表示范围，可能会涉及 BigInt 的东西。
 
 还有一点，就是题目里的硬币并不是有序的，只有调整为有序后才可以在最内层的 if 语句使用 break。
+

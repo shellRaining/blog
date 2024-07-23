@@ -304,3 +304,35 @@ var maxProduct = function (nums) {
 我倒不是很愿意把这道题放在这类，但……确实没看答案就真的不会做
 
 我们这里得保持一个 mindp 来供 maxdp 使用
+
+## [416. 分割等和子集](https://leetcode.cn/problems/partition-equal-subset-sum/)
+
+### 0-1 背包
+
+```javascript
+var canPartition = function (nums) {
+  const sum = nums.reduce((pre, cur) => pre + cur, 0)
+  if (sum % 2) return false
+  const target = sum / 2
+  const n = nums.length
+  const cache = Array.from({ length: n }, () => new Array(target + 1).fill(-1))
+
+  function dfs(i, c) {
+    if (i < 0) return c === 0
+    if (cache[i][c] !== -1) return cache[i][c]
+    if (c < nums[i]) return dfs(i - 1, c)
+    const res = dfs(i - 1, c) || dfs(i - 1, c - nums[i])
+    cache[i][c] = res
+    return res
+  }
+  return dfs(n - 1, target)
+};
+```
+
+初见想不出来解法，但看到解法后，感觉思路和[目标和](https://leetcode.cn/problems/target-sum)挺相似的，都是根据题目已知信息转换成 0-1 背包典型，这里就是判断数组是否存在部分元素的和为数组和的一半，然后转换成背包写法。
+
+当然背包的写法还有多种，我这里先给出了记忆化搜索，有以下几个注意点
+
+1. 二维数组的列一共是 `target+1` 格子，而不是 `target`。要谨防越界
+2. 两个参数的函数进行记忆化的时候可以用二维数组，但是要保证传入参数不会导致 cache 越界，所以可以看到这里的 cache 是在内部函数第二行书写的
+3. 这个和完全背包不一样，完全背包是可以重复选择一个物品的，同时还有至多至少这样的分类，详情可以看 [灵茶山艾府的视频](https://www.bilibili.com/video/BV16Y411v7Y6)
