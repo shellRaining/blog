@@ -73,6 +73,19 @@ export function initData(route: Route): VitePressData {
 
 并最终将这个返回的对象作为一个 symbol 注入到创建的 app 中。
 
+```typescript
+export async function createApp() {
+  const router = newRouter()
+  const app = newApp()
+
+  app.provide(RouterSymbol, router)
+  const data = initData(router.route)
+  app.provide(dataSymbol, data)
+
+  return { app, router, data }
+}
+```
+
 ## 总结
 
 从用户打开浏览器并且输入 `localhost:5173` 后，浏览器首先请求了一个 `index.html`，并且执行其中的脚本，引入了 `client/app/app.js` 和 `client/app/data.js`。
