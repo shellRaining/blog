@@ -6,18 +6,20 @@ defineProps<{ post: ContentData }>();
 
 const router = useRouter();
 
-function changeRoute(e: MouseEvent, to: string) {
-  if (document.startViewTransition) {
-    // to avoid animation confict with the global transition
-    const VPContentEl = document.querySelector(".VPContent")! as HTMLElement;
-    VPContentEl.style.setProperty("view-transition-name", "route");
-    const transition = document.startViewTransition(async () => {
-      await router.go(to);
-    });
-    transition.finished.then(() => {
-      VPContentEl.style.removeProperty("view-transition-name");
-    });
+function changeRoute(to: string) {
+  if (!document.startViewTransition) {
+    router.go(to);
+    return;
   }
+  // to avoid animation confict with the global transition
+  const VPContentEl = document.querySelector(".VPContent")! as HTMLElement;
+  VPContentEl.style.setProperty("view-transition-name", "route");
+  const transition = document.startViewTransition(async () => {
+    await router.go(to);
+  });
+  transition.finished.then(() => {
+    VPContentEl.style.removeProperty("view-transition-name");
+  });
 }
 </script>
 
@@ -25,7 +27,7 @@ function changeRoute(e: MouseEvent, to: string) {
   <button
     class="post-title"
     :href="withBase(post.url)"
-    @click="(e) => changeRoute(e, post.url)"
+    @click="changeRoute(post.url)"
   >
     {{ post.frontmatter.title }}
   </button>
