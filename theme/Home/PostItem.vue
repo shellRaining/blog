@@ -61,6 +61,10 @@ function changeRoute(e: MouseEvent, to: string) {
     opacity: 1;
     transform: translateX(0);
   }
+  50% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
   100% {
     opacity: 0;
     transform: translateX(-100px);
@@ -71,15 +75,19 @@ function changeRoute(e: MouseEvent, to: string) {
     opacity: 0;
     transform: translateX(100px);
   }
+  50% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
   100% {
     opacity: 1;
     transform: translateX(0);
   }
 }
 ::view-transition-old(route) {
-  animation: shift-to-left 0.3s linear;
+  animation: shift-to-left 0.6s linear;
 }
 ::view-transition-new(route) {
-  animation: push-from-right 0.3s linear;
+  animation: push-from-right 0.6s linear;
 }
 </style>

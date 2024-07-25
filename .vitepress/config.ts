@@ -2,8 +2,8 @@ import { defineConfig } from "vitepress";
 
 const APPEARANCE_KEY = "shellRaining-blog-theme";
 export default defineConfig({
-  title: "blog",
   lang: "zh-cn",
+  title: "shellRaining's blog",
   description: "A VitePress Site",
   vite: {
     build: {
