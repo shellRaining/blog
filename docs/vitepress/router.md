@@ -248,15 +248,19 @@ window.addEventListener('hashchange', (e) => {})
 
 首先讲一下鼠标事件监听器，这个事件监听器主要是针对链接类型节点处理的，如果用户是通过鼠标左键点击的该链接，并且该链接的 URL 和当前窗口的 href 的 `pathname` 和 `query` 参数相同，那么继续判断他们的 `hash` 是否相同，如果不同，就触发一个 `hashchange` 事件，并且滚动到指定位置。如果 `pathname` 或者 `query` 不同，那么直接触发 `go` 事件即可。
 
+之后是 `popstate` 监听器，主要负责状态变化后加载新页面，还有触发用户可能设置的钩子函数
+
+最后是 `hashchange` 事件监听器，只是简单做了一个 `preventDefault` 操作
+
+### 存在的问题
+
 这个监听器导致了我的静态博客分页系统除了问题，害得我排查了很久，具体表现是：
 
 > 首先进入 https://sugarat.top/?pageNum=2 这个网页，看到分页正常显示在第二页，然后按首页左上角的 logo，URL 变成了 https://sugarat.top，但页面没有正常跳转到第一页
 >
 > 这是因为如果不传入钩子函数，会直接调用 go("/")，导致 URL 发生变化，但是我们静态分页器没有更新分页信息。通过向上面提到的用户钩子函数 `onAfterRouteChanged` 传入更新分页的回调函数即可。
 
-之后是 `popstate` 监听器，主要负责状态变化后加载新页面，还有触发用户可能设置的钩子函数
-
-最后是 `hashchange` 事件监听器，只是简单做了一个 `preventDefault` 操作
+同时还导致了我的博客过渡动画出现问题，我第一次点击一篇主页的博客文章链接后，过渡效果正常显示，但是如果第二次点击同一篇文章链接，就会出现 bug，详细报错信息可以看 [GitHub issue](https://github.com/vuejs/vitepress/issues/4075)。通过将 a 链接转换成 button 标签解决，但我感觉这不是一个好的解决方案。
 
 ### `useRouter`
 

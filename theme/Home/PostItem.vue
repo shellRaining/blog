@@ -8,7 +8,6 @@ const router = useRouter();
 
 function changeRoute(e: MouseEvent, to: string) {
   if (document.startViewTransition) {
-    e.stopPropagation();
     // to avoid animation confict with the global transition
     const VPContentEl = document.querySelector(".VPContent")! as HTMLElement;
     VPContentEl.style.setProperty("view-transition-name", "route");
@@ -23,12 +22,13 @@ function changeRoute(e: MouseEvent, to: string) {
 </script>
 
 <template>
-  <a
+  <button
     class="post-title"
     :href="withBase(post.url)"
     @click="(e) => changeRoute(e, post.url)"
-    >{{ post.frontmatter.title }}</a
   >
+    {{ post.frontmatter.title }}
+  </button>
 </template>
 
 <style scoped>
