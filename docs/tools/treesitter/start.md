@@ -4,7 +4,6 @@ tag:
   - tools
   - treesitter
 date: 2024-05-18
-outline: [2, 3]
 ---
 
 ## 什么是 treesitter

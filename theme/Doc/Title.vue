@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onContentUpdated, useData } from "vitepress";
+import { ref } from "vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { ref } from "vue";
+import VersionDropdown from "./VersionDropdown.vue";
 
 dayjs.extend(relativeTime);
 
@@ -20,7 +21,10 @@ onContentUpdated(() => {
 <template>
   <div>
     <h1 class="title">{{ pageData.title }}</h1>
-    <div class="date">🕒 Published at: {{ publishDate }}</div>
+    <div class="meta-info">
+      <div class="date">🕒 Published at: {{ publishDate }}</div>
+      <VersionDropdown class="versions" />
+    </div>
   </div>
 </template>
 
@@ -32,15 +36,12 @@ onContentUpdated(() => {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
   line-height: 1.3;
-  font-family: Dosis, "Noto Sans";
 }
 
-.date {
-  font-size: 0.875rem;
+.meta-info {
+  display: flex;
   line-height: 1.25rem;
-  margin-bottom: 1em;
-  padding-bottom: 1em;
-  border-bottom: 1px dashed #c7c7c7;
-  margin-bottom: 1.5em;
+  font-size: 0.875rem;
+  justify-content: space-between;
 }
 </style>

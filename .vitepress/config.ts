@@ -1,4 +1,20 @@
 import { defineConfig } from "vitepress";
+import { spawn } from "child_process";
+import { join } from "path";
+
+function getGitTimestamp(file: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const child = spawn("git", ["log", "--pretty='%H %ai'", file]);
+    let output = "";
+    child.stdout.on("data", (data) => {
+      output += data;
+    });
+    child.on("close", () => {
+      resolve(output);
+    });
+    child.on("error", reject);
+  });
+}
 
 const APPEARANCE_KEY = "shellRaining-blog-theme";
 export default defineConfig({
@@ -21,10 +37,6 @@ export default defineConfig({
       },
     },
     nav: [
-      {
-        text: "🏡Blogs",
-        link: "/",
-      },
     ],
     outline: "deep",
   },
@@ -66,5 +78,26 @@ export default defineConfig({
   ],
   sitemap: {
     hostname: "https://shellraining.top",
+  },
+  async transformPageData(pageData, ctx) {
+    const pagePath = join(ctx.siteConfig.root, pageData.filePath);
+    const gitTimestamp = await getGitTimestamp(pagePath);
+    const versions = gitTimestamp
+      .trim()
+      .split("\n")
+      .map((line) => {
+        line = line.slice(1, -1);
+        const regex = /^(\S+)\s+(.*)$/;
+        const match = line.match(regex);
+        if (match) {
+          const [_, hash, timestamp] = match;
+          return {
+            hash,
+            timestamp,
+          };
+        }
+      })
+      .filter((item) => !!item);
+    pageData.versions = versions;
   },
 });
