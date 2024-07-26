@@ -262,6 +262,8 @@ window.addEventListener('hashchange', (e) => {})
 
 同时还导致了我的博客过渡动画出现问题，我第一次点击一篇主页的博客文章链接后，过渡效果正常显示，但是如果第二次点击同一篇文章链接，就会出现 bug，详细报错信息可以看 [GitHub issue](https://github.com/vuejs/vitepress/issues/4075)。通过将 a 链接转换成 button 标签解决，但我感觉这不是一个好的解决方案。
 
+后续更新，vitepress 开发者之一提到可以使用 `vp-raw` 类，我查看源码发现确实是一个可行的办法。不过这样就要自己处理 a 标签的默认行为了，比如 `prevent` 修饰符
+
 ### `useRouter`
 
 ```TypeScript

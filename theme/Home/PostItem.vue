@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { ContentData } from "vitepress";
 import { useRouter, withBase } from "vitepress";
+import { onMounted, ref } from "vue";
 
 defineProps<{ post: ContentData }>();
 
@@ -21,16 +22,22 @@ function changeRoute(to: string) {
     VPContentEl.style.removeProperty("view-transition-name");
   });
 }
+
+const viewTransitionsEnabled = ref(false);
+onMounted(() => {
+  viewTransitionsEnabled.value = "startViewTransition" in document;
+});
 </script>
 
 <template>
-  <button
+  <a
     class="post-title"
+    :class="viewTransitionsEnabled && 'vp-raw'"
     :href="withBase(post.url)"
-    @click="changeRoute(post.url)"
+    @click.prevent="changeRoute(post.url)"
   >
     {{ post.frontmatter.title }}
-  </button>
+  </a>
 </template>
 
 <style scoped>
