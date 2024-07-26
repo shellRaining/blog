@@ -21,18 +21,18 @@ rollup 插件实际上就是一个对象，必须包含的字段为 `name`，表
 
 ```typescript
 export default function resolveFirst() {
-	return {
-		name: 'resolve-first',
-		resolveId: {
-			order: 'pre',
-			handler(source) {
-				if (source === 'external') {
-					return { id: source, external: true };
-				}
-				return null;
-			}
-		}
-	};
+  return {
+    name: "resolve-first",
+    resolveId: {
+      order: "pre",
+      handler(source) {
+        if (source === "external") {
+          return { id: source, external: true };
+        }
+        return null;
+      },
+    },
+  };
 }
 ```
 

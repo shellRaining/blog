@@ -6,21 +6,21 @@
 
 ```javascript
 var coinChange = function (coins, amount) {
-  const stk = []
-  let res = Number.MAX_SAFE_INTEGER
+  const stk = [];
+  let res = Number.MAX_SAFE_INTEGER;
   function inner(remain) {
     if (remain == 0) {
-      res = Math.min(res, stk.length)
-      return
-    } else if (remain < 0) return
+      res = Math.min(res, stk.length);
+      return;
+    } else if (remain < 0) return;
     for (let i = 0; i < coins.length; i++) {
-      stk.push(coins[i])
-      inner(remain - coins[i])
-      stk.pop(coins[i])
+      stk.push(coins[i]);
+      inner(remain - coins[i]);
+      stk.pop(coins[i]);
     }
   }
-  inner(amount)
-  return res == Number.MAX_SAFE_INTEGER ? -1 : res
+  inner(amount);
+  return res == Number.MAX_SAFE_INTEGER ? -1 : res;
 };
 ```
 
@@ -98,30 +98,28 @@ var dailyTemperatures = function (temperatures) {
 
 ```javascript
 var dailyTemperatures = function (temperatures) {
-  const len = temperatures.length
-  const res = new Array(len).fill(0)
+  const len = temperatures.length;
+  const res = new Array(len).fill(0);
   for (let i = 0; i < len; i++) {
-    if (res[i] !== 0) continue
+    if (res[i] !== 0) continue;
     for (let j = i + 1; j < len + 1; j++) {
-      const ti = temperatures[i]
-      const tj = temperatures[j]
+      const ti = temperatures[i];
+      const tj = temperatures[j];
       if (ti < tj) {
-        res[i] = j - i
+        res[i] = j - i;
         for (let k = i + 1; k < j; k++) {
-          const tk = temperatures[k]
+          const tk = temperatures[k];
           if ((tk < tj && tk > ti) || tk == ti) {
-            res[k] = res[i] - (k - i)
+            res[k] = res[i] - (k - i);
           }
         }
-        break
+        break;
       }
     }
   }
-  return res
-}
+  return res;
+};
 ```
-
-
 
 首先要构造出上面暴力做法可能出现问题的一个数据集，即最坏情况，所有天数都是一样的温度就可以实现，因为无法找到高于他的温度，会一直向后遍历，导致时间复杂度变成 `O(n^2)`。因此可以去寻找一些规律来加速这一过程，比方说我们在遍历的时候找到了 `i` 对应的是 `j`，那么在这 `i-j` 天内，凡是温度高于 `i` 天且小于 `j` 天，或者温度等于 `i` 天的某个 `k` 天，我们就可以通过 `res[i]` 计算出 `res[k]`。
 
@@ -182,16 +180,16 @@ var wordBreak = function (s, wordDict) {
 
 ```javascript
 var merge = function (intervals) {
-  intervals.sort((x, y) => x[0] - y[0])
-  const res = [intervals[0]]
+  intervals.sort((x, y) => x[0] - y[0]);
+  const res = [intervals[0]];
   for (let i = 1; i < intervals.length; i++) {
-    const item = intervals[i]
-    const top = res[res.length - 1]
-    if (item[0] <= top[1]) top[1] = Math.max(top[1], item[1])
-    else res.push(item)
+    const item = intervals[i];
+    const top = res[res.length - 1];
+    if (item[0] <= top[1]) top[1] = Math.max(top[1], item[1]);
+    else res.push(item);
   }
-  return res
-}
+  return res;
+};
 ```
 
 我最开始在做的时候只考虑到了排序后遍历所有 interval 子项，如果没有重合就直接插入到结果数组中，有重合就找到更改位置，然后对指定位置的数组进行合并。但是忽略了一个情况，即我们 `res` 数组其实本身也是和 `arr` 一样有序，去寻找重合位置本身是浪费时间的行为，直接获取 `res` 最后一项，然后进行比较合并即可。
@@ -210,9 +208,10 @@ function match(s) {
       if (nextIdx === -1) {
         return res;
       } else {
-        const substr = s.slice(i+1, nextIdx)
-        if (substr.match(/^\d+$/)) { // 这里也可以 re.test 这个函数
-          res.push(Number(substr))
+        const substr = s.slice(i + 1, nextIdx);
+        if (substr.match(/^\d+$/)) {
+          // 这里也可以 re.test 这个函数
+          res.push(Number(substr));
         }
         i = nextIdx + 1;
       }
@@ -238,12 +237,12 @@ function match(s) {
 他问了 `bigInt` 可能会在什么情况下使用
 
 ```javascript
-const nval1 = 9007199254740991 + 1
-const nval2 = 9007199254740991 + 2
-nval1 === nval2 // true
-const bval1 =  9007199254740991n + 1n
-const bval2 =  9007199254740991n + 2n
-bval1 === bval2 // false
+const nval1 = 9007199254740991 + 1;
+const nval2 = 9007199254740991 + 2;
+nval1 === nval2; // true
+const bval1 = 9007199254740991n + 1n;
+const bval2 = 9007199254740991n + 2n;
+bval1 === bval2; // false
 ```
 
 在 `SAFE VALUE` 之外进行计算，很有可能导致错误，这是因为 JavaScript 使用 IEEE754 来表示浮点数，阶码十一位，尾数五十二位
@@ -252,23 +251,23 @@ bval1 === bval2 // false
 
 ```javascript
 var MinStack = function () {
-  this.stk = []
-  this.helper = [Number.MAX_SAFE_INTEGER]
+  this.stk = [];
+  this.helper = [Number.MAX_SAFE_INTEGER];
 };
 MinStack.prototype.push = function (val) {
-  this.stk.push(val)
-  this.helper.push(Math.min(this.helper[this.helper.length - 1], val))
+  this.stk.push(val);
+  this.helper.push(Math.min(this.helper[this.helper.length - 1], val));
 };
 MinStack.prototype.pop = function () {
-  this.stk.pop()
-  this.helper.pop()
+  this.stk.pop();
+  this.helper.pop();
 };
 MinStack.prototype.top = function () {
-  return this.stk[this.stk.length - 1]
+  return this.stk[this.stk.length - 1];
 };
 MinStack.prototype.getMin = function () {
-  return this.helper[this.helper.length - 1]
-}
+  return this.helper[this.helper.length - 1];
+};
 ```
 
 这道题我最开始想着要通过一个最小堆来配合栈使用，但是答案挺有意思，他用一个辅助栈来对应原栈中每个位置的最小值
@@ -279,25 +278,25 @@ MinStack.prototype.getMin = function () {
 
 ```javascript
 var dailyTemperatures = function (temperatures) {
-  const n = temperatures.length
-  const res = new Array(n).fill(0)
+  const n = temperatures.length;
+  const res = new Array(n).fill(0);
   for (let i = 0; i < n; i++) {
-    if(res[i] !== 0) continue
+    if (res[i] !== 0) continue;
     for (let j = i + 1; j < n; j++) {
-      const ti = temperatures[i]
-      const tj = temperatures[j]
-      if(ti < tj) {
-        for(let k = i; k < j ;k++){
-          const tk = temperatures[k]
-          if((tk < tj && tk >= ti)) {
-            res[k] = j - k
+      const ti = temperatures[i];
+      const tj = temperatures[j];
+      if (ti < tj) {
+        for (let k = i; k < j; k++) {
+          const tk = temperatures[k];
+          if (tk < tj && tk >= ti) {
+            res[k] = j - k;
           }
         }
-        break
+        break;
       }
     }
   }
-  return res
+  return res;
 };
 ```
 
@@ -305,18 +304,18 @@ var dailyTemperatures = function (temperatures) {
 
 ```javascript
 var dailyTemperatures = function (temperatures) {
-  const n = temperatures.length
-  const res = new Array(n).fill(0)
-  const stk = []
+  const n = temperatures.length;
+  const res = new Array(n).fill(0);
+  const stk = [];
   for (let i = 0; i < n; i++) {
-    const ti = temperatures[i]
+    const ti = temperatures[i];
     while (stk.length && temperatures[stk[stk.length - 1]] < ti) {
-      const idx = stk.pop()
-      res[idx] = i - idx
+      const idx = stk.pop();
+      res[idx] = i - idx;
     }
-    stk.push(i)
+    stk.push(i);
   }
-  return res
+  return res;
 };
 ```
 
@@ -330,20 +329,20 @@ var dailyTemperatures = function (temperatures) {
 
 ```javascript
 var coinChange = function (coins, amount) {
-  coins.sort((x, y) => x - y)
-  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER)
-  for (const v of coins) dp[v] = 1
+  coins.sort((x, y) => x - y);
+  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
+  for (const v of coins) dp[v] = 1;
   for (let i = 1; i <= amount; i++) {
-    if (dp[i] < Number.MAX_SAFE_INTEGER) continue
-    let curMin = Number.MAX_SAFE_INTEGER
+    if (dp[i] < Number.MAX_SAFE_INTEGER) continue;
+    let curMin = Number.MAX_SAFE_INTEGER;
     for (const coin of coins) {
-      if (coin > i) break
-      curMin = Math.min(curMin, dp[i - coin])
+      if (coin > i) break;
+      curMin = Math.min(curMin, dp[i - coin]);
     }
-    dp[i] = curMin + 1
+    dp[i] = curMin + 1;
   }
-  dp[0] = 0
-  return dp[amount] >= Number.MAX_SAFE_INTEGER ? -1 : dp[amount]
+  dp[0] = 0;
+  return dp[amount] >= Number.MAX_SAFE_INTEGER ? -1 : dp[amount];
 };
 ```
 
@@ -352,4 +351,3 @@ var coinChange = function (coins, amount) {
 至于为什么是大于等于，因为 `dp[i] = curMin + 1` 这段代码中，`curMin` 有可能就是 `Number.MAX_SAFE_INTEGER`，导致被算出来的 `dp[i]` 自身大于 `Number.MAX_SAFE_INTEGER`，但要注意，这种计算已经超越了 IEEE754 的表示范围，可能会涉及 BigInt 的东西。
 
 还有一点，就是题目里的硬币并不是有序的，只有调整为有序后才可以在最内层的 if 语句使用 break。
-

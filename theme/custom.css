@@ -71,7 +71,6 @@
   --vp-c-text-3: rgba(235, 235, 245, 0.38);
 }
 
-
 :root[lang] {
   --vp-font-family-base: "LXGW WenKai", sans-serif;
   --vp-font-family-mono: "LXGW WenKai Mono", monospace;

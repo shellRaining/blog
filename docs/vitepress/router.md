@@ -114,11 +114,11 @@ export function createRouter(
 
 ```typescript
 export interface Router {
-  route: Route
-  go: (to?: string) => Promise<void>
-  onBeforeRouteChange?: (to: string) => Awaitable<void | boolean>
-  onBeforePageLoad?: (to: string) => Awaitable<void | boolean>
-  onAfterRouteChanged?: (to: string) => Awaitable<void>
+  route: Route;
+  go: (to?: string) => Promise<void>;
+  onBeforeRouteChange?: (to: string) => Awaitable<void | boolean>;
+  onBeforePageLoad?: (to: string) => Awaitable<void | boolean>;
+  onAfterRouteChanged?: (to: string) => Awaitable<void>;
 }
 ```
 
@@ -129,17 +129,17 @@ export interface Router {
 #### 定义 `go` 和 `loadPage`
 
 ```typescript
-  async function go(href: string = inBrowser ? location.href : '/') {
-    href = normalizeHref(href)
-    if ((await router.onBeforeRouteChange?.(href)) === false) return
-    if (inBrowser && href !== normalizeHref(location.href)) {
-      // save scroll position before changing url
-      history.replaceState({ scrollPosition: window.scrollY }, '')
-      history.pushState({}, '', href)
-    }
-    await loadPage(href)
-    await router.onAfterRouteChanged?.(href)
+async function go(href: string = inBrowser ? location.href : "/") {
+  href = normalizeHref(href);
+  if ((await router.onBeforeRouteChange?.(href)) === false) return;
+  if (inBrowser && href !== normalizeHref(location.href)) {
+    // save scroll position before changing url
+    history.replaceState({ scrollPosition: window.scrollY }, "");
+    history.pushState({}, "", href);
   }
+  await loadPage(href);
+  await router.onAfterRouteChanged?.(href);
+}
 ```
 
 `go` 函数首先规范化我们传入的 href，然后和当前的 href 进行比对，如果不同，就在当前的页面的状态对象中记录一下 `scrollY` 的值，以便后续恢复浏览进度，然后执行加载页面的任务（通过后面提到的 `loadPage` 函数）
@@ -157,8 +157,6 @@ export interface Router {
     }
   }
 ```
-
-
 
 `loadPage` 函数会用到 `createRouter` 传入的 `loadPageModule` 回调函数，用来加载页面，这个函数在 `app/index.ts` 中（我们前置流程中 `newRouter` 部分）定义
 
@@ -191,60 +189,55 @@ cosnt loadPageModule = (path) => {
 
 ```typescript
 window.addEventListener(
-  'click',
+  "click",
   (e) => {
-    const button = (e.target as Element).closest('button')
-    if (button) return
-    const link = (e.target as Element | SVGElement).closest<HTMLAnchorElement | SVGAElement>('a')
-    
+    const button = (e.target as Element).closest("button");
+    if (button) return;
+    const link = (e.target as Element | SVGElement).closest<
+      HTMLAnchorElement | SVGAElement
+    >("a");
+
     if (
       link &&
-      !link.closest('.vp-raw') &&
+      !link.closest(".vp-raw") &&
       (link instanceof SVGElement || !link.download)
     ) {
-      const { target } = link
+      const { target } = link;
       const { href, origin, pathname, hash, search } = new URL(
-        link.href instanceof SVGAnimatedString
-          ? link.href.animVal
-          : link.href,
-        link.baseURI
-      )
-      const currentUrl = new URL(location.href) // copy to keep old data
-      e.preventDefault()
-      if (
-        pathname === currentUrl.pathname &&
-        search === currentUrl.search
-      ) {
+        link.href instanceof SVGAnimatedString ? link.href.animVal : link.href,
+        link.baseURI,
+      );
+      const currentUrl = new URL(location.href); // copy to keep old data
+      e.preventDefault();
+      if (pathname === currentUrl.pathname && search === currentUrl.search) {
         // scroll between hash anchors in the same page
         // avoid duplicate history entries when the hash is same
         if (hash !== currentUrl.hash) {
-          history.pushState({}, '', href)
+          history.pushState({}, "", href);
           // still emit the event so we can listen to it in themes
           window.dispatchEvent(
-            new HashChangeEvent('hashchange', {
+            new HashChangeEvent("hashchange", {
               oldURL: currentUrl.href,
-              newURL: href
-            })
-          )
+              newURL: href,
+            }),
+          );
         }
         if (hash) {
           // use smooth scroll when clicking on header anchor links
-          scrollTo(link, hash, link.classList.contains('header-anchor'))
+          scrollTo(link, hash, link.classList.contains("header-anchor"));
         } else {
-          window.scrollTo(0, 0)
+          window.scrollTo(0, 0);
         }
       } else {
-        go(href)
+        go(href);
       }
     }
   },
-  { capture: true }
-)
-window.addEventListener('popstate', async (e) => {})
-window.addEventListener('hashchange', (e) => {})
+  { capture: true },
+);
+window.addEventListener("popstate", async (e) => {});
+window.addEventListener("hashchange", (e) => {});
 ```
-
-
 
 首先讲一下鼠标事件监听器，这个事件监听器主要是针对链接类型节点处理的，如果用户是通过鼠标左键点击的该链接，并且该链接的 URL 和当前窗口的 href 的 `pathname` 和 `query` 参数相同，那么继续判断他们的 `hash` 是否相同，如果不同，就触发一个 `hashchange` 事件，并且滚动到指定位置。如果 `pathname` 或者 `query` 不同，那么直接触发 `go` 事件即可。
 
@@ -287,4 +280,3 @@ export function useRoute(): Route {
 ```
 
 这个也是非常简单的一个函数，获取其中的字段就可以了。
-

@@ -16,7 +16,7 @@ date: 2024-07-05
 
 ```typescript
 function id<T extends Point>(x: T): T {
-	return x
+  return x;
 }
 ```
 
@@ -36,7 +36,7 @@ function id<T extends Point>(x: T): T {
 
 ```typescript
 function fn<T extends Point>(p: T): T {
-  return {x: 1, y: 1}
+  return { x: 1, y: 1 };
 }
 ```
 
@@ -78,8 +78,8 @@ type Tree<T> {
 
 ```typescript
 interface Point {
-	x: number;
-	y: number;
+  x: number;
+  y: number;
 }
 type T = keyof Point; // 'x' | 'y'
 ```
@@ -125,9 +125,9 @@ type MOT = { [P in K]: T[P] } // { a: string | undefined, b: number }
 还有一些特殊情况，比如 `T` 类型是一个原始类型，那么不会发生映射的操作，例子如下：
 
 ```typescript
-type HMOT<T, X> = { [p in keyof T]: X }
-type T = string
-type R = HMOT<T, boolean> // string
+type HMOT<T, X> = { [p in keyof T]: X };
+type T = string;
+type R = HMOT<T, boolean>; // string
 ```
 
 同理，如果 `T` 是一个联合类型，则对联合类型中的每个成员类型，都要进行求同态映射对象类型的操作，并将结果构造成一个联合类型。
@@ -144,8 +144,8 @@ type R = HMOT<T, boolean> // string
 
 ```typescript
 type Pick<T extends object, U extends keyof T> = {
-  [k in U]: T[k]
-}
+  [k in U]: T[k];
+};
 ```
 
 ### 添加移除修饰符
@@ -200,4 +200,4 @@ type CT<T> = [T] extends [string] ? true : false
 
 ## Infer 关键字
 
-`infer` 关键字需要搭配条件类型的语法使用，`T extends infer U ? U : Y`，这里的 infer 必须出现在原来条件类型的类型 `U`  的位置上。内置工具类型 `ReturnType` 就是通过 infer 实现的。
+`infer` 关键字需要搭配条件类型的语法使用，`T extends infer U ? U : Y`，这里的 infer 必须出现在原来条件类型的类型 `U` 的位置上。内置工具类型 `ReturnType` 就是通过 infer 实现的。

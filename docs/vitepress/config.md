@@ -75,14 +75,14 @@ export function initData(route: Route): VitePressData {
 
 ```typescript
 export async function createApp() {
-  const router = newRouter()
-  const app = newApp()
+  const router = newRouter();
+  const app = newApp();
 
-  app.provide(RouterSymbol, router)
-  const data = initData(router.route)
-  app.provide(dataSymbol, data)
+  app.provide(RouterSymbol, router);
+  const data = initData(router.route);
+  app.provide(dataSymbol, data);
 
-  return { app, router, data }
+  return { app, router, data };
 }
 ```
 

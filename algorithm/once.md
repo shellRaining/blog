@@ -78,8 +78,6 @@ var findAnagrams = function (s, p) {
 }
 ```
 
-
-
 首先计算 `p` 字符串的字符频次表，然后针对 `s` 字符串相同长度的子字符串进行频次计算，如果频次相同，说明是一个异位词。这里遍历可以保持一个不变量，即当前遍历开始时的频次表一定是当前子串的，直到遍历末期我们才对子串首字符频率减一，对后面新字符频率加一。
 
 ## [1. 两数之和](https://leetcode.cn/problems/two-sum/)
@@ -91,33 +89,36 @@ var findAnagrams = function (s, p) {
 
 ```javascript
 var twoSum = function (nums, target) {
-  const map = new Map()
-  const len = nums.length
+  const map = new Map();
+  const len = nums.length;
   for (let i = 0; i < len; i++) {
-    map.set(nums[i], i)
+    map.set(nums[i], i);
   }
   for (let i = 0; i < len; i++) {
-    const sub = target - nums[i]
+    const sub = target - nums[i];
     if (map.has(sub)) {
-      const idx = map.get(sub)
-      if(idx !== i) return [i, idx]
+      const idx = map.get(sub);
+      if (idx !== i) return [i, idx];
     }
   }
-}
+};
 ```
 
 ## [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
 
 ```javascript
 var groupAnagrams = function (strs) {
-  const map = new Map()
-  for(const s of strs) {
-    const sortedStr = s.split('').sort((a, b) => a.charCodeAt() - b.charCodeAt()).join('')
-    if(map.has(sortedStr)) map.get(sortedStr).push(s)
-    else map.set(sortedStr, [s])
+  const map = new Map();
+  for (const s of strs) {
+    const sortedStr = s
+      .split("")
+      .sort((a, b) => a.charCodeAt() - b.charCodeAt())
+      .join("");
+    if (map.has(sortedStr)) map.get(sortedStr).push(s);
+    else map.set(sortedStr, [s]);
   }
-  return Array.from(map, ([_, val]) => val)
-}
+  return Array.from(map, ([_, val]) => val);
+};
 ```
 
 思路明确，但是要注意 JavaScript 相关的 API 使用参数
@@ -129,29 +130,29 @@ var groupAnagrams = function (strs) {
 
 ```javascript
 var longestConsecutive = function (nums) {
-  const set = new Set(nums)
-  let cnt = 1
-  let res = 0
+  const set = new Set(nums);
+  let cnt = 1;
+  let res = 0;
 
   for (const num of nums) {
-    if (!set.has(num)) continue
-    let up = num + 1
-    let down = num - 1
+    if (!set.has(num)) continue;
+    let up = num + 1;
+    let down = num - 1;
     while (set.has(up)) {
-      set.delete(up)
-      up++
-      cnt++
+      set.delete(up);
+      up++;
+      cnt++;
     }
     while (set.has(down)) {
-      set.delete(down)
-      down--
-      cnt++
+      set.delete(down);
+      down--;
+      cnt++;
     }
-    if (cnt > res) res = cnt
-    cnt = 1
+    if (cnt > res) res = cnt;
+    cnt = 1;
   }
-  return res
-}
+  return res;
+};
 ```
 
 代码不难理解，就是在选择如何遍历的时候犹豫了很久，一开始打算直接遍历 set，但是 map 和 set 都是无法使用下标直接获取元素的，因此不太现实，那就选择用原数组遍历。
@@ -162,16 +163,16 @@ var longestConsecutive = function (nums) {
 
 ```javascript
 var moveZeroes = function (nums) {
-  let cur = 0
-  let front = 0
-  const len = nums.length
+  let cur = 0;
+  let front = 0;
+  const len = nums.length;
   for (; front < len; front++) {
     if (nums[front] !== 0) {
-      nums[cur++] = nums[front]
+      nums[cur++] = nums[front];
     }
   }
-  while (cur < len) nums[cur++] = 0
-}
+  while (cur < len) nums[cur++] = 0;
+};
 ```
 
 没啥难度，最简单的双指针，写的时候别忘记快慢指针都要挪动，慢指针表示元素即将放入的位置，快指针表示当前即将被判断是否符合条件的元素。
@@ -180,19 +181,19 @@ var moveZeroes = function (nums) {
 
 ```javascript
 var maxArea = function (height) {
-  const len = height.length
-  let l = 0
-  let r = len - 1
-  let capcity = 0
+  const len = height.length;
+  let l = 0;
+  let r = len - 1;
+  let capcity = 0;
 
   while (l < r) {
-    const cur = (r - l) * Math.min(height[l], height[r])
-    if (cur > capcity) capcity = cur
-    height[l] > height[r] ? r-- : l++
+    const cur = (r - l) * Math.min(height[l], height[r]);
+    if (cur > capcity) capcity = cur;
+    height[l] > height[r] ? r-- : l++;
   }
 
-  return capcity
-}
+  return capcity;
+};
 ```
 
 这道题还是双指针，只需要找出
@@ -205,27 +206,29 @@ var maxArea = function (height) {
 
 ```javascript
 var threeSum = function (nums) {
-  const len = nums.length
-  const res = []
-  nums.sort((x, y) => x - y)
+  const len = nums.length;
+  const res = [];
+  nums.sort((x, y) => x - y);
 
   for (let i = 0; i < len; i++) {
-    if (nums[i] === nums[i - 1]) continue
-    let l = i + 1
-    let r = len - 1
+    if (nums[i] === nums[i - 1]) continue;
+    let l = i + 1;
+    let r = len - 1;
     while (l < r) {
-      const sum = nums[i] + nums[l] + nums[r]
+      const sum = nums[i] + nums[l] + nums[r];
       if (sum < 0) l++;
       else if (sum > 0) r--;
       else {
-        res.push([nums[i], nums[l], nums[r]])
-        do l++; while (nums[l] === nums[l - 1])
-        do r--; while (nums[r] === nums[r + 1])
+        res.push([nums[i], nums[l], nums[r]]);
+        do l++;
+        while (nums[l] === nums[l - 1]);
+        do r--;
+        while (nums[r] === nums[r + 1]);
       }
     }
   }
-  return res
-}
+  return res;
+};
 ```
 
 这道题已经被做烂了，唯一要注意的就是判断最后相等后，要挪动 l 和 r 两根指针，以避免重复，同时使用 do while 语句可以减少代码量。注意不加花括号就要加引号。
@@ -234,16 +237,16 @@ var threeSum = function (nums) {
 
 ```javascript
 var trap = function (height) {
-  const len = height.length
-  const lmax = new Array(len).fill(0)
-  const rmax = new Array(len).fill(0)
+  const len = height.length;
+  const lmax = new Array(len).fill(0);
+  const rmax = new Array(len).fill(0);
   for (let i = 0, curMax = 0; i < len; i++) {
-    curMax < height[i] ? curMax = height[i] : lmax[i] = curMax - height[i]
+    curMax < height[i] ? (curMax = height[i]) : (lmax[i] = curMax - height[i]);
   }
   for (let i = len - 1, curMax = 0; i >= 0; i--) {
-    curMax < height[i] ? curMax = height[i] : rmax[i] = curMax - height[i]
+    curMax < height[i] ? (curMax = height[i]) : (rmax[i] = curMax - height[i]);
   }
-  return lmax.reduce((pre, cur, idx) => pre + Math.min(cur, rmax[idx]), 0)
+  return lmax.reduce((pre, cur, idx) => pre + Math.min(cur, rmax[idx]), 0);
 };
 ```
 
@@ -253,21 +256,21 @@ var trap = function (height) {
 
 ```javascript
 var lengthOfLongestSubstring = function (s) {
-  const len = s.length
-  const set = new Set()
-  let l = 0
-  let r = 0
-  let max = 0
+  const len = s.length;
+  const set = new Set();
+  let l = 0;
+  let r = 0;
+  let max = 0;
 
   while (r < len) {
     if (set.has(s[r])) {
-      while (s[l] !== s[r]) set.delete(s[l++])
-      l++
-    } 
-    set.add(s[r++])
-    max = Math.max(r - l, max)
+      while (s[l] !== s[r]) set.delete(s[l++]);
+      l++;
+    }
+    set.add(s[r++]);
+    max = Math.max(r - l, max);
   }
-  return max
+  return max;
 };
 ```
 
@@ -277,26 +280,30 @@ var lengthOfLongestSubstring = function (s) {
 
 ```javascript
 var findAnagrams = function (s, p) {
-  function a2i(c) { return c.charCodeAt(0) - 97 }
-  function equal(x, y) { return x.every((v, i) => v === y[i]) }
-  const sf = new Array(26).fill(0)
-  const pf = new Array(26).fill(0)
-  const slen = s.length
-  const plen = p.length
-  if(slen < plen) return []
+  function a2i(c) {
+    return c.charCodeAt(0) - 97;
+  }
+  function equal(x, y) {
+    return x.every((v, i) => v === y[i]);
+  }
+  const sf = new Array(26).fill(0);
+  const pf = new Array(26).fill(0);
+  const slen = s.length;
+  const plen = p.length;
+  if (slen < plen) return [];
   for (let i = 0; i < plen; i++) {
-    sf[a2i(s[i])]++
-    pf[a2i(p[i])]++
+    sf[a2i(s[i])]++;
+    pf[a2i(p[i])]++;
   }
-  const res = []
-  if (equal(sf, pf)) res.push(0)
+  const res = [];
+  if (equal(sf, pf)) res.push(0);
   for (let i = 0; i < slen - plen; i++) {
-    sf[a2i(s[i])]--
-    sf[a2i(s[i + plen])]++
-    if (equal(sf, pf)) res.push(i + 1)
+    sf[a2i(s[i])]--;
+    sf[a2i(s[i + plen])]++;
+    if (equal(sf, pf)) res.push(i + 1);
   }
-  return res
-}
+  return res;
+};
 ```
 
 这道题的思路很简单，就是匹配字符的频次，但是需要注意的点还是蛮多的
@@ -310,18 +317,18 @@ var findAnagrams = function (s, p) {
 
 ```javascript
 var minSubArrayLen = function (target, nums) {
-  let l = 0
-  let r = 0
-  let sum = 0
-  let res = Number.MAX_SAFE_INTEGER
+  let l = 0;
+  let r = 0;
+  let sum = 0;
+  let res = Number.MAX_SAFE_INTEGER;
   while (r <= nums.length) {
-    if (sum < target ) sum += nums[r++]
+    if (sum < target) sum += nums[r++];
     else {
-      res = Math.min(res, r - l)
-      sum -= nums[l++]
+      res = Math.min(res, r - l);
+      sum -= nums[l++];
     }
   }
-  return res === Number.MAX_SAFE_INTEGER ? 0 : res
+  return res === Number.MAX_SAFE_INTEGER ? 0 : res;
 };
 ```
 
@@ -331,14 +338,14 @@ var minSubArrayLen = function (target, nums) {
 
 ```javascript
 var maxSubArray = function (nums) {
-  const len = nums.length
-  const dp = new Array(len + 1)
-  dp[0] = Number.MIN_SAFE_INTEGER
+  const len = nums.length;
+  const dp = new Array(len + 1);
+  dp[0] = Number.MIN_SAFE_INTEGER;
 
   for (let i = 1; i <= len; i++) {
-    dp[i] = Math.max(dp[i - 1] + nums[i - 1], nums[i - 1])
+    dp[i] = Math.max(dp[i - 1] + nums[i - 1], nums[i - 1]);
   }
-  return Math.max(...dp)
+  return Math.max(...dp);
 };
 ```
 
@@ -352,15 +359,15 @@ var maxSubArray = function (nums) {
 var rotate = function (nums, k) {
   function reverse(i, j) {
     while (i < j) {
-      [nums[i], nums[j]] = [nums[j], nums[i]]
-      i++, j--
+      [nums[i], nums[j]] = [nums[j], nums[i]];
+      i++, j--;
     }
   }
-  const len = nums.length
-  k %= len
-  reverse(0, len - 1)
-  reverse(0, k - 1)
-  reverse(k, len - 1)
+  const len = nums.length;
+  k %= len;
+  reverse(0, len - 1);
+  reverse(0, k - 1);
+  reverse(k, len - 1);
 };
 ```
 
@@ -370,12 +377,16 @@ var rotate = function (nums, k) {
 
 ```javascript
 var productExceptSelf = function (nums) {
-  const len = nums.length
-  const lm = new Array(len).fill(1)
-  const rm = new Array(len).fill(1)
-  for (let i = 1; i < len; i++) { lm[i] = lm[i - 1] * nums[i - 1] }
-  for (let i = len - 2; i >= 0; i--) { rm[i] = rm[i + 1] * nums[i + 1] }
-  return lm.map((v, i) => v * rm[i])
+  const len = nums.length;
+  const lm = new Array(len).fill(1);
+  const rm = new Array(len).fill(1);
+  for (let i = 1; i < len; i++) {
+    lm[i] = lm[i - 1] * nums[i - 1];
+  }
+  for (let i = len - 2; i >= 0; i--) {
+    rm[i] = rm[i + 1] * nums[i + 1];
+  }
+  return lm.map((v, i) => v * rm[i]);
 };
 ```
 
@@ -410,21 +421,24 @@ function setZeroes(matrix) {
 
 ```javascript
 var spiralOrder = function (matrix) {
-  const row = matrix.length
-  const col = matrix[0].length
-  let l = 0, r = col - 1, t = 0, b = row - 1
-  const res = []
+  const row = matrix.length;
+  const col = matrix[0].length;
+  let l = 0,
+    r = col - 1,
+    t = 0,
+    b = row - 1;
+  const res = [];
   while (true) {
-    for (let i = l; i <= r; i++) res.push(matrix[t][i])
-    if (++t > b) break
-    for (let i = t; i <= b; i++) res.push(matrix[i][r])
-    if (--r < l) break
-    for (let i = r; i >= l; i--) res.push(matrix[b][i])
-    if (--b < t) break
-    for (let i = b; i >= t; i--) res.push(matrix[i][l])
-    if (++l > r) break
+    for (let i = l; i <= r; i++) res.push(matrix[t][i]);
+    if (++t > b) break;
+    for (let i = t; i <= b; i++) res.push(matrix[i][r]);
+    if (--r < l) break;
+    for (let i = r; i >= l; i--) res.push(matrix[b][i]);
+    if (--b < t) break;
+    for (let i = b; i >= t; i--) res.push(matrix[i][l]);
+    if (++l > r) break;
   }
-  return res
+  return res;
 };
 ```
 
@@ -434,12 +448,17 @@ var spiralOrder = function (matrix) {
 
 ```javascript
 var rotate = function (matrix) {
-  const n = matrix.length
-  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++)
-    [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
-  for (let j = 0; j < n / 2; j++) for (let i = 0; i < n; i++)
-    [matrix[i][j], matrix[i][n - j - 1]] = [matrix[i][n - j - 1], matrix[i][j]]
-}
+  const n = matrix.length;
+  for (let i = 0; i < n; i++)
+    for (let j = i + 1; j < n; j++)
+      [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+  for (let j = 0; j < n / 2; j++)
+    for (let i = 0; i < n; i++)
+      [matrix[i][j], matrix[i][n - j - 1]] = [
+        matrix[i][n - j - 1],
+        matrix[i][j],
+      ];
+};
 ```
 
 我很讨厌的一道题，应该就是一个普通的体力活题目
@@ -450,24 +469,26 @@ var rotate = function (matrix) {
 
 ```javascript
 var isValid = function (s) {
-  const list = Array.from(s)
-  const stk = []
-  function isLeft(c) { return c === '(' || c === '{' || c === '[' }
+  const list = Array.from(s);
+  const stk = [];
+  function isLeft(c) {
+    return c === "(" || c === "{" || c === "[";
+  }
   function match(lc, rc) {
-    if (lc === '(') return rc === ')'
-    if (lc === '{') return rc === '}'
-    if (lc === '[') return rc === ']'
-    return false
+    if (lc === "(") return rc === ")";
+    if (lc === "{") return rc === "}";
+    if (lc === "[") return rc === "]";
+    return false;
   }
   for (const c of list) {
-    if (isLeft(c)) stk.push(c)
+    if (isLeft(c)) stk.push(c);
     else {
-      if (!match(stk[stk.length - 1], c)) return false
-      stk.pop()
+      if (!match(stk[stk.length - 1], c)) return false;
+      stk.pop();
     }
   }
   return stk.length === 0;
-}
+};
 ```
 
 最简单的栈的解法，不过有一些小知识点。ASCII 码表中只有小括号是紧邻着的（40 41），中括号和大括号都是中间隔一个符号（91 93）（123 125）
@@ -476,14 +497,13 @@ var isValid = function (s) {
 
 ```javascript
 var climbStairs = function (n) {
-  const dp = new Array(n + 1).fill(0)
-  dp[0] = 1
+  const dp = new Array(n + 1).fill(0);
+  dp[0] = 1;
   for (let i = 1; i <= n; i++) {
-    dp[i] = (dp[i - 1] ?? 0) + (dp[i - 2] ?? 0)
+    dp[i] = (dp[i - 1] ?? 0) + (dp[i - 2] ?? 0);
   }
-  return dp[n]
-}
-
+  return dp[n];
+};
 ```
 
 找到递推式就可以解决，`dp[i] = dp[i-1] + dp[i-2]`，但这个递推式没有解决初始态的问题，一般我们可以手算初始态，然后避免像我这样写的麻烦。
@@ -492,16 +512,16 @@ var climbStairs = function (n) {
 
 ```javascript
 var generate = function (numRows) {
-  if (numRows === 1) return [[1]]
-  const pre = generate(numRows - 1)
-  const level = pre[numRows - 2]
-  const newLevel = new Array(numRows).fill(1)
+  if (numRows === 1) return [[1]];
+  const pre = generate(numRows - 1);
+  const level = pre[numRows - 2];
+  const newLevel = new Array(numRows).fill(1);
   for (let i = 1; i < numRows - 1; i++) {
-    newLevel[i] = level[i - 1] + level[i]
+    newLevel[i] = level[i - 1] + level[i];
   }
-  pre.push(newLevel)
-  return pre
-}
+  pre.push(newLevel);
+  return pre;
+};
 ```
 
 虽然说是动态规划，但……我感觉只是披了层皮而已，我这里考虑使用递归解决，但实际上也可以转化成遍历
@@ -528,17 +548,17 @@ function numSquares(n: number): number {
 
 ```javascript
 var lengthOfLIS = function (nums) {
-  const n = nums.length
-  const dp = new Array(n).fill(0)
+  const n = nums.length;
+  const dp = new Array(n).fill(0);
   for (let i = 1; i <= n; i++) {
-    let curMax = 0
+    let curMax = 0;
     for (let j = 1; j < i; j++) {
-      if (nums[j - 1] >= nums[i - 1]) continue
-      curMax = Math.max(curMax, dp[j])
+      if (nums[j - 1] >= nums[i - 1]) continue;
+      curMax = Math.max(curMax, dp[j]);
     }
-    dp[i] = curMax + 1
+    dp[i] = curMax + 1;
   }
-  return Math.max(...dp)
+  return Math.max(...dp);
 };
 ```
 

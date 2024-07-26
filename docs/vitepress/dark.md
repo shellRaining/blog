@@ -31,20 +31,19 @@ collection: vitepress
 
 ```typescript
 const isDark =
-  appearance === 'force-dark'
+  appearance === "force-dark"
     ? ref(true)
     : appearance
       ? useDark({
           storageKey: APPEARANCE_KEY,
           initialValue: () =>
-            typeof appearance === 'string' ? appearance : 'auto',
-          ...(typeof appearance === 'object' ? appearance : {})
+            typeof appearance === "string" ? appearance : "auto",
+          ...(typeof appearance === "object" ? appearance : {}),
         })
-      : ref(false)
+      : ref(false);
 return {
   isDark, // 还有其他很多属性没有列出来
-}
-
+};
 ```
 
 分为三种情况，
@@ -71,17 +70,17 @@ return {
 
 ```typescript
 head.push([
-  'script',
-  { id: 'check-dark-mode' },
-  fallbackPreference === 'force-dark'
+  "script",
+  { id: "check-dark-mode" },
+  fallbackPreference === "force-dark"
     ? `document.documentElement.classList.add('dark')`
     : `;(() => {
         const preference = localStorage.getItem('${APPEARANCE_KEY}') || '${fallbackPreference}'
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
         if (!preference || preference === 'auto' ? prefersDark : preference === 'dark')
           document.documentElement.classList.add('dark')
-      })()`
-])
+      })()`,
+]);
 ```
 
 这段代码是服务端的，它在构建的时候，通过查看 `appearance` 配置项决定是否注入代码或者注入什么样的代码。

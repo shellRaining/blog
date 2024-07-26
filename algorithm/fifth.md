@@ -138,26 +138,26 @@ var subarraySum = function (nums, k) {
 
 ```javascript
 var maxSlidingWindow = function (nums, k) {
-  const len = nums.length
+  const len = nums.length;
   function max(start, end) {
-    let res = Number.MIN_SAFE_INTEGER
+    let res = Number.MIN_SAFE_INTEGER;
     while (start < end) {
-      res = nums[start] > res ? nums[start] : res
-      start++
+      res = nums[start] > res ? nums[start] : res;
+      start++;
     }
-    return res
+    return res;
   }
-  const res = [max(0, k)]
+  const res = [max(0, k)];
 
   for (let i = 1; i <= len - k; i++) {
     if (res[i - 1] === nums[i - 1]) {
-      res.push(max(i, i + k))
+      res.push(max(i, i + k));
     } else {
-      res.push(Math.max(res[i - 1], nums[i + k - 1]))
+      res.push(Math.max(res[i - 1], nums[i + k - 1]));
     }
   }
 
-  return res
+  return res;
 };
 ```
 
@@ -167,16 +167,16 @@ var maxSlidingWindow = function (nums, k) {
 
 ```javascript
 var maxSlidingWindow = function (nums, k) {
-  const len = nums.length
-  const q = []
-  const res = []
+  const len = nums.length;
+  const q = [];
+  const res = [];
   for (let i = 0; i < len; i++) {
-    while (q.length && nums[q[q.length - 1]] < nums[i]) q.pop()
-    q.push(i)
-    if (i - q[0] + 1 > k) q.shift()
-    if (i >= k - 1) res.push(nums[q[0]])
+    while (q.length && nums[q[q.length - 1]] < nums[i]) q.pop();
+    q.push(i);
+    if (i - q[0] + 1 > k) q.shift();
+    if (i >= k - 1) res.push(nums[q[0]]);
   }
-  return res
+  return res;
 };
 ```
 
@@ -192,8 +192,8 @@ var minWindow = function (s, t) {
   const tf = new Array(128).fill(0)
   for (const c of t) tf[c.charCodeAt(0)]++
   const len = s.length
-  function cover() { return sf.every((v, i) => v >= tf[i]) 
-  
+  function cover() { return sf.every((v, i) => v >= tf[i])
+
   let l = 0, r = 0
   let minLen = Number.MAX_SAFE_INTEGER
   let resIdx = 0
@@ -217,7 +217,7 @@ var minWindow = function (s, t) {
 这道题还是子串类型，也还是过不去，一开始隐约有滑动窗口的感觉，但实现到代码上就稀烂了，写了两层 while 循环。后面看了解答确信是双指针（滑动窗口），就按照套路去写，也确实没有问题。需要注意点有
 
 1. 滑动窗口我们每次只需要处理一格就可以
-2. 区间选择上统一遵循左闭右开，但是这样就会导致 `r == len` 的时候，我们仍然保持 cover  的状态，但结果可能不是最优解，还需要继续把 l 指针向右移动，因此循环的条件就变成了 `while(r <= len)`，以保证可以继续循环下去。但这还带来了新的问题，如果此时不匹配，那么就会执行 else 语句中的自增操作，会触发 undefined 报错，因此用可选链操作符来避免此行为。
+2. 区间选择上统一遵循左闭右开，但是这样就会导致 `r == len` 的时候，我们仍然保持 cover 的状态，但结果可能不是最优解，还需要继续把 l 指针向右移动，因此循环的条件就变成了 `while(r <= len)`，以保证可以继续循环下去。但这还带来了新的问题，如果此时不匹配，那么就会执行 else 语句中的自增操作，会触发 undefined 报错，因此用可选链操作符来避免此行为。
 3. 我们最后要返回一个最小长度，因此初始值选择最大安全整数，同时还有没有匹配子串的情况，最后一行返回代码就是用来解决这个问题的。
 
 这道题实质上是 [209. 长度最小的子数组](./once.md#_209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84) 的翻版，可以先看他熟悉一下。
@@ -228,21 +228,21 @@ var minWindow = function (s, t) {
 
 ```javascript
 var largestRectangleArea = function (heights) {
-  const n = heights.length
-  let res = 0
-  let curArea = 0
+  const n = heights.length;
+  let res = 0;
+  let curArea = 0;
   for (let i = 0; i < n; i++) {
-    const minH = []
-    minH[i] = heights[i]
+    const minH = [];
+    minH[i] = heights[i];
     for (let j = i + 1; j < n; j++) {
-      minH[j] = Math.min(minH[j - 1], heights[j])
+      minH[j] = Math.min(minH[j - 1], heights[j]);
     }
     for (let j = i; j < n; j++) {
-      curArea = (j - i + 1) * minH[j]
-      res = Math.max(res, curArea)
+      curArea = (j - i + 1) * minH[j];
+      res = Math.max(res, curArea);
     }
   }
-  return res
+  return res;
 };
 ```
 
@@ -253,28 +253,28 @@ var largestRectangleArea = function (heights) {
 ```javascript
 var largestRectangleArea = function (heights) {
   const n = heights.length;
-  const stk = []
-  const lIdx = new Array(n).fill(-1)
-  const rIdx = new Array(n).fill(n)
-  let res = 0
+  const stk = [];
+  const lIdx = new Array(n).fill(-1);
+  const rIdx = new Array(n).fill(n);
+  let res = 0;
   for (let i = 0; i < n; i++) {
-    const h = heights[i]
-    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop()
-    if (stk.length) lIdx[i] = stk[stk.length - 1]
-    stk.push(i)
+    const h = heights[i];
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop();
+    if (stk.length) lIdx[i] = stk[stk.length - 1];
+    stk.push(i);
   }
-  stk.length = 0
+  stk.length = 0;
   for (let i = n - 1; i >= 0; i--) {
-    const h = heights[i]
-    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop()
-    if (stk.length) rIdx[i] = stk[stk.length - 1]
-    stk.push(i)
+    const h = heights[i];
+    while (stk.length && h <= heights[stk[stk.length - 1]]) stk.pop();
+    if (stk.length) rIdx[i] = stk[stk.length - 1];
+    stk.push(i);
   }
   for (let i = 0; i < n; i++) {
-    const h = heights[i]
-    res = Math.max(res, h * (rIdx[i] - lIdx[i] - 1))
+    const h = heights[i];
+    res = Math.max(res, h * (rIdx[i] - lIdx[i] - 1));
   }
-  return res
+  return res;
 };
 ```
 
@@ -289,16 +289,24 @@ var largestRectangleArea = function (heights) {
 
 ```javascript
 var maxProduct = function (nums) {
-  const n = nums.length
-  const maxdp = new Array(n).fill(1)
-  const mindp = new Array(n).fill(1)
+  const n = nums.length;
+  const maxdp = new Array(n).fill(1);
+  const mindp = new Array(n).fill(1);
   for (let i = 1; i <= n; i++) {
-    maxdp[i] = Math.max(maxdp[i - 1] * nums[i - 1], mindp[i - 1] * nums[i - 1], nums[i - 1])
-    mindp[i] = Math.min(maxdp[i - 1] * nums[i - 1], mindp[i - 1] * nums[i - 1], nums[i - 1])
+    maxdp[i] = Math.max(
+      maxdp[i - 1] * nums[i - 1],
+      mindp[i - 1] * nums[i - 1],
+      nums[i - 1],
+    );
+    mindp[i] = Math.min(
+      maxdp[i - 1] * nums[i - 1],
+      mindp[i - 1] * nums[i - 1],
+      nums[i - 1],
+    );
   }
-  maxdp.shift()
-  return Math.max(...maxdp)
-}
+  maxdp.shift();
+  return Math.max(...maxdp);
+};
 ```
 
 我倒不是很愿意把这道题放在这类，但……确实没看答案就真的不会做
@@ -311,21 +319,21 @@ var maxProduct = function (nums) {
 
 ```javascript
 var canPartition = function (nums) {
-  const sum = nums.reduce((pre, cur) => pre + cur, 0)
-  if (sum % 2) return false
-  const target = sum / 2
-  const n = nums.length
-  const cache = Array.from({ length: n }, () => new Array(target + 1).fill(-1))
+  const sum = nums.reduce((pre, cur) => pre + cur, 0);
+  if (sum % 2) return false;
+  const target = sum / 2;
+  const n = nums.length;
+  const cache = Array.from({ length: n }, () => new Array(target + 1).fill(-1));
 
   function dfs(i, c) {
-    if (i < 0) return c === 0
-    if (cache[i][c] !== -1) return cache[i][c]
-    if (c < nums[i]) return dfs(i - 1, c)
-    const res = dfs(i - 1, c) || dfs(i - 1, c - nums[i])
-    cache[i][c] = res
-    return res
+    if (i < 0) return c === 0;
+    if (cache[i][c] !== -1) return cache[i][c];
+    if (c < nums[i]) return dfs(i - 1, c);
+    const res = dfs(i - 1, c) || dfs(i - 1, c - nums[i]);
+    cache[i][c] = res;
+    return res;
   }
-  return dfs(n - 1, target)
+  return dfs(n - 1, target);
 };
 ```
 

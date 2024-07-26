@@ -12,7 +12,7 @@ export default createContentLoader("docs/**/*.md", {
     return rawData.sort((a, b) => {
       const timeA = dayjs(a.frontmatter.date);
       const timeB = dayjs(b.frontmatter.date);
-      return timeA.isBefore(timeB) ? 1 : -1
+      return timeA.isBefore(timeB) ? 1 : -1;
     });
   },
 });
