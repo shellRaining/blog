@@ -5,6 +5,7 @@ import { ref, watch } from "vue";
 const main = ref<HTMLDivElement | null>(null);
 const { page } = useData();
 const open = ref(false);
+
 function closeOnClickOutside(e: Event) {
   if (!main.value?.contains(e.target as Node)) {
     open.value = false;

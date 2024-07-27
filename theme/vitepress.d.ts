@@ -1,4 +1,3 @@
-// vitepress.d.ts
 import 'vitepress';
 
 declare module 'vitepress' {
