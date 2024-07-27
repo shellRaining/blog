@@ -36,8 +36,6 @@ export default defineConfig({
         indexName: "shellraining",
       },
     },
-    nav: [
-    ],
     outline: "deep",
   },
   appearance: false,
@@ -47,23 +45,8 @@ export default defineConfig({
       "link",
       {
         rel: "stylesheet",
-        href: "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css",
+        href: "https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/style.min.css",
       },
-    ],
-    [
-      "script",
-      {
-        async: "",
-        src: "https://www.googletagmanager.com/gtag/js?id=G-MRR1SRZVFY",
-      },
-    ],
-    [
-      "script",
-      { id: "google-gtag" },
-      `window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-MRR1SRZVFY');`,
     ],
     [
       "script",
