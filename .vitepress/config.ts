@@ -11,6 +11,7 @@ export default defineConfig({
       target: "es2020",
     },
   },
+  srcExclude: ["algorithm/**/*.md", "gallery/**/*.md"],
   themeConfig: {
     logo: { src: "/favicon.ico", width: 24, height: 24 },
     search: {
@@ -22,6 +23,7 @@ export default defineConfig({
       },
     },
     outline: "deep",
+    nav: [{ text: "gallery", link: "/gallery" }],
   },
   appearance: false,
   head: [

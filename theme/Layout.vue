@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from "vitepress/theme-without-fonts";
 import Title from "./Doc/Title.vue";
-import Gallery from "./Viewer/Gallery.vue";
+import Viewer from "./Viewer/Viewer.vue";
 import Home from "./Home/Home.vue";
 import AppearanceSwitcher from "./Home/AppearanceSwitcher.vue";
 
@@ -13,7 +13,7 @@ const { Layout } = DefaultTheme;
   <Layout>
     <template #doc-before>
       <Title />
-      <Gallery />
+      <Viewer />
     </template>
 
     <template #home-features-after>
