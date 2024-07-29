@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const main = ref<HTMLDivElement | null>(null);
 const { page } = useData();
 const open = ref(false);
+const fmtedDate = computed(() => {
+  return page.value.versions?.map((item) => {
+    return {
+      timestamp: item.timestamp.slice(0, -6),
+      hash: item.hash.slice(0, 6),
+    };
+  });
+});
 
 function closeOnClickOutside(e: Event) {
   if (!main.value?.contains(e.target as Node)) {
@@ -36,13 +44,13 @@ function toggle() {
     </button>
     <Transition name="flyout">
       <ul v-if="open" class="items">
-        <li v-for="item in page.versions">
+        <li v-for="item in fmtedDate">
           <a
             :href="'https://github.com/shellRaining/blog/commit/' + item.hash"
             class="item"
           >
-            <span> {{ item.timestamp.slice(0, -6) }}</span>
-            <span> {{ item.hash.slice(0, 6) }}</span>
+            <time :datetime="item.timestamp"> {{ item.timestamp }}</time>
+            <span>{{ item.hash }}</span>
           </a>
         </li>
       </ul>
@@ -109,6 +117,7 @@ function toggle() {
       padding: 0.2rem;
       transition: all 0.3s ease;
       color: #57534e; /* stone-600 */
+      font-family: "LXGW WenKai Mono";
 
       &:hover {
         color: #0c0a09; /* stone-950 */

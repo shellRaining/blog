@@ -22,7 +22,7 @@ onContentUpdated(() => {
   <div>
     <h1 class="title">{{ pageData.title }}</h1>
     <div class="meta-info">
-      <div class="date">🕒 Published at: {{ publishDate }}</div>
+      <date class="date">🕒 Published at: {{ publishDate }}</date>
       <VersionDropdown class="versions" />
     </div>
   </div>
