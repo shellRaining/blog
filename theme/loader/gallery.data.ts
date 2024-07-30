@@ -62,7 +62,7 @@ function parseMd(path: string): GalleryItem[] {
 }
 
 export default defineLoader({
-  watch: ["gallery/**/*.md"],
+  watch: ["gallery/*.md"],
   async load(watchedFiles) {
     watchedFiles = watchedFiles.map((relativePath) =>
       join(config.root, relativePath),
