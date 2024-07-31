@@ -4,6 +4,7 @@ import type { GalleryItem } from "../loader/gallery.data";
 import LazyImage from "./LazyImage.vue";
 
 const props = defineProps<{
+  shouldLoad: boolean;
   albumName: string;
   collection: GalleryItem[];
 }>();
@@ -43,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="items">
+  <div class="items" v-if="props.shouldLoad">
     <LazyImage
       :id="id"
       :shouldLoad="loadingStatus[id]"
@@ -54,6 +55,7 @@ onMounted(() => {
       @loaded="onImageLoaded(id)"
     />
   </div>
+  <div v-else class="items"></div>
 </template>
 
 <style scoped>
@@ -66,6 +68,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.4rem;
   perspective: calc(var(--index) * 70);
+  min-height: calc(var(--index) * 12);
 
   .item {
     width: calc(var(--index) * 3);

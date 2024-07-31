@@ -54,6 +54,6 @@ watch(
 </script>
 
 <template>
-  <img v-if="imageUrl" :src="imageUrl" />
+  <img v-if="imageUrl" :src="imageUrl" :alt="`pixiv ${props.id}`" loading="lazy" />
   <SkeletonLoader v-else></SkeletonLoader>
 </template>

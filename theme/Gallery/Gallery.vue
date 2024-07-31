@@ -1,13 +1,45 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
 import { data } from "../loader/gallery.data.ts";
 import Album from "./Album.vue";
+
+const visibleAlbums = ref<Set<string>>(new Set());
+
+const observerOptions = {
+  threshold: 0,
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const albumName = entry.target.getAttribute("data-album");
+      if (albumName) {
+        visibleAlbums.value.add(albumName);
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+onMounted(() => {
+  const sectionElements = document.querySelectorAll("section");
+  sectionElements.forEach((el) => observer.observe(el));
+});
 </script>
 
 <template>
   <main>
-    <section v-for="(collection, albumName) in data">
+    <section
+      v-for="(collection, albumName) in data"
+      :key="albumName"
+      :data-album="albumName"
+    >
       <h2>{{ albumName }}</h2>
-      <Album :album-name="albumName" :collection="collection" />
+      <Album
+        :should-load="visibleAlbums.has(albumName)"
+        :album-name="albumName"
+        :collection="collection"
+      />
     </section>
   </main>
 </template>
