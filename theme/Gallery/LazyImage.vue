@@ -54,11 +54,6 @@ watch(
 </script>
 
 <template>
-  <div
-    v-if="imageUrl"
-    :style="{
-      backgroundImage: `url(${imageUrl})`,
-    }"
-  ></div>
+  <img v-if="imageUrl" :src="imageUrl" />
   <SkeletonLoader v-else></SkeletonLoader>
 </template>

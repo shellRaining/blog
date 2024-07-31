@@ -6,7 +6,7 @@ import Album from "./Album.vue";
 <template>
   <main>
     <section v-for="(collection, albumName) in data">
-      <h2>{{albumName}}</h2>
+      <h2>{{ albumName }}</h2>
       <Album :album-name="albumName" :collection="collection" />
     </section>
   </main>
