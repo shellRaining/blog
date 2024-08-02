@@ -127,7 +127,7 @@ openRequest.onupgradeneeded = function() {
   // 在 versionchange 事务中，我们必须在这里创建索引
   let books = db.createObjectStore('books', {keyPath: 'id'});
   let index = books.createIndex('price_idx', 'price');
-  
+
   let transaction = db.transaction("books"); // 只读
   let books = transaction.objectStore("books");
   let priceIndex = books.index("price_idx");

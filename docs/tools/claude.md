@@ -12,6 +12,7 @@ date: 2024-07-28
    需求：一个谷歌账号，一个干净的代理
 
    前往 [https://cloud.google.com/vertex-ai](https://cloud.google.com/vertex-ai) 注册一个 GCP 账号，注册成功后会赠送 150 刀，绑卡后增加到 300 刀，三个月有效期
+
 2. 启用 Vertex AI API
 
    前往 [https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com](https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com)，点击蓝色的按钮启用 Vertex AI API

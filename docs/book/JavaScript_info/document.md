@@ -31,7 +31,7 @@ JavaScript 的核心为 ECMAScript，它只包含语言自身的规范，并没�
 我们网页上的每个元素（比如一个图片，一段文字）都是一个 DOM 节点，这些节点被有规律的组织成一棵树，就称作 DOM 树。通常 DOM 树以 `<html>` 元素为根，下面包含 `<head>` 和 `<body>` 两个子元素，比如
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>About elk</title>

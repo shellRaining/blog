@@ -4,7 +4,6 @@ tag:
   - vitepress
 date: 2024-07-27
 collection: vitepress
-
 ---
 
 ## 前言
@@ -13,7 +12,7 @@ collection: vitepress
 
 首先确定一下需求，我们需要再每篇博客的标题处显示一个 versions 按钮，点击后出现一个弹窗，弹窗内的文本呈列表样式，每行包含提交时间和提交的哈希值，点击该行可以跳转到 GitHub 相应的链接。
 
- 然后想一下大致的实现过程，因为每篇文章都有自己的 versions，所以不能使用构建时数据加载这个功能（它一般用于生成合集或者组件的数据），我们可以考虑使用 `transformPageData` 这个钩子函数，在生成 pageData 时增加自定义字段 versions。然后我们在 `Title.vue` 组件中添加一个 `VersionDropdown.vue` 组件，用这个组件来构建相关功能。
+然后想一下大致的实现过程，因为每篇文章都有自己的 versions，所以不能使用构建时数据加载这个功能（它一般用于生成合集或者组件的数据），我们可以考虑使用 `transformPageData` 这个钩子函数，在生成 pageData 时增加自定义字段 versions。然后我们在 `Title.vue` 组件中添加一个 `VersionDropdown.vue` 组件，用这个组件来构建相关功能。
 
 ## 实现
 
@@ -25,7 +24,7 @@ collection: vitepress
 async transformPageData(pageData, ctx) {
   await injectVersions(pageData, ctx);
 },
-  
+
 export async function injectVersions(
   pageData: PageData,
   ctx: TransformPageContext,
@@ -91,7 +90,7 @@ function getGitPageVersions(file: string): Promise<string> {
 >
 > ```TypeScript
 > import 'vitepress';
-> 
+>
 > declare module 'vitepress' {
 >   interface PageData {
 >     versions?: {
