@@ -88,3 +88,7 @@ head.push([
 ## 一个小应用
 
 我个人博客不喜欢他的切换主题样式，于是通过设置 `appearance` 为 false 禁用了相关组件，并且写了一个 vue 组件来接替他的功能，具体的实现可以看[我的博客仓库](https://github.com/shellRaining/blog/blob/main/theme/Home/AppearanceSwitcher.vue)。由于设置为 false 后，没有自动注入防闪烁内联脚本，我也遇到了闪烁的问题，通过在 `config.ts` 中指定 `head` 数组，手动加入该脚本即可。
+
+> [!warning]
+>
+> 上面这个内联脚本千万不要写成 module 的形式，因为 module 执行时机是在文档加载后，`DOMContentLoaded` 之前加载。会导致闪烁问题重新发生

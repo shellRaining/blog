@@ -37,12 +37,13 @@ export default defineConfig({
     ],
     [
       "script",
-      { id: "check-dark-mode", type: "module" },
-      `const preference = localStorage.getItem('${APPEARANCE_KEY}');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (!preference || preference === 'auto' ? prefersDark : preference === 'dark') {
-  document.documentElement.classList.add('dark');
-}`,
+      { id: "check-dark-mode" },
+      `;(() => {
+            const preference = localStorage.getItem('${APPEARANCE_KEY}')
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+            if (!preference || preference === 'auto' ? prefersDark : preference === 'dark')
+              document.documentElement.classList.add('dark')
+          })()`,
     ],
   ],
   sitemap: {
