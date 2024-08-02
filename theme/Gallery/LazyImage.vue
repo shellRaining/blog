@@ -16,11 +16,15 @@ const imageUrl = ref<string | null>(null);
 async function loadImage() {
   if (!props.shouldLoad) return;
 
-  const cachedImage = await get(props.id);
-  if (cachedImage) {
-    imageUrl.value = URL.createObjectURL(cachedImage);
-    emit("loaded");
-    return;
+  try {
+    const cachedImage = await get(props.id);
+    if (cachedImage) {
+      imageUrl.value = URL.createObjectURL(cachedImage);
+      emit("loaded");
+      return;
+    }
+  } catch (e) {
+    console.log("Error loading cache:", e);
   }
 
   try {
@@ -54,6 +58,11 @@ watch(
 </script>
 
 <template>
-  <img v-if="imageUrl" :src="imageUrl" :alt="`pixiv ${props.id}`" loading="lazy" />
+  <img
+    v-if="imageUrl"
+    :src="imageUrl"
+    :alt="`pixiv ${props.id}`"
+    loading="lazy"
+  />
   <SkeletonLoader v-else></SkeletonLoader>
 </template>

@@ -4,31 +4,32 @@ import { data } from "../loader/gallery.data.ts";
 import Album from "./Album.vue";
 
 const visibleAlbums = ref<Set<string>>(new Set());
-
-const observerOptions = {
-  threshold: 0,
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const albumName = entry.target.getAttribute("data-album");
-      if (albumName) {
-        visibleAlbums.value.add(albumName);
-      }
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
+const mainEl = ref<HTMLElement | null>();
 
 onMounted(() => {
-  const sectionElements = document.querySelectorAll("section");
+  if (!mainEl.value) return;
+
+  const sectionElements = mainEl.value.querySelectorAll("section");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const albumName = entry.target.getAttribute("data-album");
+          if (albumName) {
+            visibleAlbums.value.add(albumName);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0 },
+  );
   sectionElements.forEach((el) => observer.observe(el));
 });
 </script>
 
 <template>
-  <main>
+  <main ref="mainEl">
     <section
       v-for="(collection, albumName) in data"
       :key="albumName"

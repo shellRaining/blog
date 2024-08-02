@@ -1,6 +1,6 @@
-import 'vitepress';
+import "vitepress";
 
-declare module 'vitepress' {
+declare module "vitepress" {
   interface PageData {
     versions?: {
       hash: string;

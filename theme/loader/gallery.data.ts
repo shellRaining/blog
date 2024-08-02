@@ -15,13 +15,14 @@ export interface GalleryItem {
 declare const data: Record<string, GalleryItem[]>;
 export { data };
 
-function walk(node: SyntaxNode, type: string, res: SyntaxNode[]) {
+function walk(node: SyntaxNode, type: string, res: SyntaxNode[] = []) {
   if (node.type === type) {
     res.push(node);
   }
   for (const child of node.namedChildren) {
     walk(child, type, res);
   }
+  return res;
 }
 
 function parseMd(path: string): GalleryItem[] {
@@ -33,8 +34,7 @@ function parseMd(path: string): GalleryItem[] {
   const markdownTree = markdownParser.parse(content);
   const inlineTree = inlineParser.parse(content);
 
-  const sectionNodes: SyntaxNode[] = [];
-  walk(markdownTree.rootNode, "section", sectionNodes);
+  const sectionNodes = walk(markdownTree.rootNode, "section");
 
   const pairs = sectionNodes
     .map((node) => {
@@ -67,14 +67,11 @@ export default defineLoader({
     watchedFiles = watchedFiles.map((relativePath) =>
       join(config.root, relativePath),
     );
-    const res = watchedFiles.reduce(
-      (pre, cur) => {
-        const key: string = basename(cur, '.md');
-        pre[key] = parseMd(cur);
-        return pre;
-      },
-      Object.create(null)
-    );
+    const res = watchedFiles.reduce((pre, cur) => {
+      const key: string = basename(cur, ".md");
+      pre[key] = parseMd(cur);
+      return pre;
+    }, Object.create(null));
 
     return res;
   },

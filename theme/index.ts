@@ -8,7 +8,7 @@ import "./custom.css";
 export default {
   extends: DefaultTheme,
   Layout,
-  enhanceApp({app}) {
-    app.component("Gallery", Gallery)
+  enhanceApp({ app }) {
+    app.component("Gallery", Gallery);
   },
 } satisfies Theme;
