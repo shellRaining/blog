@@ -82,10 +82,14 @@ onMounted(() => {
       transform 1.25s var(--transition),
       filter 3s var(--transition),
       width 1.25s var(--transition);
-    filter: grayscale(1) brightness(0.5);
+    filter: grayscale(0.5) brightness(0.8);
     will-change: transform, rotateY, width, filter;
     border: 10px solid transparent;
     margin: -10px;
+
+    .dark & {
+      filter: grayscale(1) brightness(0.5);
+    }
 
     &:hover {
       filter: inherit;

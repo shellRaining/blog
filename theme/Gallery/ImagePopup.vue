@@ -135,7 +135,7 @@ main {
       display: block;
       width: 100%;
       padding: 0.5rem;
-      background: var(--vp-c-brand-1);
+      background: var(--vp-c-brand-3);
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -146,7 +146,7 @@ main {
       }
 
       &:active {
-        background: var(--vp-c-brand-3);
+        background: var(--vp-c-brand-1);
       }
     }
   }
