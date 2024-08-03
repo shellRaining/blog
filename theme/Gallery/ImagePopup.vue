@@ -31,26 +31,42 @@ watch(
 </script>
 
 <template>
-  <section v-if="open" class="popup-overlay" @click="$emit('close')">
-    <article class="popup-content" @click.stop>
-      <header>
-        <h2>{{ image.title }}</h2>
-      </header>
-      <main>
-        <div class="left-side">
-          <img :src="image.src" :alt="image.alt" />
-        </div>
-        <div class="vertical-line"></div>
-        <div class="right-side">
-          <textarea v-model="comment" placeholder="若你也有所感悟"></textarea>
-          <button @click="saveComment">Save</button>
-        </div>
-      </main>
-    </article>
-  </section>
+  <Transition name="flyout">
+    <section v-if="open" class="popup-overlay" @click="$emit('close')">
+      <article class="popup-content" @click.stop>
+        <header>
+          <h2>{{ image.title }}</h2>
+        </header>
+        <main>
+          <div class="left-side">
+            <img :src="image.src" :alt="image.alt" />
+          </div>
+          <div class="vertical-line"></div>
+          <div class="right-side">
+            <textarea v-model="comment" placeholder="若你也有所感悟"></textarea>
+            <button @click="saveComment">Save</button>
+          </div>
+        </main>
+      </article>
+    </section>
+  </Transition>
 </template>
 
 <style scoped>
+.flyout-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.flyout-leave-active {
+  transition: all 0.15s ease-in;
+}
+
+.flyout-enter-from,
+.flyout-leave-to {
+  opacity: 0;
+  transform: translateY(-16px);
+}
+
 .popup-overlay {
   position: fixed;
   top: 0;

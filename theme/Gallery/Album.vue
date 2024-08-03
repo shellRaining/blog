@@ -134,7 +134,7 @@ onMounted(() => {
 
     &:focus {
       filter: inherit;
-      width: 20vw;
+      width: 10vw;
       z-index: 100;
       transform: translateZ(calc(var(--index) * 10));
       margin: 0 0.45vw;

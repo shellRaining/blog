@@ -34,7 +34,10 @@ onMounted(() => {
   let pre: HTMLImageElement | null = null;
   mainEl.value.addEventListener("click", (e) => {
     const target = e.target as HTMLImageElement;
-    if (target.tagName !== "IMG" || !target.alt.startsWith("pixiv")) return;
+    if (target.tagName !== "IMG" || !target.alt.startsWith("pixiv")) {
+      pre = null;
+      return;
+    }
     if (pre === target) {
       selectedImage.value = {
         src: target.src,
@@ -61,7 +64,7 @@ const closePopup = () => {
       <div class="desc-box">
         <p>
           这是我从 pixiv
-          收集到的画片，我从其中挑选出了我认为最优雅的一些放在这里，他们就像是一个笔记本的一页，每张都承载着我一段思绪和旧念。
+          收集到的画片，我从其中挑选出了我认为最优雅的一些放在这里，他们就像是一个笔记本的一页，每张都承载着我一段思绪和旧念。若你感兴趣，可以依次点开图片欣赏，再次点击可以打开更大的窗口。若心情不佳，你也可以在旁边的文本框记录自己的心绪……
         </p>
         <p>
           我把他们按照时间排列，用一种我感觉还算比较优雅的方式组织起来，陈列在这里。但还存在一些问题，如果一个月的画片过多或者过少，都会造成布局的不平衡，如果你有什么好主意，可以在
