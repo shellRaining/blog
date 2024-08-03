@@ -2,13 +2,17 @@
 import { ref, onMounted } from "vue";
 import { data } from "../loader/gallery.data.ts";
 import Album from "./Album.vue";
+import ImagePopup from "./ImagePopup.vue";
 
 const visibleAlbums = ref<Set<string>>(new Set());
 const mainEl = ref<HTMLElement | null>();
+const isPopupOpen = ref(false);
+const selectedImage = ref({ src: "", alt: "", title: "" });
 
 onMounted(() => {
   if (!mainEl.value) return;
 
+  // intersection observer lazy load
   const sectionElements = mainEl.value.querySelectorAll("section");
   const observer = new IntersectionObserver(
     (entries) => {
@@ -25,7 +29,29 @@ onMounted(() => {
     { threshold: 0 },
   );
   sectionElements.forEach((el) => observer.observe(el));
+
+  // viewerjs
+  let pre: HTMLImageElement | null = null;
+  mainEl.value.addEventListener("click", (e) => {
+    const target = e.target as HTMLImageElement;
+    if (target.tagName !== "IMG" || !target.alt.startsWith("pixiv")) return;
+    if (pre === target) {
+      selectedImage.value = {
+        src: target.src,
+        alt: target.alt,
+        title: target.title,
+      };
+      isPopupOpen.value = true;
+      pre = null;
+    } else {
+      pre = target as HTMLImageElement;
+    }
+  });
 });
+
+const closePopup = () => {
+  isPopupOpen.value = false;
+};
 </script>
 
 <template>
@@ -56,6 +82,7 @@ onMounted(() => {
       />
     </section>
   </main>
+  <ImagePopup :image="selectedImage" :open="isPopupOpen" @close="closePopup" />
 </template>
 
 <style scoped>

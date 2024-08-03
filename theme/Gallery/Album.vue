@@ -9,24 +9,26 @@ const props = defineProps<{
   collection: GalleryItem[];
 }>();
 
-const IDs = props.collection.map((item) => {
+const collection = props.collection.map((item) => {
   const id = item.link.split("/").pop() as string;
-  return id;
+  return { id, title: item.head };
 });
-const maxConcurrents = 3;
 
-const loadingQueue = ref<string[]>([...IDs]);
+// concurrent control and lazy load
+const maxConcurrents = 5;
+const loadingQueue = ref([...collection]);
 const activeRequests = ref(0);
-const loadingStatus = ref<{ [id: string]: boolean }>(
-  IDs.reduce((acc, id) => {
-    acc[id] = false;
-    return acc;
+const loadingStatus = ref(
+  collection.reduce((pre, cur) => {
+    const id = cur.id;
+    pre[id] = false;
+    return pre;
   }, Object.create(null)),
 );
 
 function startNextLoad() {
   if (activeRequests.value < maxConcurrents && loadingQueue.value.length > 0) {
-    const id = loadingQueue.value.shift()!;
+    const id = loadingQueue.value.shift()!.id;
     activeRequests.value++;
     loadingStatus.value[id] = true;
   }
@@ -46,13 +48,14 @@ onMounted(() => {
 <template>
   <div class="items" v-if="props.shouldLoad">
     <LazyImage
-      :id="id"
-      :shouldLoad="loadingStatus[id]"
-      v-for="id in IDs"
-      :key="id"
+      v-for="item in collection"
+      :key="item.id"
+      :id="item.id"
+      :title="item.title"
+      :shouldLoad="loadingStatus[item.id]"
       class="item"
       tabindex="0"
-      @loaded="onImageLoaded(id)"
+      @loaded="onImageLoaded(item.id)"
     />
   </div>
   <div v-else class="items"></div>
@@ -129,7 +132,6 @@ onMounted(() => {
       transform: translateZ(calc(var(--index) * 0.6)) rotateY(-15deg);
     }
 
-    &:active,
     &:focus {
       filter: inherit;
       width: 20vw;
@@ -186,7 +188,6 @@ onMounted(() => {
         transform: translateZ(calc(var(--index) * 0.6)) rotateX(15deg);
       }
 
-      &:active,
       &:focus {
         width: 80%;
         height: 40vh;

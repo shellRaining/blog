@@ -5,6 +5,7 @@ import SkeletonLoader from "./SkeletonLoader.vue";
 
 const props = defineProps<{
   id: string;
+  title: string;
   shouldLoad: boolean;
 }>();
 
@@ -62,6 +63,7 @@ watch(
     v-if="imageUrl"
     :src="imageUrl"
     :alt="`pixiv ${props.id}`"
+    :title="props.title"
     loading="lazy"
   />
   <SkeletonLoader v-else></SkeletonLoader>
