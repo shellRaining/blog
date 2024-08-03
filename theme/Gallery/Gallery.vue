@@ -90,31 +90,39 @@ main {
   margin: 20px auto;
   max-width: 48rem;
 
-  h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
+  article {
+    margin: 1rem;
 
-  .desc-box {
-    text-indent: 2em;
-    background-color: var(--vp-c-bg-soft);
-    padding: 1rem;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: 0 0 10px var(--vp-c-border);
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
     }
 
-    a {
-      color: var(--vp-c-brand-1);
-      text-decoration: underline;
-      transition:
-        color 0.25s,
-        opacity 0.25s;
+    .desc-box {
+      text-indent: 2em;
+      background-color: var(--vp-c-bg-soft);
+      padding: 1rem;
+      transition: box-shadow 0.3s;
+
+      & > * {
+        margin: 1rem 0;
+      }
+
       &:hover {
-        color: var(--vp-c-brand-2);
+        box-shadow: 0 0 10px var(--vp-c-border);
+      }
+
+      a {
+        color: var(--vp-c-brand-1);
+        text-decoration: underline;
+        transition:
+          color 0.25s,
+          opacity 0.25s;
+        &:hover {
+          color: var(--vp-c-brand-2);
+        }
       }
     }
   }
@@ -127,7 +135,7 @@ main {
 
   section {
     padding: 2rem;
-    margin: 2rem 0;
+    margin: 1rem;
     background-color: var(--vp-c-bg-soft);
     transition: box-shadow 0.3s;
 

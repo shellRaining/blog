@@ -1,38 +1,37 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
   open: boolean;
   image: { src: string; alt: string; title: string };
 }>();
 
-const emit = defineEmits(["close", "save"]);
+const emit = defineEmits(["close"]);
 
+const key = computed(
+  () => `https://www.pixiv.net/artworks/${props.image.alt.split(" ")[1]}`,
+);
 const comment = ref("");
 
 const saveComment = () => {
-  const key = `comment_${props.image.src}`;
-  localStorage.setItem(key, comment.value);
-  emit("save", { imageSrc: props.image.src, comment: comment.value });
+  if (!key.value || !comment.value) return;
+  localStorage.setItem(key.value, comment.value);
 };
-
-function closeHandler() {
-  emit("close");
-}
 
 watch(
   () => props.open,
   (newVal) => {
     if (newVal) {
-      const key = `comment_${props.image.alt}`;
-      comment.value = localStorage.getItem(key) || "";
+      comment.value = localStorage.getItem(key.value) || "";
+      return;
     }
+    saveComment();
   },
 );
 </script>
 
 <template>
-  <section v-if="open" class="popup-overlay" @click="closeHandler">
+  <section v-if="open" class="popup-overlay" @click="$emit('close')">
     <article class="popup-content" @click.stop>
       <header>
         <h2>{{ image.title }}</h2>
@@ -63,15 +62,17 @@ watch(
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
 
-  .popup-content {
-    position: relative;
-    background: var(--vp-c-bg-soft);
-    padding: 20px;
-    border-radius: 5px;
-    max-height: 80%;
-    max-width: 80%;
-  }
+.popup-content {
+  position: relative;
+  background: var(--vp-c-bg-soft);
+  padding: 20px;
+  border-radius: 5px;
+  max-height: 80%;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
@@ -80,13 +81,15 @@ h2 {
 }
 
 main {
+  flex: 1;
   display: flex;
 
   .left-side {
     flex: 1;
 
     img {
-      max-height: 100%;
+      border-radius: 5px;
+      max-height: 90vh;
     }
   }
 
@@ -124,6 +127,42 @@ main {
 
       &:hover {
         background: var(--vp-c-brand-2);
+      }
+
+      &:active {
+        background: var(--vp-c-brand-3);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    max-height: 90%;
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  main {
+    flex-direction: column;
+
+    .left-side {
+      margin-bottom: 1rem;
+    }
+
+    .vertical-line {
+      display: none;
+    }
+
+    .right-side {
+      textarea {
+        margin-bottom: 0;
+      }
+      button {
+        display: none;
       }
     }
   }

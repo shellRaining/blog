@@ -142,7 +142,13 @@ onMounted(() => {
   }
 }
 
-@media (320px <= width <= 480px) {
+@media (min-width: 1440px) {
+  .items {
+    --index: 1vw;
+  }
+}
+
+@media (max-width: 480px) {
   .items {
     --index: calc(2vw + 2vh);
     flex-direction: column;
