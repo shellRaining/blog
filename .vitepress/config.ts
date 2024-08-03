@@ -32,7 +32,7 @@ export default defineConfig({
       "link",
       {
         rel: "stylesheet",
-        href: "https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/style.min.css",
+        href: "https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css",
       },
     ],
     [
