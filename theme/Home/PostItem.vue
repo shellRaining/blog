@@ -45,21 +45,14 @@ onMounted(() => {
   overflow-x: hidden;
   text-wrap: nowrap;
   text-overflow: ellipsis;
-  color: #57534e; /* stone-600 */
+  color: var(--sr-c-text);
   font-weight: normal;
   padding: 0 1rem;
   transition: all 0.5s ease;
 
   &:hover {
-    color: #0c0a09; /* stone-950 */
+    color: var(--sr-c-text-hover);
     font-weight: bold;
-  }
-}
-.dark .post-title {
-  color: #a8a29e; /* stone-400 */
-
-  &:hover {
-    color: #fafaf9; /* stone-50 */
   }
 }
 </style>

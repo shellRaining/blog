@@ -53,20 +53,6 @@ watch(
 </template>
 
 <style scoped>
-.flyout-enter-active {
-  transition: all 0.2s ease-out;
-}
-
-.flyout-leave-active {
-  transition: all 0.15s ease-in;
-}
-
-.flyout-enter-from,
-.flyout-leave-to {
-  opacity: 0;
-  transform: translateY(-16px);
-}
-
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -82,7 +68,7 @@ watch(
 
 .popup-content {
   position: relative;
-  background: var(--vp-c-bg-soft);
+  background: var(--sr-c-bg-section);
   padding: 20px;
   border-radius: 5px;
   max-height: 80%;
@@ -111,7 +97,7 @@ main {
 
   .vertical-line {
     width: 1px;
-    background: var(--vp-c-border);
+    background: var(--sr-border);
     margin: 0 1rem;
   }
 
@@ -135,18 +121,18 @@ main {
       display: block;
       width: 100%;
       padding: 0.5rem;
-      background: var(--vp-c-brand-3);
+      background: var(--sr-c-btn);
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s;
 
       &:hover {
-        background: var(--vp-c-brand-2);
+        background: var(--sr-c-btn-hover);
       }
 
       &:active {
-        background: var(--vp-c-brand-1);
+        background: var(--sr-c-btn-active);
       }
     }
   }

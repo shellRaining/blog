@@ -45,7 +45,7 @@ async function toggleAppearance({ x, y }: MouseEvent) {
 .appearance-toggle {
   position: fixed;
   left: 0;
-  top: var(--vp-nav-height);
+  top: calc(var(--vp-nav-height) + 1rem);
 
   margin: -10px;
   border-radius: 50%;

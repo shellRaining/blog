@@ -30,7 +30,6 @@ onContentUpdated(() => {
 
 <style scoped>
 .title {
-  color: var(--vp-c-text-1);
   font-weight: 600;
   font-size: 2.25em;
   margin-top: 0.3em;

@@ -13,7 +13,7 @@ defineProps<{
 
 <style scoped>
 .skeleton-loader {
-  background-color: var(--vp-c-bg-soft);
+  background-color: var(--sr-c-bg-section);
   position: relative;
   overflow: hidden;
   border-radius: 4px;
@@ -28,7 +28,7 @@ defineProps<{
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--vp-c-bg-alt) 50%,
+    var(--sr-c-bg-section) 50%,
     transparent 100%
   );
   animation: shimmer 1.5s infinite;
@@ -41,7 +41,7 @@ defineProps<{
   transform: translate(-50%, -50%);
   width: 40%;
   height: 40%;
-  color: var(--vp-c-bg-alt);
+  color: var(--sr-c-bg-section);
 }
 
 @keyframes shimmer {
