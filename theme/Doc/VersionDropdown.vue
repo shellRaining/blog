@@ -50,7 +50,7 @@ function toggle() {
             class="item"
           >
             <time :datetime="item.timestamp"> {{ item.timestamp }}</time>
-            <span>{{ item.hash }}</span>
+            <code>{{ item.hash }}</code>
           </a>
         </li>
       </ul>
@@ -101,7 +101,6 @@ function toggle() {
       padding: 0.2rem;
       transition: all 0.3s ease;
       color: var(--sr-c-text);
-      font-family: "LXGW WenKai Mono";
 
       &:hover {
         color: var(--sr-c-text-hover);
