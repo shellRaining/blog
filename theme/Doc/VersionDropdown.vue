@@ -93,7 +93,7 @@ function toggle() {
     border: var(--sr-border);
     border-radius: 4px;
     background-color: var(--sr-c-bg-section);
-    box-shadow: var(--sr-card-shadow);
+    box-shadow: var(--sr-float-shadow);
 
     .item {
       display: flex;

@@ -30,6 +30,7 @@
 
 /* shadow */
 :root {
+  --sr-float-shadow: 0 0 5px var(--sr-c-border);
   --sr-card-shadow: 0 0 10px var(--sr-c-border);
 }
 
