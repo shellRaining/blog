@@ -23,7 +23,13 @@ export default defineConfig({
       },
     },
     outline: "deep",
-    nav: [{ text: "🎨 gallery", link: "/gallery" }],
+    nav: [
+      { text: "🎨 gallery", link: "/gallery" },
+      // {
+      //   text: "🛝 playground",
+      //   link: "/playground",
+      // },
+    ],
   },
   appearance: false,
   head: [

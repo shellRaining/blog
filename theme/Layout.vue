@@ -13,7 +13,7 @@ const { Layout } = DefaultTheme;
   <Layout>
     <template #doc-before>
       <Title />
-      <Viewer />
+      <ClientOnly><Viewer /></ClientOnly>
     </template>
 
     <template #home-features-after>
