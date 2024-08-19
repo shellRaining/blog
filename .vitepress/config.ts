@@ -24,7 +24,7 @@ export default defineConfig({
     },
     outline: "deep",
     nav: [
-      { text: "🎨 gallery", link: "/gallery" },
+      { text: "🎨 gallery", link: "/gallery.html" },
       // {
       //   text: "🛝 playground",
       //   link: "/playground",
