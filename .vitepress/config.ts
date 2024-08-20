@@ -53,7 +53,7 @@ export default defineConfig({
     ],
   ],
   sitemap: {
-    hostname: "https://shellraining.top",
+    hostname: "https://shellraining.xyz",
   },
   async transformPageData(pageData, ctx) {
     await injectVersions(pageData, ctx);
