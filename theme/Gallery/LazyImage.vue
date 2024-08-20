@@ -36,7 +36,7 @@ async function loadImage() {
     await set(props.id, blob);
     imageUrl.value = URL.createObjectURL(blob);
   } catch (error) {
-    console.error("Error loading image:", error);
+    imageUrl.value = '/load_error.png'
   } finally {
     emit("loaded");
   }
