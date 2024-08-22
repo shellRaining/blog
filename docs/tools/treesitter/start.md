@@ -129,9 +129,9 @@ CallExpressionNode {
 
 ```plaintext
 (lexical_declaration
-	(variable_declarator
-    	name: (identifier)
-    	!value
+  (variable_declarator
+      name: (identifier)
+      !value
     ) @var
 ) @decl
 ```

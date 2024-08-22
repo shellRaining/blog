@@ -48,7 +48,7 @@ function fn<T extends Point>(p: T): T {
 
 ```TypeScript
 type Tree<T> {
-	left: Tree<T> | null;
+  left: Tree<T> | null;
   right: Tree<T> | null;
   value: T;
 }
@@ -180,9 +180,9 @@ type Exclude<T, U> = T extends U ? never : T
 
 T = Exclude<string | undefined, null | undefined>
   = (string extends null | undefined ? never : string)
-		| (undefined extends null | undefined ? never : string)
-	= string | never
-	= string
+    | (undefined extends null | undefined ? never : string)
+  = string | never
+  = string
 ```
 
 这里利用了 `never` 类型和任何类型做联合运算都会被合并的特性

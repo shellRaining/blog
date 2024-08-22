@@ -81,7 +81,7 @@ app.on('userLoggedIn', (username) => {
 
 ```TypeScript
 interface GeneralEventTypes {
-	[EventName: string]: unknown[]
+  [EventName: string]: unknown[]
 }
 class EventEmitter<EventTypes extends GeneralEventTypes> {}
 ```
@@ -125,7 +125,8 @@ class EventEmitter<EventTypes extends GeneralEventTypes> {
     listener: EventListener<EventTypes, EventName>,
   ): () => void {}
   public unAll(): void {}
-  protected emit<EventName extends keyof EventTypes>(eventName: EventName, ...args: EventTypes[EventName]): void {}
+  protected emit<EventName extends keyof EventTypes>
+    (eventName: EventName, ...args: EventTypes[EventName]): void {}
 ```
 
 ## 定义

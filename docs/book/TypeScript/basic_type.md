@@ -194,8 +194,8 @@ function f(x: any): any {
 
 ```typescript
 {
-	(x: string): 0|1;
-	(x: any): number;
+  (x: string): 0|1;
+  (x: any): number;
 }
 ```
 

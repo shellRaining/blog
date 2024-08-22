@@ -43,7 +43,7 @@ export async function createApp() {
   const router = newRouter()
   const app = newApp()
   app.provide(RouterSymbol, router)
-	// 省略部分代码……
+  // 省略部分代码……
   return { app, router, data }
 }
 ```
@@ -86,10 +86,10 @@ export function createRouter(
   const router: Router = { route, go }
 
   async function go(href: string = inBrowser ? location.href : '/') {
-		// ...
+    // ...
   }
   async function loadPage(href: string, scrollPosition = 0, isRetry = false) {
-		// ...
+    // ...
   }
 
   window.addEventListener('click', (e) => {}, { capture: true })
@@ -152,7 +152,7 @@ async function go(href: string = inBrowser ? location.href : "/") {
     const targetLoc = new URL(href, fakeHost)
     try {
       let page = await loadPageModule(pendingPath)
-				// ...
+        // ...
       })
     }
   }
@@ -249,7 +249,7 @@ window.addEventListener("hashchange", (e) => {});
 
 这个监听器导致了我的静态博客分页系统除了问题，害得我排查了很久，具体表现是：
 
-> 首先进入 https://sugarat.top/?pageNum=2 这个网页，看到分页正常显示在第二页，然后按首页左上角的 logo，URL 变成了 https://sugarat.top，但页面没有正常跳转到第一页
+> 首先进入 [https://sugarat.top/?pageNum=2](https://sugarat.top/?pageNum=2) 这个网页，看到分页正常显示在第二页，然后按首页左上角的 logo，URL 变成了 [https://sugarat.top](https://sugarat.top)，但页面没有正常跳转到第一页
 >
 > 这是因为如果不传入钩子函数，会直接调用 go("/")，导致 URL 发生变化，但是我们静态分页器没有更新分页信息。通过向上面提到的用户钩子函数 `onAfterRouteChanged` 传入更新分页的回调函数即可。
 

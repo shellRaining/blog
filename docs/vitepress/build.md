@@ -12,7 +12,7 @@ collection: vitepress
 
 假设我们只有两篇文章，位于项目根目录的 `algorithm` 目录下，可以看到如下的目录结构
 
-```
+```plaintext
 .
 ├── 404.html
 ├── algorithm

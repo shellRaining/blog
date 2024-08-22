@@ -12,7 +12,9 @@ date: 2024-06-15
 
 ## 需求
 
-我们需要针对每一个 `bufnr`，`lnum`，`col` 或者 `bufnr`，`lnum` 来建立 cache，这意味着这个 `cache` 类构造函数需要预先传入字段名，比如这样调用：`local cache = Cache('bufnr', 'lnum')`，这样就指定了 `get` 函数的签名为 `get(bufnr, lnum)`，同理如果这样调用 `local cache = Cache('bufnr', 'lnum', 'col')`，这样就指定了 `get` 函数的签名为 `get(bufnr, lnum, col)`
+我们需要针对每一个 `bufnr`，`lnum`，`col` 或者 `bufnr`，`lnum` 来建立 cache，这意味着这个 `cache` 类构造函数需要预先传入字段名，比如这样调用：`local cache = Cache('bufnr', 'lnum')`，这样就指定了 `get` 函数的签名为 `get(bufnr, lnum)`
+
+同理如果这样调用 `local cache = Cache('bufnr', 'lnum', 'col')`，这样就指定了 `get` 函数的签名为 `get(bufnr, lnum, col)`
 
 ## 实现
 

@@ -29,7 +29,7 @@ date: 2024-08-02
 
 为了我们能够处理动画过程中的节点，view transition API 创建了一棵伪元素树来供我们使用，其结构如下：
 
-```
+```plaintext
 ::view-transition
 └─ ::view-transition-group(root)
   └─ ::view-transition-image-pair(root)

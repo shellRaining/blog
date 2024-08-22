@@ -19,7 +19,7 @@ vitepress 的配置文件是位于 `.vitepress/config.ts` 下的，我们需要�
 
 我们这里介绍的初始化过程是从文档加载起，到向服务器请求配置文件结束，不包含其他诸如路由初始化等。下面是我们执行初始化过程的栈帧
 
-```
+```plaintext
 initData (data.ts:74)
 createApp (index.ts:75)
 （匿名） (index.ts:169)
@@ -66,7 +66,7 @@ export function initData(route: Route): VitePressData {
     site,
     theme: computed(() => site.value.themeConfig),
     page: computed(() => route.data),
-		// ...
+    // ...
   }
 }
 ```

@@ -25,7 +25,9 @@ date: 2024-07-28
 
 4. 创建服务账号
 
-   前往 [https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts/create](https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts/create)，点击近期项目中的 My First Project，会出现一个表单，表单分为三部分 `服务账号详情`，`向此服务账号授予对项目的访问权限 (可选)`，`向用户授予访问此服务账号的权限 (可选)`，都是可以随意填写的，填写完后点击完成，进入一个新页面。
+   前往 [https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts/create](https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts/create)
+
+   点击近期项目中的 My First Project，会出现一个表单，表单分为三部分 `服务账号详情`，`向此服务账号授予对项目的访问权限 (可选)`，`向用户授予访问此服务账号的权限 (可选)`，都是可以随意填写的，填写完后点击完成，进入一个新页面。
 
    新页面会看到我们刚才创建的服务账号，点击最右侧的三个点（操作），然后点击管理秘钥，再依次点击添加秘钥，创建新秘钥，秘钥类型选择 JSON，点击创建，这一套操作后浏览器会下载一个 JSON 文件，留作后续使用。也请注意不要泄露该文件内的信息。
 

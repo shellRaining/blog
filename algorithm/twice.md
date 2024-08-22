@@ -55,7 +55,7 @@ var coinChange = function (coins, amount) {
 
 ```JavaScript
 var coinChange = function (coins, amount) {
-	const arr = new Array(amount + 1)
+  const arr = new Array(amount + 1)
   arr[0] = 0
 
   for (let i = 0; i < amount + 1; i++) {
@@ -71,6 +71,31 @@ var coinChange = function (coins, amount) {
 ```
 
 对于要兑换的 `amount` 数目所需要的最小数值，我们定义为 `f(x)`，那么 `f(x) = Math.min(f(x-a), f(x-b), f(x-c))`，依次构建一个递归式子，并且初始状态为 `f(0) = 0, f(k) = -1 (k < 0)`，通过这个已经可以用递归来做了，但是我选择的是自底向上计算，我们有 `f(0)`，就可以计算 `f(a), f(b), f(c)`，并且通过这三个新计算出来的值，再次重复上述过程。最终如果我们需要钱数的位置为 `undefined`，表示不可能有这种兑换方式。
+
+```javascript
+var coinChange = function (coins, amount) {
+  coins.sort((x, y) => x - y);
+  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
+  for (const v of coins) dp[v] = 1;
+  for (let i = 1; i <= amount; i++) {
+    if (dp[i] < Number.MAX_SAFE_INTEGER) continue;
+    let curMin = Number.MAX_SAFE_INTEGER;
+    for (const coin of coins) {
+      if (coin > i) break;
+      curMin = Math.min(curMin, dp[i - coin]);
+    }
+    dp[i] = curMin + 1;
+  }
+  dp[0] = 0;
+  return dp[amount] >= Number.MAX_SAFE_INTEGER ? -1 : dp[amount];
+};
+```
+
+老对手了，这次还是吃了一次亏。因为题目要求最少的零钱兑换次数，而同时有要求不可以兑换的时候返回 -1，因此我们初始化 dp 数组的时候只能用 `Number.MAX_SAFE_INTEGER`，然后最后判断返回值是否大于等于该数值来决定最终返回值。
+
+至于为什么是大于等于，因为 `dp[i] = curMin + 1` 这段代码中，`curMin` 有可能就是 `Number.MAX_SAFE_INTEGER`，导致被算出来的 `dp[i]` 自身大于 `Number.MAX_SAFE_INTEGER`，但要注意，这种计算已经超越了 IEEE754 的表示范围，可能会涉及 BigInt 的东西。
+
+还有一点，就是题目里的硬币并不是有序的，只有调整为有序后才可以在最内层的 if 语句使用 break。
 
 ## [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
 
@@ -271,83 +296,3 @@ MinStack.prototype.getMin = function () {
 ```
 
 这道题我最开始想着要通过一个最小堆来配合栈使用，但是答案挺有意思，他用一个辅助栈来对应原栈中每个位置的最小值
-
-## [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
-
-### 暴力解法
-
-```javascript
-var dailyTemperatures = function (temperatures) {
-  const n = temperatures.length;
-  const res = new Array(n).fill(0);
-  for (let i = 0; i < n; i++) {
-    if (res[i] !== 0) continue;
-    for (let j = i + 1; j < n; j++) {
-      const ti = temperatures[i];
-      const tj = temperatures[j];
-      if (ti < tj) {
-        for (let k = i; k < j; k++) {
-          const tk = temperatures[k];
-          if (tk < tj && tk >= ti) {
-            res[k] = j - k;
-          }
-        }
-        break;
-      }
-    }
-  }
-  return res;
-};
-```
-
-通过二层循环找到最终的答案，但是有一点小优化，每当找到结果时候，再重新遍历一次，将所有大于 i 小于 j 温度的下标赋值，可以避免重复计算。但整体的时间复杂度还是 `n^2`
-
-```javascript
-var dailyTemperatures = function (temperatures) {
-  const n = temperatures.length;
-  const res = new Array(n).fill(0);
-  const stk = [];
-  for (let i = 0; i < n; i++) {
-    const ti = temperatures[i];
-    while (stk.length && temperatures[stk[stk.length - 1]] < ti) {
-      const idx = stk.pop();
-      res[idx] = i - idx;
-    }
-    stk.push(i);
-  }
-  return res;
-};
-```
-
-通过单调栈来解决，这个单调栈是递减的，每当看到比栈顶大的元素，我们就让栈内比该元素小的所有元素都出栈，并为他们赋值答案，然后将该元素推入栈中，始终保持栈内的有序。遍历完所有元素后，栈内必定留存一些还没出栈的元素，表示没有比他们大的，因此直接赋值为 0 即可。
-
-这里有个有意思的观察，栈内存储的是元素的下标，而不是元素本身，这样相当于多存储了一个信息，可以用来做很多事。相似的题目可以看
-
-- [滑动窗口最大值](./fifth#_239-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC)
-
-## [322. 零钱兑换](https://leetcode.cn/problems/coin-change/)
-
-```javascript
-var coinChange = function (coins, amount) {
-  coins.sort((x, y) => x - y);
-  const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
-  for (const v of coins) dp[v] = 1;
-  for (let i = 1; i <= amount; i++) {
-    if (dp[i] < Number.MAX_SAFE_INTEGER) continue;
-    let curMin = Number.MAX_SAFE_INTEGER;
-    for (const coin of coins) {
-      if (coin > i) break;
-      curMin = Math.min(curMin, dp[i - coin]);
-    }
-    dp[i] = curMin + 1;
-  }
-  dp[0] = 0;
-  return dp[amount] >= Number.MAX_SAFE_INTEGER ? -1 : dp[amount];
-};
-```
-
-老对手了，这次还是吃了一次亏。因为题目要求最少的零钱兑换次数，而同时有要求不可以兑换的时候返回 -1，因此我们初始化 dp 数组的时候只能用 `Number.MAX_SAFE_INTEGER`，然后最后判断返回值是否大于等于该数值来决定最终返回值。
-
-至于为什么是大于等于，因为 `dp[i] = curMin + 1` 这段代码中，`curMin` 有可能就是 `Number.MAX_SAFE_INTEGER`，导致被算出来的 `dp[i]` 自身大于 `Number.MAX_SAFE_INTEGER`，但要注意，这种计算已经超越了 IEEE754 的表示范围，可能会涉及 BigInt 的东西。
-
-还有一点，就是题目里的硬币并不是有序的，只有调整为有序后才可以在最内层的 if 语句使用 break。

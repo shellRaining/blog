@@ -41,7 +41,7 @@ wavesurfer = WaveSurfer.create({
 和 neovim 插件的配置差不多，顾名思义，就是进行一个对象的合并
 
 ```typescript
-this.options = Object.assign({}, defaultOptions, options)
+this.options = Object.assign({}, defaultOptions, options);
 ```
 
 这个配置对象还会同时被传给 `renderer`
@@ -66,8 +66,8 @@ renderer 实例会在用户传入的 `container` 下面新建一个 `div` 标签
           <div class="cursor" part="cursor"></div>
         </div>
       </div>
-  </div>  
-</div>  
+  </div>
+</div>
 ```
 
 > [!tip]
@@ -151,7 +151,7 @@ this.renderer.on('click', (relativeX, relativeY) => {
 > onInit() {
 >  this.container = this.container || this.wavesurfer.getWrapper()
 >  this.container.appendChild(this.wrapper)
-> 
+>
 >  if (this.wavesurfer.options.fillParent) {
 >    Object.assign(this.wrapper.style, {
 >      width: '100%',
@@ -170,13 +170,13 @@ this.renderer.on('click', (relativeX, relativeY) => {
 在构造函数的最后，我们可以解析音频了，但为了保证用户调用 `registerPlugin` 注册的插件能够被初始化，通过将其送到微任务队列中来保证代码执行顺序的正确性
 
 ```typescript
-  Promise.resolve().then(() => {
-    this.emit('init')
-    const { peaks, duration } = this.options
-    if (initialUrl || (peaks && duration)) {
-      this.load(initialUrl, peaks, duration).catch(() => null)
-    }
-  })
+Promise.resolve().then(() => {
+  this.emit("init");
+  const { peaks, duration } = this.options;
+  if (initialUrl || (peaks && duration)) {
+    this.load(initialUrl, peaks, duration).catch(() => null);
+  }
+});
 ```
 
 加载音频分为三步

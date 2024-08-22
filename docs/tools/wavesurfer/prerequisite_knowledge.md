@@ -27,7 +27,14 @@ date: 2024-08-20
 
 ## 基础 API
 
-我们通常使用 `<audio>` 节点来播放一段音频，除了 HTML 声明外，我们还可以通过 `Audio` 构造函数来创建一个节点，然后加入到文档中。这个 `Audio` 构造函数返回的是一个 `HTMLAudioElement` 对象，该对象没有独特的属性，他的所有属性都继承自 `HTMLMediaElement` 和 `HTMLElement`，因此也可以访问比如 `currentSrc` 这些属性，常用的属性还包括 [`src`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/src)、[`currentTime`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/currentTime)、[`duration`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/duration)、[`paused`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/paused)、[`muted`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/muted) 和 [`volume`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/volume) 等
+我们通常使用 `<audio>` 节点来播放一段音频，除了 HTML 声明外，我们还可以通过 `Audio` 构造函数来创建一个节点，然后加入到文档中。这个 `Audio` 构造函数返回的是一个 `HTMLAudioElement` 对象，该对象没有独特的属性，他的所有属性都继承自 `HTMLMediaElement` 和 `HTMLElement`，因此也可以访问比如 `currentSrc` 这些属性，常用的属性还包括
+
+- [`src`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/src)
+- [`currentTime`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/currentTime)
+- [`duration`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/duration)
+- [`paused`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/paused)
+- [`muted`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/muted)
+- [`volume`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/volume) 等
 
 > [!tip]
 >
@@ -113,9 +120,9 @@ loadBtnEl.addEventListener("click", async () => {
 playBtnEl.addEventListener("click", () => {
   if (audioContext && audioBuffer) {
     const sourceNode = audioContext.createBufferSource();
-    sourceNode.buffer = audioBuffer
-    sourceNode.connect(audioContext.destination)
-    sourceNode.start(0)
+    sourceNode.buffer = audioBuffer;
+    sourceNode.connect(audioContext.destination);
+    sourceNode.start(0);
   }
 });
 ```
