@@ -17,7 +17,7 @@ date: 2024-08-23
 
 我见过的点文件第三种居多。第一种一般是和代码工程有关（毕竟每个项目的需求不同），第二种也有，但一般情况下他们提供了多种放置位置的可能性，比如 `tmux` 既可以选择第二种，也可以选择第三种。第三种是我最喜欢的，点文件整整齐齐的放在 `.config` 目录下，是一件赏心悦目的事情，下面是我的部分 dotfiles
 
-<img src="https://2f0f3db.webp.li/2024/08/my_dotfiles.png" alt="my dotfiles" style="zoom:50%;" />
+<img src="https://2f0f3db.webp.li/2024/08/my_dotfiles.png" alt="my dotfiles" />
 
 除了放置整齐外，统一放在 `$XDG_CONFIG_HOME` 还使得管理这些配置文件变得简单，使得我们在迁移到一个新机器的时候可以快速重新配置环境，这也是我下面着重讲的内容。
 
@@ -99,7 +99,7 @@ echo "Keyboard repeat settings updated. You may need to log out and back in for 
 
 我们自己的 dotfiles 结构和上面的结构大致差不多，当然你也可以个性化一点，只要脚本能够保证软链接成功即可
 
-<img src="https://2f0f3db.webp.li/2024/08/dotfiles_structure.png" style="zoom:50%;" />
+<img src="https://2f0f3db.webp.li/2024/08/dotfiles_structure.png" />
 
 各个工具的配置不赘述，可以看到多了几个飘红的脚本文件，这些就是用来管理的核心
 

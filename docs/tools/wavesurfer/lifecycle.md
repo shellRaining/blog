@@ -148,19 +148,19 @@ this.renderer.on('click', (relativeX, relativeY) => {
 > 比如 spectrogram 插件
 >
 > ```typescript
-> onInit() {
->  this.container = this.container || this.wavesurfer.getWrapper()
->  this.container.appendChild(this.wrapper)
->
->  if (this.wavesurfer.options.fillParent) {
->    Object.assign(this.wrapper.style, {
->      width: '100%',
->      overflowX: 'hidden',
->      overflowY: 'hidden',
->    })
->  }
->  this.subscriptions.push(this.wavesurfer.on('redraw', () => this.render()))
-> }
+>   onInit() {
+>     this.container = this.container || this.wavesurfer.getWrapper()
+>     this.container.appendChild(this.wrapper)
+> 
+>     if (this.wavesurfer.options.fillParent) {
+>       Object.assign(this.wrapper.style, {
+>         width: '100%',
+>         overflowX: 'hidden',
+>         overflowY: 'hidden',
+>       })
+>     }
+>     this.subscriptions.push(this.wavesurfer.on('redraw', () => this.render()))
+>   }
 > ```
 >
 > 他就在 `onInit` 中初始化了 `container`，并且注册 wavesurfer 的 `redraw` 事件，以便在 wavesurfer 每次**渲染前**也进行一次渲染
