@@ -1,7 +1,7 @@
 ---
 title: 白嫖claude 3个月！
 tag:
-  - tools
+  - tech_blog
 date: 2024-07-28
 ---
 

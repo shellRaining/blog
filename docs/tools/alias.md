@@ -1,7 +1,7 @@
 ---
 title: rollup alias 插件
 tag:
-  - build_tools
+  - tools
 date: 2024-07-01
 ---
 
