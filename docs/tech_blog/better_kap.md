@@ -20,4 +20,3 @@ date: 2024-08-26
 这个是 MacOS 的问题，我们需要安装一个应用（Background Music）来增强 MacOS 的声音功能。在录制屏幕之前，如果有内录的需求，可以在选项中选择 `background music` 作为背景声音，同时注意软件要打开，否则是没有用的，然后就可以调节各个应用的声音大小了
 
 ![background-music](https://2f0f3db.webp.li/2024/08/background-music.png)
-
