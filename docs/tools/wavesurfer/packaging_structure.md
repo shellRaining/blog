@@ -103,3 +103,40 @@ import Spectrogram from "wavesurfer.js/dist/plugins/spectrogram"; // 通过目�
 ```
 
 如果想要通过别名导入，我们需要手动指定 `tsconfig.json` 中的 `moduleResolution` 为 `Node16` 及以上，因为前面也提到，不支持 ES6 的 node 版本是无法解析这种导入规则的，会让 typescript 的 LSP 语言服务器报错
+
+## 打包过程
+
+这个项目使用的是 rollup 进行打包，打包配置如下：
+
+```JavaScript
+const plugins = [typescript({ declaration: false }), terser({ format: { comments: false } })]
+
+export default [
+  {
+    input: 'src/wavesurfer.ts',
+    output: {
+      file: 'dist/wavesurfer.esm.js',
+      format: 'esm',
+    },
+    plugins,
+  },
+  ...glob
+    .sync('src/plugins/*.ts')
+    .map((plugin) => [
+      {
+        input: plugin,
+        output: {
+          file: plugin.replace('src/', 'dist/').replace('.ts', '.js'),
+          format: 'esm',
+        },
+        plugins,
+      },
+    ])
+    .flat(),
+]
+
+```
+
+可以看到使用了两个插件，typescript 用来编译，terser 用来压缩文件，需要注意这个插件会默认使用 `tsconfig.json` 中的配置，我们可以在函数内传入用来覆盖的配置
+
+在 `package.json` 中，用来构建的命令是 `"build": "npm run clean && tsc && rollup -c"`，可以看到在用 rollup 打包前先用 tsc 编译了一次，这时候已经生成了类型声明文件，如果在打包时候还生成类型声明文件，就会导致重复和文件结构混乱
