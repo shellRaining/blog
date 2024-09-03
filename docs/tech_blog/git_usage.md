@@ -43,3 +43,11 @@ date: 2024-09-02
 2. 推送新的分支 `git push origin -u new-branch-name`
 
 这里的 `-u` 选项是 `--set-upstream`，用来设置设置本地分支跟踪的远程分支，相当于确定了一个对应关系
+
+## 切换到远程分支
+
+有时候想要切换到远程的分支，并且在本地创建同名分支来跟踪该远程分支，可以输入以下命令
+
+- `git checkout --track origin/branch-name`：这个命令会自动创建一个与远程分支同名的本地分支，并设置好跟踪关系
+- `git switch branch-name`：如果远程分支存在而本地不存在，Git 会自动创建并跟踪远程分支
+- `git checkout -b branch-name origin/branch-name`：这个命令会创建一个新的本地分支，并让它跟踪远程分支
