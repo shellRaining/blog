@@ -38,7 +38,7 @@ collection: vitepress
 
 ### `/index.html`
 
-首先看一下最先接收的 `/index.html` 的代码
+首先看一下最先接收的 `/index.html` 的代码的 `<head>` 部分
 
 ```html
 <!doctype html>
@@ -73,6 +73,24 @@ collection: vitepress
       );
     </script>
   </head>
+</html>
+```
+
+我们能从中`<head>` 标签中发现很多有意思的细节
+
+1. 首先是 `<meta>` 标签，他们都是我们在 `config.ts` 中自定义的配置，包括 `tilte`，`description`等。
+
+2. 在他的下面是打包好的一个 css 文件，用来提供样式（一共有五千多行代码，真是挺大的）。
+
+3. 再后面是两个 JS 文件 `app.js` 和 `framework.js`，我们随后介绍他们的作用，但需要注意他们的引入方式是不同的， `app.js` 是通过我们熟知的 `<script>` 标签来引入，而 `framework.js` 是通过 `<link rel="modulepreload" href="">` 标签引入的。
+
+   这其实是一种前端优化手段，在 2023 年，所有的主流浏览器都已经支持了 `modulepreload` 这个新特性，它允许我们并行的加载编译（注意不是执行）脚本，而不是像之前那样先加载并执行一个主入口脚本，然后依次去请求其他的脚本。具体信息可以看 [MDN 文档](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload#examples)
+
+4. 后面也是一个预加载的模块 `/assets/index.md.BgHyiSgX.lean.js`，他有一个奇特的 `lean` 后缀，这表示用来优化初始页面加载和导航回初始页面的，具体是如何工作的，我们后面再说
+
+5. 最后边就是我们的各种各种资产文件和导入的内联脚本了，包括 Google analysis，检查主题模式和平台的内联脚本等
+
+```html
   <body>
     <div id="app">
       <!--[-->
@@ -142,18 +160,22 @@ collection: vitepress
 </html>
 ```
 
-我们能从中`<head>` 标签中发现很多有意思的细节
+然后再看一下 `<body>` 标签，里面有很多 HTML 注释，这些位置是预留给 JavaScript（vue）来进行动态插入 DOM 的。
 
-1. 首先是 `<meta>` 标签，他们都是我们在 `config.ts` 中自定义的配置，包括 `tilte`，`description`等。
+同时页面还有我们写的文章列表组件，这个组件是一个服务端组件，因此刷新后是不会有动画效果的，同时由于 `IntersectionObserver`，只有当视口出现该链接后才会进行预加载
 
-2. 在他的下面是打包好的一个 css 文件，用来提供样式（一共有五千多行代码，真是挺大的）。
+## 执行构建命令
 
-3. 再后面是两个 JS 文件 `app.js` 和 `framework.js`，我们随后介绍他们的作用，但需要注意他们的引入方式是不同的， `app.js` 是通过我们熟知的 `<script>` 标签来引入，而 `framework.js` 是通过 `<link rel="modulepreload" href="">` 标签引入的。
+在我们文档根目录下执行 `pnpm run build` 的时候，会执行 `vitepress build` 命令，这个 `vitepress` 是一个可执行脚本（bin），其位置在 vitepress 包中的 `package.json` 有指出来，一般是 `bin/vitepress.js`，这个文件会间接调用 `cli.js`（被编译之前在 `/src/node/cli.ts`），然后执行其中真正的构建命令
 
-   这其实是一种前端优化手段，在 2023 年，所有的主流浏览器都已经支持了 `modulepreload` 这个新特性，它允许我们并行的加载（注意不是执行）脚本，而不是像之前那样先加载并执行一个主入口脚本，然后依次去请求其他的脚本。具体信息可以看 [MDN 文档](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload#examples)
-
-4. 后面也是一个预加载的模块 `/assets/index.md.BgHyiSgX.lean.js`，他有一个奇特的 `lean` 后缀，这表示用来优化初始页面加载和导航回初始页面的，具体是如何工作的，我们后面再说
-
-5. 最后边就是我们的各种各种资产文件和导入的内联脚本了，包括 Google analysis，检查主题模式和平台的内联脚本等
-
-然后再看一下 `<body>` 标签
+> [!note]
+>
+> ```ts
+> [
+>   "~/.nvm/versions/node/v22.6.0/bin/node",
+>   "~/Documents/blog/node_modules/vitepress/bin/vitepress.js",
+>   "build",
+> ];
+> ```
+>
+> 这是启动构建进程的真正命令行参数（也即 argv）
