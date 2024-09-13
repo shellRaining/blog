@@ -45,7 +45,7 @@ onMounted(() => {
   let pre: HTMLImageElement | null = null;
   mainEl.value.addEventListener("click", (e) => {
     const target = e.target as HTMLImageElement;
-    if (target.tagName !== "IMG" || !target.alt.startsWith("pixiv")) {
+    if (target.tagName !== "IMG" || !target.alt.startsWith("image diary")) {
       pre = null;
       return;
     }

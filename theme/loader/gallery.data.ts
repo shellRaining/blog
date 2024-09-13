@@ -10,6 +10,7 @@ export interface ImgDiaryItem {
   title: string;
   date: Date;
   image_url: string;
+  original_url: string;
   note: string;
   tags: string[];
   blurhash: string;

@@ -63,7 +63,7 @@ watch(
     v-if="imageUrl"
     :src="imageUrl"
     :data-origin-src="fetchUrl"
-    :alt="`pixiv ${title} img`"
+    :alt="`image diary ${title}`"
     :title="title"
     loading="lazy"
   />

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { ImgDiaryItem } from "../loader/gallery.data";
 
 const { open, blobUrl, imgDiaryItem } = defineProps<{
@@ -8,6 +9,7 @@ const { open, blobUrl, imgDiaryItem } = defineProps<{
 }>();
 
 const emit = defineEmits(["close"]);
+const paragraphs = computed(() => imgDiaryItem.note.split("\n"));
 </script>
 
 <template>
@@ -23,7 +25,9 @@ const emit = defineEmits(["close"]);
             :alt="imgDiaryItem.title"
             class="left-side"
           />
-          <p class="right-side">{{ imgDiaryItem.note }}</p>
+          <div class="right-side">
+            <p class="passage" v-for="p in paragraphs" :key="p">{{ p }}</p>
+          </div>
         </main>
       </article>
     </section>
@@ -77,17 +81,21 @@ main {
     max-width: 50%; /* 限制图片最大宽度 */
     object-fit: contain; /* 保持图片比例 */
     align-self: flex-start; /* 图片顶部对齐 */
-    border-radius: 5px;
   }
 
   .right-side {
     flex: 1;
     overflow-y: auto; /* 如果文本过长，添加滚动条 */
-    padding: 0 10px; /* 添加一些内边距 */
+    padding: 10px 2rem; /* 添加一些内边距 */
+
+    .passage {
+      margin-bottom: 1rem;
+      text-indent: 2em; /* 首行缩进 */
+    }
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .popup-content {
     max-height: 90%;
     padding: 1rem;
@@ -101,13 +109,17 @@ main {
     flex-direction: column;
 
     .left-side {
-      flex: 2;
+      flex: 0;
+      max-width: 100%;
+      max-height: 70%;
       margin: 0 auto;
+      padding: 1rem;
     }
 
     .right-side {
       flex: 1;
-      padding: 10px 0;
+      padding: 0 1rem;
+      margin-top: 1rem;
     }
   }
 }

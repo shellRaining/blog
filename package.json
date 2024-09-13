@@ -8,7 +8,7 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
     "debug": "vitepress build && vitepress preview",
-    "gen_hash": "node gallery/hashGenerator.js && taplo gallery/diary.toml"
+    "gen_hash": "node gallery/hashGenerator.js && taplo format gallery/diary.toml"
   },
   "dependencies": {
     "@vueuse/core": "^10.11.1",
