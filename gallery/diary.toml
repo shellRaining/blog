@@ -2,6 +2,7 @@
 title = "纸牌城堡"
 date = 2024-09-09
 image_url = "https://2f0f3db.webp.li/2024/09/89956875_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/89956875"
 note = "庆祝画廊页面的重构完成！这种感觉确实很像是搭纸牌城堡，莫名有一种契合（笑）"
 keywords = ["城堡", "公主", "优雅"]
 blurhash = "UxKwCFIURPs:~qaKRjV@%gayV@WBkWs:jFae"
@@ -10,6 +11,7 @@ blurhash = "UxKwCFIURPs:~qaKRjV@%gayV@WBkWs:jFae"
 title = "追寻"
 date = 2024-09-10
 image_url = "https://2f0f3db.webp.li/2024/09/122295149_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122295149"
 note = "今天是生日，也是准备面试的第二天，忙的连轴转，也算是一起在追寻！总是在寻找一些美好的东西"
 keywords = ["银发"]
 blurhash = "UADJJ5^-009F=SRh4?IV00E1^+bX0@oh~9xt"
@@ -18,6 +20,30 @@ blurhash = "UADJJ5^-009F=SRh4?IV00E1^+bX0@oh~9xt"
 title = "流星"
 date = 2024-09-11
 image_url = "https://2f0f3db.webp.li/2024/09/122228116_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122228116"
 note = "流星的意思是出货吗（笑），请假一天，好好准备吧！"
 keywords = ["流星", "许愿"]
 blurhash = "U9C~Y~x|}$Ae009X0e$,[%^Ekr%N%OAL-XEM"
+
+[[entry]]
+title = "雨中音"
+date = 2024-09-12
+image_url = "https://2f0f3db.webp.li/2024/09/122170357_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122170357"
+note = """
+今天有一个华为的宣讲会，到场后深刻感觉了宣讲学长的热情……真的是站着不动都会有人来找你（笑）。华为在我看来还是很硬核的，也许前端并不会招收很多，不过终端部门的学长讲了很多有关前端与华为生态的东西，我似乎也可以尝试一下 arkTs，做一个客户端应用试试看。
+除了华为的宣讲会，今天也是我 512 stars 的日子，在 Reddit 上有个人推荐了我的插件，一晚上就多了二三十个 stars，真的感觉很棒，一年多前无心的插柳，现在也算是开花结果，期待 1024 stars 的到来。
+不过说实话 neovim 的插件开发有点痛苦，这份痛苦是 Lua 这门语言带来的，非常诡异的语法和简陋的标准库，再加上 neovim 接口设计的也比较混乱，导致我很想放弃 neovim 的插件开发。刚好今天群里看到有群友写了一个 rsvim 项目，rust 作为内核，并且使用 typescript 进行插件开发。这个项目还处于一个相当早期的阶段，不过如果可能的话，我也希望能够尽一份力"""
+keywords = ["雨", "紫色", "忧郁"]
+blurhash = "U9G[W,Djk;?b00_M00M|0K00xsM|?cRk?H-."
+
+[[entry]]
+title = "早！"
+date = 2024-09-13
+image_url = "https://2f0f3db.webp.li/2024/09/93941224_p0_master1200.jpg"
+note = """
+这张图片是凌晨的时候刷 pixiv 看见的，可以说不小心暴露了 XP（乐），这样的早上一定很美好吧！
+今天主要是修改 bug，测试给出的 bug 都是陈年老货，七个月之前没有测出来，现在交到了我的手里，谁知道改一下会不会爆出问题呢？
+现在看来前端的平均水平还真是令人悲哀，居然都是 copy 来 copy 去，有问题也不知道，不深究代码运行的机制，只是追求代码能跑，没有及时的重构，这样下去，肯定会变得很难维护。还有破窗效应也是体现的淋漓尽致，一个人在代码里面写了无厘头的写法，后面看到的人就会不自觉的给打补丁（往上面堆），要么说领头羊呢"""
+keywords = ["早晨", "绝对领域"]
+blurhash = "ULI|]]00t,-A~WD%%MRP4.xuxaM{bbNGWVRk"
