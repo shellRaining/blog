@@ -51,253 +51,186 @@ promise2 = promise1.then(onFulfilled, onRejected);
 > 1. 根据规范，promise 有 `pending`，`fulfilled`，`rejected` 三个状态，初始状态为 `pending`，调用 `resolve` 会将其改为 `fulfilled`，调用 `reject` 会改为 `rejected`。并且一旦更改不能再改变
 > 1. promise 实例对象建好后可以调用 `then` 方法，而且是可以链式调用`then`方法，说明`then`是一个实例方法。[链式调用的实现这篇有详细解释](https://juejin.im/post/5e64cf0ef265da5734024f84#heading-7)，我这里不再赘述。简单的说就是 `then` 方法也必须返回一个带 `then` 方法的对象，可以是 this 或者新的 promise 实例。
 
-### 构造函数
+### Promise 类的实现
 
-为了更好的兼容性，本文就不用 ES6 了。
+按照上面说的，我们需要创建一个类，这里使用 ES6 class 语法
 
-```javascript
-// 先定义三个常量表示状态
-const PENDING = "pending";
-const FULFILLED = "fulfilled";
-const REJECTED = "rejected";
+```JavaScript
+class Promise {
+  constructor(fn) {
+    this.status = PENDING;
+    this.value = undefined;
+    this.reason = undefined;
+    this.onFulfilledCbs = []; // 暂时不用理会这两个数组，后面会用到
+    this.onRejectedCbs = [];
 
-function Promise(fn) {
-  this.status = PENDING;
-  this.value = null;
-  this.reason = null;
-}
-```
-
-### 执行传入的函数
-
-由于我们会立即执行传入函数特性，我们会继续加入如下代码：
-
-```javascript
-function Promise(fn) {
-  // ...省略前面代码...
-  try {
-    fn(resolve, reject);
-  } catch (e) {
-    reject(e);
-  }
-}
-```
-
-注意加上 `try...catch`，如果捕获到错误就 `reject`。注意这里 `resolve` 和 `reject` 是构造函数里面的局部函数，我们马上会定义
-
-### `resolve` 和 `reject` 方法
-
-根据规范，`resolve` 方法是将状态改为 fulfilled，`reject` 是将状态改为 rejected。因此要加上条件判断，同时，因为要保证 this 值不被我们新定义的函数覆盖，这里使用箭头函数。
-
-```javascript
-function Promise(fn) {
-  // ...省略前面代码...
-
-  const resolve = (value) => {
-    if (this.status === PENDING) {
-      this.status = FULFILLED;
+    const resolve = (value) => {
+      if (this.status !== PENDING) return;
       this.value = value;
-    }
-  };
-  const reject = (reason) => {
-    if (this.status === PENDING) {
-      this.status = REJECTED;
-      this.reason = reason;
-    }
-  };
-
-  // ...省略后面代码...
-}
-```
-
-### then 方法实现
-
-首先我们知道 `then` 方法是一个实例方法，所以要定义在原型链上。其次，`then` 方法是可以链式调用的，所以要返回一个新的 promise 对象。
-
-```javascript
-Promise.prototype.then = function (onFulfilled, onRejected) {
-  let resPromise;
-  // 暂时省略赋值 resPromise 的代码
-  return resPromise;
-};
-```
-
-### 根据前面 promise 不同状态执行不同回调
-
-我们知道 promise 有三种状态，所以我们要根据不同状态执行不同的回调。如果前面的状态已经是 fulfilled 或者 rejected，那么我们就直接执行回调，如果是 pending，我们就把回调函数推入 promise 实例内的一个数组，等到状态改变的时候再执行。这就有订阅发布模式的味道了。所以我们还需要回头修改 Promise 类里面的一些东西。
-
-```javascript
-function Promise(fn) {
-  // 省略前面代码...
-  this.onFulfilledCallbacks = [];
-  this.onRejectedCallbacks = [];
-
-  const resolve = (value) => {
-    if (this.status === PENDING) {
       this.status = FULFILLED;
-      this.value = value;
-      this.onFulfilledCallbacks.forEach((cb) => cb());
-    }
-  };
-  const reject = (reason) => {
-    if (this.status === PENDING) {
-      this.status = REJECTED;
+      this.onFulfilledCbs.forEach((cb) => void cb());
+    };
+    const reject = (reason) => {
+      if (this.status !== PENDING) return;
       this.reason = reason;
-      this.onRejectedCallbacks.forEach((cb) => cb());
-    }
-  };
-  // 省略后面代码...
-}
-```
+      this.status = REJECTED;
+      this.onRejectedCbs.forEach((cb) => void cb());
+    };
 
-首先先把三个分支的框架搭好，即 `if` `elif` `else`，然后赋值 `resPromise`，这里我们针对三种情况分别新建一个 promise 对象。以 fulfilled 为例：
-
-如果前面状态已经是 fulfilled，那么在下一个事件循环中我们就应该执行 `onFulfilled` 回调函数了，所以我们要把这个回调函数包装在一个 `setTimeout` 里面来模拟这一行为（但注意不是完全模拟，因为 setTimeout 是一个宏任务，而 then 中的回调是微任务）
-
-还有就是这里我没有直接调用 `onFulfilled`，而是调用了一个函数 `fulfilledTask`，这是因为 pending 分支中的代码和这里逻辑是一样的，所以将其抽离出来作为 `fulfilledTask`，同理 `rejectedTask`。至于这个函数本身的工作，马上就会讲到。
-
-```javascript
-Promise.prototype.then = function (onFulfilled, onRejected) {
-  let resPromise;
-  if (this.status === FULFILLED) {
-    resPromise = new Promise((resolve, reject) => {
-      setTimeout(fulfilledTask, 0, resolve, reject);
-    });
-  } else if (this.status === REJECTED) {
-    resPromise = new Promise((resolve, reject) => {
-      setTimeout(rejectedTask, 0, resolve, reject);
-    });
-  } else {
-    resPromise = new Promise((resolve, reject) => {
-      this.onFulfilledCallbacks.push(() => {
-        setTimeout(fulfilledTask, 0, resolve, reject);
-      });
-      this.onRejectedCallbacks.push(() => {
-        setTimeout(rejectedTask, 0, resolve, reject);
-      });
-    });
-  }
-  return resPromise;
-};
-```
-
-### `fulfilledTask` 和 `rejectedTask` 方法
-
-我们上面提到，如果前一个 promise 落定为 fulfilled， `onFulfilled` 执行成功并返回一个值 x，那么就把这个 x 就做为新 promise 的 value，如果执行失败就把失败的原因作为新 promise 的 reason。而如果 `onFulfilled` 不是函数，那么直接 resolve 前一个 promise 的 value，这个逻辑是通用的，所以我们将其抽离出来作为 `fulfilledTask`
-
-同理 `rejectedTask` 也是这样分析，二者有一点差别就是，如果 `onRejected` 不是函数，那么直接 reject 前一个 promise 的 reason，而不是 resolve
-
-```javascript
-Promise.prototype.then = function (onFulfilled, onRejected) {
-  const fulfilledTask = (resolve, reject) => {
     try {
-      if (typeof onFulfilled === "function") {
-        const res = onFulfilled(this.value);
-        resolvePromise(resPromise, res, resolve, reject);
-      } else {
-        resolve(this.value);
-      }
+      fn(resolve, reject);
     } catch (e) {
       reject(e);
     }
-  };
-  const rejectedTask = (resolve, reject) => {
-    try {
-      if (typeof onRejected === "function") {
-        const res = onRejected(this.reason);
-        resolvePromise(resPromise, res, resolve, reject);
-      } else {
-        reject(this.reason);
-      }
-    } catch (e) {
-      reject(e);
-    }
-  };
-
-  // ...省略前面代码...
-  return resPromise;
-};
-```
-
-这里还有一个函数 `resolvePromise`，这个函数是用来处理 `onFulfilled` 或者 `onRejected` 返回的值，我们马上讲到。
-
-### Promise 解决过程
-
-这里分为以下几种情况
-
-- 回调函数返回了一个基本类型，直接 `resolve` 掉
-- 回调函数返回了一个 promise，需要等待这个 promise 执行完，再根据他的状态来决定`resolve`还是`reject`
-- 回调函数返回了一个 thenable 对象，需要调用他的`then`方法，根据他的状态来决定`resolve`还是`reject`
-- 其他直接 resolve 掉（比如返回了一个对象）
-
-```javascript
-function resolvePromise(promise, x, resolve, reject) {
-  if (promise === x) return reject(new TypeError("promise equal with res")); // 不能返回自己
-  if (x === null) return resolve(null);
-  else if (typeof x !== "function" && typeof x !== "object") return resolve(x);
-  else if (x instanceof Promise) {
-    return x.then(
-      (value) => resolvePromise(promise, value, resolve, reject),
-      reject,
-    );
-  }
-
-  // 下面的代码是处理 thenable 对象
-  let then;
-  try {
-    then = x.then;
-    if (typeof then !== "function") return resolve(x);
-  } catch (e) {
-    reject(e);
-  }
-  var called = false;
-  // 将 x 作为函数的作用域 this 调用之
-  // 传递两个回调函数作为参数，第一个参数叫做 resolvePromise ，第二个参数叫做 rejectPromise
-  // 名字重名了，我直接用匿名函数了
-  try {
-    then.call(
-      x,
-      // 如果 resolvePromise 以值 y 为参数被调用，则运行 [[Resolve]](promise, y)
-      function (y) {
-        // 如果 resolvePromise 和 rejectPromise 均被调用，
-        // 或者被同一参数调用了多次，则优先采用首次调用并忽略剩下的调用
-        // 实现这条需要前面加一个变量called
-        if (called) return;
-        called = true;
-        resolvePromise(promise, y, resolve, reject);
-      },
-      // 如果 rejectPromise 以据因 r 为参数被调用，则以据因 r 拒绝 promise
-      function (r) {
-        if (called) return;
-        called = true;
-        reject(r);
-      },
-    );
-  } catch (error) {
-    // 如果调用 then 方法抛出了异常 e：
-    // 如果 resolvePromise 或 rejectPromise 已经被调用，则忽略之
-    if (called) return;
-
-    // 否则以 e 为据因拒绝 promise
-    reject(error);
   }
 }
 ```
+
+这个类的构造函数主要分为了三部分
+
+1. 初始化类的各种字段，这里有我们前面提到的 `status`，`value`，`reason`，还有两个陌生的家伙，后面会介绍
+2. 创建两个内部函数 `resolve` 和 `reject`，用来改变当前 Promise 实例的状态，可以看到为了防止多次调用导致状态转变，有一个分支判断语句来阻拦
+3. 在 `try catch` 语句中调用传入的函数，如果调用过程中报错就 `reject` 这个实例，否则决定权交给传入的这个函数
+
+### then 函数的大致框架
+
+```JavaScript
+class Promise {  
+  then(onFulfilled, onRejected) {
+    const resPromise = new Promise((resolve, reject) => {
+      const fulfilledTask = () => {};
+      const rejectedTask = () => {};
+      if (this.status === FULFILLED) queueMicrotask(fulfilledTask);
+      else if (this.status === REJECTED) queueMicrotask(rejectedTask);
+      else {
+        this.onFulfilledCbs.push(() => queueMicrotask(fulfilledTask));
+        this.onRejectedCbs.push(() => queueMicrotask(rejectedTask));
+      }
+    });
+
+    return resPromise;
+  }
+}
+```
+
+因为我们是对一个 Promise 实例调用 `then` 方法，所以直接在类中定义就可以，不用搞什么静态方法
+
+通过前面讲解可以知道，`then` 函数可以链式调用，所以返回值必定是一个 Promise 实例或者他自身，这里我们选择的是创建一个新的 Promise 实例。我们这里管前面的 Promise 叫做 `promise1`，then 返回的 Promise 实例叫做 `promise2`。
+
+由于 `promise1` 内部函数调用结束后会接着调用 `then` 方法，此时 `promise1` 的状态并没有敲定，既有可能已经解决了，也可能处于待定状态，因此我们需要进行分支判断。
+
+比方说如果已经落定为 fulfilled，我们就将 `then` 方法传入的 `onFulfilled` 回调函数安排到微任务队列中，但是由于 `onFulfilled` 的类型可能有很多种，所以我们这里抽象出来一个 `fulfilledTask` 函数，专门处理一些杂活，这个后面我们会介绍。
+
+同理如果处于已经拒绝的状态，我们也会推入到一个微任务队列。但是如果处于待定状态，我们需要将这个回调函数暂存起来，等到敲定后再去执行。这里很适合使用订阅发布模式，我们在每个 promise 中设置一个 `onFulfilledCbs` 和 `onRejectedCbs` 数组，专门存储敲定后需要执行的回调函数。等到敲定后我们就顺序遍历，将任务塞到微任务队列中。
+
+### promise1 落定后的处理方案
+
+上面我们提到了 `fulfilledTask` 和 `rejectedTask`，他们主要负责运行传入 `then` 方法的回调函数，并且稍加修饰，代码如下
+
+```JavaScript
+class Promise {
+  then(onFulfilled, onRejected) {
+		const resPromise = new Promise((resolve, reject) => {      
+			const fulfilledTask = () => {
+        try {
+          if (typeof onFulfilled !== "function") resolve(this.value);
+          else resolveThen(onFulfilled(this.value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      const rejectedTask = () => {
+        try {
+          if (typeof onRejected !== "function") reject(this.reason);
+          else resolveThen(onRejected(this.reason));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      // then 中的主要逻辑，同上面讲的
+    }
+  }
+}	                   
+```
+
+可以看到我们在这些处理函数内的逻辑都是一样的
+
+1. 放到 `try catch` 中尝试运行，如果报错都会拒付 promise2
+2. 如果回调执行成功，那么就落定 promise2，但落定的 value 需要由传入 then 的两个回调函数的返回值来决定，如果返回值是非引用类型，或者是非 thenable 的对象，那么可以直接交付，而如果是 thenable 类型的对象，就需要一些额外的操作，这里抽象成一个新的函数
+3. 如果传入 then 的回调参数不是函数类型，那么就直接落定 promise1 的 value 或者 reason
+
+### 对 then 回调函数返回值的处理
+
+上面我们提到，由于 then 回调函数返回值的多样性，我们需要额外的代码来处理这些逻辑，下面就是处理的整个函数
+
+```JavaScript
+class Promise {
+  then(onFulfilled, onRejected) {
+		const resPromise = new Promise((resolve, reject) => {      
+      const resolveThen = (cbRet) => {
+        if (cbRet === resPromise) return reject(new TypeError());
+
+        if (cbRet instanceof Promise) cbRet.then(resolveThen, reject);
+        else if (
+          typeof cbRet === "function" ||
+          (typeof cbRet === "object" && cbRet !== null)
+        ) {
+          let then;
+          try {
+            then = cbRet.then;
+            if (typeof then !== "function") resolve(cbRet);
+          } catch (e) {
+            reject(e);
+          }
+
+          let called = false;
+          function callOnce(fn) {
+            return function (...args) {
+              if (called) return;
+              called = true;
+              fn(...args);
+            };
+          }
+          try {
+            then.call(cbRet, callOnce(resolveThen), callOnce(reject));
+          } catch (e) {
+            callOnce(reject)(e);
+          }
+        } else resolve(cbRet);
+      };
+      // 上面提到的代码
+    }
+  }
+}	    
+```
+
+可以看到上来先进行了一个判断，看返回值是否和 resPromise 重合，如果重合就直接 reject 一个 TypeError
+
+之后就是正事环节
+
+1. 如果对象是 promise 实例，那么就等这个 promise 解决后我们再去尝试解决他的值，很有递归的味道……但由于这是异步操作，所以严格意义上来说不是递归
+2. 如果是对象类型（不包含 null），那么
+   1. 首先取返回值的 then 属性，如果过程中遇到了报错，就直接拒付（比如 proxy 对象就可能发生这种事）
+   2. 取到了 then 属性后判断是否是函数，如果不是就直接兑现这个返回值
+   3. 如果是函数，就运行这个函数，这里 thenable 对象的 then 函数也和我们自己实现的 then 方法一样，接受两个回调函数，所以这里也要传入 resolveThen 和 reject，但由于 then 函数执行过程中可能调用很多次，为了防止状态发生改变，我们设计了一个 callOnce 函数，保证只执行一次 then 的回调函数
+3. 如果是基本类型，就直接兑付返回值即可
 
 ### 测试我们的 Promise
 
 我们使用 Promise/A+ 官方的测试工具 [promises-aplus-tests](https://github.com/promises-aplus/promises-tests) 来对我们的 `Promise`进行测试，要使用这个工具我们必须实现一个静态方法 `deferred`，可以将下面代码粘贴进去。
 
 ```javascript
-Promise.deferred = function () {
-  const result = {};
-  result.promise = new MyPromise(function (resolve, reject) {
-    result.resolve = resolve;
-    result.reject = reject;
-  });
+class Promise {
+	static deferred() {
+    var result = {};
+    result.promise = new Promise(function (resolve, reject) {
+      result.resolve = resolve;
+      result.reject = reject;
+    });
 
-  return result;
-};
+    return result;
+  }
+}
 ```
 
 然后用 npm 将`promises-aplus-tests`下载下来，再配置下 package.json 就可以跑测试了：
@@ -308,7 +241,7 @@ Promise.deferred = function () {
     "promises-aplus-tests": "^2.1.2"
   },
   "scripts": {
-    "test": "promises-aplus-tests MyPromise"
+    "test": "promises-aplus-tests ./promise.js"
   }
 }
 ```
@@ -340,12 +273,12 @@ Promise.deferred = function () {
 将现有对象转为 Promise 对象，如果 Promise.resolve 方法的参数，不是具有 then 方法的对象（又称 thenable 对象），则返回一个新的 Promise 对象，且它的状态为 fulfilled。
 
 ```javascript
-MyPromise.resolve = function (parameter) {
-  if (parameter instanceof MyPromise) {
+Promise.resolve = function (parameter) {
+  if (parameter instanceof Promise) {
     return parameter;
   }
 
-  return new MyPromise(function (resolve) {
+  return new Promise(function (resolve) {
     resolve(parameter);
   });
 };
@@ -356,8 +289,8 @@ MyPromise.resolve = function (parameter) {
 返回一个新的 Promise 实例，该实例的状态为 rejected。Promise.reject 方法的参数 reason，会被传递给实例的回调函数。
 
 ```javascript
-MyPromise.reject = function (reason) {
-  return new MyPromise(function (resolve, reject) {
+Promise.reject = function (reason) {
+  return new Promise(function (resolve, reject) {
     reject(reason);
   });
 };
@@ -460,7 +393,7 @@ Promise.race = function (tasks) {
 `Promise.prototype.catch`方法是`.then(null, rejection)`或`.then(undefined, rejection)`的别名，用于指定发生错误时的回调函数。
 
 ```javascript
-MyPromise.prototype.catch = function (onRejected) {
+Promise.prototype.catch = function (onRejected) {
   this.then(null, onRejected);
 };
 ```
@@ -470,15 +403,15 @@ MyPromise.prototype.catch = function (onRejected) {
 `finally`方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
 
 ```javascript
-MyPromise.prototype.finally = function (fn) {
+Promise.prototype.finally = function (fn) {
   return this.then(
     function (value) {
-      return MyPromise.resolve(fn()).then(function () {
+      return Promise.resolve(fn()).then(function () {
         return value;
       });
     },
     function (error) {
-      return MyPromise.resolve(fn()).then(function () {
+      return Promise.resolve(fn()).then(function () {
         throw error;
       });
     },
