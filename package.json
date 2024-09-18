@@ -12,23 +12,20 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.11.1",
+    "blurhash": "^2.0.5",
     "dayjs": "latest",
     "gsap": "^3.12.5",
     "idb-keyval": "^6.2.1",
-    "viewerjs": "^1.11.6",
-    "blurhash": "^2.0.5"
+    "viewerjs": "^1.11.6"
   },
   "devDependencies": {
     "@iarna/toml": "^2.2.5",
-    "@tree-sitter-grammars/tree-sitter-markdown": "^0.2.3",
     "@types/dom-view-transitions": "^1.0.5",
     "@types/node": "latest",
     "axios": "^1.7.7",
     "js-toml": "^1.0.0",
     "sharp": "^0.33.5",
-    "tree-sitter": "^0.21.1",
-    "tree-sitter-toml": "^0.5.1",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.2",
     "vitepress": "latest",
     "vue": "latest"
   }
