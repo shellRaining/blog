@@ -43,7 +43,7 @@ date: 2024-08-25
 
 1. 我们创建插件实例，注册到 `wavesurfer` 实例上，`wavesurfer` 实例会调用插件实例的 `onInit` 函数，这个过程涉及到 `SpectrogramPlugin` 类对 `BasePlugin` 类的 `onInit` 方法的重写
 
-2. 在执行 `onInit` 的过程中，找到用户指定的 `container`（默认和 wavesurfer 实例共用一个 `container`），并且订阅了主波形图的重绘事件，每当其重绘后插件实例也执行 `render` 操作
+2. 在执行 `onInit` 的过程中，找到用户指定的 `container`（默认和 wavesurfer 实例共用一个 `container`），并且订阅了主波形图的重绘事件，每当其重绘之前插件实例也执行 `render` 操作
 
    虽说是订阅的重绘事件，但波形图第一次绘制也会触发重绘，因为 `wavesurfer` 实例也订阅了他自身的 `renderer` 的 `render` 事件。这个流程在前面的文章中提到过
 
