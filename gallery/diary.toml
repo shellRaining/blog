@@ -41,9 +41,47 @@ blurhash = "U9G[W,Djk;?b00_M00M|0K00xsM|?cRk?H-."
 title = "早！"
 date = 2024-09-13
 image_url = "https://2f0f3db.webp.li/2024/09/93941224_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/93941224"
 note = """
 这张图片是凌晨的时候刷 pixiv 看见的，可以说不小心暴露了 XP（乐），这样的早上一定很美好吧！
 今天主要是修改 bug，测试给出的 bug 都是陈年老货，七个月之前没有测出来，现在交到了我的手里，谁知道改一下会不会爆出问题呢？
 现在看来前端的平均水平还真是令人悲哀，居然都是 copy 来 copy 去，有问题也不知道，不深究代码运行的机制，只是追求代码能跑，没有及时的重构，这样下去，肯定会变得很难维护。还有破窗效应也是体现的淋漓尽致，一个人在代码里面写了无厘头的写法，后面看到的人就会不自觉的给打补丁（往上面堆），要么说领头羊呢"""
 keywords = ["早晨", "绝对领域"]
 blurhash = "ULI|]]00t,-A~WD%%MRP4.xuxaM{bbNGWVRk"
+
+[[entry]]
+title = "自言自语"
+date = 2024-09-14
+image_url = "https://2f0f3db.webp.li/2024/09/119507114_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/119507114"
+note = """
+这张图片让我想起了候鸟这个 galgame，就在黄河边的湿地旁，二人半开玩笑而又略带认真的讨论着未来……不知怎的，感同身受啊！
+今天还收到了百度的预录取通知，不过这个没有准信，还得去实习才能决定，我可能还要问一下那边的业务主要是什么再做决定，现在的 vue2 已经很折磨了，学习不到新的东西，在舒适区怎么能成长呢？要想完成自己的全栈梦想（一个完整的 APP），还有很长的路要走啊！"""
+keywords = ["星空", "思考", "月光"]
+blurhash = "UCA]t3xaR%t80eNcoMWA9WogaxWB}sn%W=of"
+
+[[entry]]
+title = "四季的窗"
+date = 2024-09-15
+image_url = "https://2f0f3db.webp.li/2024/09/116362193_p0_master1200.jpg"
+note = """
+这是九月十八日补上的日记，重新下载回来了王者荣耀，一个人假期里实在是太闷了，还是和同学打打游戏比较好……不过因为是补充的日记，你也知道后续发生了什么（悲）。
+顺带一提，计算了伽罗太华皮肤要想抽到一共需要多少抽，深感概率论的实用性"""
+keywords = ["四季", "窗户"]
+blurhash = "UQHe%#}Y4TF{BEyF%1Mv0KOa%MrV-ORNM}xv"
+
+[[entry]]
+title = "你记录光，我记录你"
+date = 2024-09-16
+image_url = "https://2f0f3db.webp.li/2024/09/102210467_p0_master1200.jpg"
+note = "想让男女保持同样的理性和思考步调，也许是一种奢望。今天 98 上的帖子实在是令人震撼。"
+keywords = ["光影"]
+blurhash = "ULC?P]?a-:~V~Vx[xu-:9aNHWXRk9ajGoLRj"
+
+[[entry]]
+title = "水畔的风"
+date = 2024-09-17
+image_url = "https://2f0f3db.webp.li/2024/09/81060731_p0_master1200.jpg"
+note = "最后一天咯，明天的面试就相当于是裸考了！"
+keywords = ["风", "湿地", "公主", "城堡"]
+blurhash = "UuMG*Jt8WTxs~pkCa#ofx]oes;a$-=t7kBoe"
