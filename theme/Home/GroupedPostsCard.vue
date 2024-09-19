@@ -12,6 +12,7 @@ const showChunk = ref(false);
 const showList = ref(true);
 const foldEl = ref<HTMLUListElement | null>(null);
 const foldHeight = ref("");
+const isMounted = ref(false);
 
 function toggleList() {
   showList.value = !showList.value;
@@ -38,6 +39,7 @@ onMounted(() => {
     const ulEl = foldEl.value;
     foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
   }
+  isMounted.value = true;
 });
 </script>
 
@@ -52,15 +54,16 @@ onMounted(() => {
       {{ props.date }}
     </header>
 
-    <div
-      class="chunk"
-      :class="{ 'chunk-active': showChunk }"
-      key="chunk-bar"
-    ></div>
+    <div class="chunk" :class="{ 'chunk-active': showChunk }"></div>
 
     <Transition name="fold">
       <ul ref="foldEl" v-show="showList">
-        <TransitionGroup appear @before-enter="beforeEnter" @enter="enter">
+        <TransitionGroup
+          appear
+          @before-enter="beforeEnter"
+          @enter="enter"
+          v-if="isMounted"
+        >
           <li
             v-for="(post, index) in props.posts"
             :key="post.url"
@@ -69,6 +72,15 @@ onMounted(() => {
             <PostItem :post="post" />
           </li>
         </TransitionGroup>
+        <template v-else>
+          <li
+            v-for="post in props.posts"
+            :key="post.url"
+            :style="{ visibility: 'hidden' }"
+          >
+            <PostItem :post="post" />
+          </li>
+        </template>
       </ul>
     </Transition>
   </section>
