@@ -5,7 +5,7 @@
 await 操作符会等待后面的 Promise 表达式兑现后获取他的值，并且只能在顶层模块或者异步函数中使用。总结一下使用方式就是：
 
 ```javascript
-await expression
+await expression;
 ```
 
 这里的 expression 就很有讲究
@@ -14,7 +14,7 @@ await expression
 2. 若是 thenable 对象，那么就将其包装成一个 Promise 对象，构造时会调用其中的 then 函数
 3. 除此之外的其他类型会被隐式的包装进一个已兑现的 `Promise` 用于等待，其结果就是表达式的值。
 
-## async function 
+## async function
 
 该语句用来声明一个异步函数，如果调用这个函数，必定返回一个 promise（即使内部没有写 return 语句）
 
@@ -28,15 +28,15 @@ await expression
 > const p = new Promise((res, rej) => {
 >   res(1);
 > });
-> 
+>
 > async function asyncReturn() {
 >   return p;
 > }
-> 
+>
 > function basicReturn() {
 >   return Promise.resolve(p);
 > }
-> 
+>
 > console.log(p === basicReturn()); // true
 > console.log(p === asyncReturn()); // false
 > ```
@@ -85,4 +85,3 @@ button.onclick = () => void doSomething();
 >
 > - 返回 `true` (或任何真值): 不会阻止默认行为。
 > - 返回 `false`: 会阻止默认行为(相当于调用 `event.preventDefault()`)。
-

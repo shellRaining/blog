@@ -95,7 +95,7 @@ class Promise {
 ### then 函数的大致框架
 
 ```JavaScript
-class Promise {  
+class Promise {
   then(onFulfilled, onRejected) {
     const resPromise = new Promise((resolve, reject) => {
       const fulfilledTask = () => {};
@@ -130,8 +130,8 @@ class Promise {
 ```JavaScript
 class Promise {
   then(onFulfilled, onRejected) {
-		const resPromise = new Promise((resolve, reject) => {      
-			const fulfilledTask = () => {
+    const resPromise = new Promise((resolve, reject) => {
+      const fulfilledTask = () => {
         try {
           if (typeof onFulfilled !== "function") resolve(this.value);
           else resolveThen(onFulfilled(this.value));
@@ -150,7 +150,7 @@ class Promise {
       // then 中的主要逻辑，同上面讲的
     }
   }
-}	                   
+}
 ```
 
 可以看到我们在这些处理函数内的逻辑都是一样的
@@ -166,7 +166,7 @@ class Promise {
 ```JavaScript
 class Promise {
   then(onFulfilled, onRejected) {
-		const resPromise = new Promise((resolve, reject) => {      
+    const resPromise = new Promise((resolve, reject) => {
       const resolveThen = (cbRet) => {
         if (cbRet === resPromise) return reject(new TypeError());
 
@@ -201,7 +201,7 @@ class Promise {
       // 上面提到的代码
     }
   }
-}	    
+}
 ```
 
 可以看到上来先进行了一个判断，看返回值是否和 resPromise 重合，如果重合就直接 reject 一个 TypeError
@@ -221,7 +221,7 @@ class Promise {
 
 ```javascript
 class Promise {
-	static deferred() {
+  static deferred() {
     var result = {};
     result.promise = new Promise(function (resolve, reject) {
       result.resolve = resolve;
