@@ -10,13 +10,13 @@ const posts = data.filter(({ frontmatter }) => {
 const groupedPosts = posts.reduce(
   (acc, post) => {
     const date = dayjs(post.frontmatter.date);
-    const month = date.format("YYYY-MM");
+    const groupKey = date.format("YYYY-MM");
 
-    if (!acc[month]) {
-      acc[month] = [];
+    if (!acc[groupKey]) {
+      acc[groupKey] = [];
     }
 
-    acc[month].push(post);
+    acc[groupKey].push(post);
     return acc;
   },
   {} as Record<string, ContentData[]>,

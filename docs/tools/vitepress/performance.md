@@ -1,4 +1,10 @@
-# 博客性能优化随笔
+---
+title: 博客性能优化随笔
+tag:
+  - vitepress
+date: 2024-09-20
+collection: vitepress
+---
 
 在使用 vitepress 这个静态框架来编写博客的时候，很容易就能取得 lightinghouse 满分的效果，这是因为他在很多地方进行了优化的结果，我们这里挑出一些来重点讲解。
 
@@ -51,41 +57,38 @@ vitepress 是一个静态博客生成框架，而不是一个服务端渲染框�
 observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      const link = entry.target as HTMLAnchorElement
-      observer!.unobserve(link)
-      const { pathname } = link
+      const link = entry.target as HTMLAnchorElement;
+      observer!.unobserve(link);
+      const { pathname } = link;
       if (!hasFetched.has(pathname)) {
-        hasFetched.add(pathname)
-        const pageChunkPath = pathToFile(pathname)
-        if (pageChunkPath) doFetch(pageChunkPath)
+        hasFetched.add(pathname);
+        const pageChunkPath = pathToFile(pathname);
+        if (pageChunkPath) doFetch(pageChunkPath);
       }
     }
-  })
-})
+  });
+});
 
 rIC(() => {
   document
-    .querySelectorAll<HTMLAnchorElement | SVGAElement>('#app a')
+    .querySelectorAll<HTMLAnchorElement | SVGAElement>("#app a")
     .forEach((link) => {
       const { hostname, pathname } = new URL(
-        link.href instanceof SVGAnimatedString
-          ? link.href.animVal
-          : link.href,
-        link.baseURI
-      )
+        link.href instanceof SVGAnimatedString ? link.href.animVal : link.href,
+        link.baseURI,
+      );
       if (
         // 仅预取同标签页导航，因为新标签页将加载 lean.js 代码块。
-        link.target !== '_blank' &&
+        link.target !== "_blank" &&
         // 仅预取入站链接
         hostname === location.hostname
       ) {
         if (pathname !== location.pathname) {
-          observer!.observe(link)
+          observer!.observe(link);
         }
       }
-    })
-})
-
+    });
+});
 ```
 
 ## 代码分割
@@ -95,3 +98,98 @@ vitepress 的代码分割做的可以称作简洁有力啊，打包后的产物�
 其中框架代码包含了 vitepress 的核心内容，比如 vue3 的运行时核心，路由系统，markdown 渲染（存疑）。应用代码包含了我们自己编写的主题（除了 css 会被默认拆出去形成一个单独的文件），同时，由于我们的主题依附于默认主题，所以部分主题代码还会出现在框架代码中。博文的拆分在前面已经提到了，这里不再赘述。
 
 同时对重要代码还进行了预取，比如 `framework.js` 的代码，以供 `app.js` 使用，而不是形成一个瀑布流的请求
+
+除了 vitepress 框架自身的代码分割，我们还可以通过动态引入其他模块（比如 viewerjs），来触发代码分割。如果我们通过顶层静态引入 viewerjs，他就会附加到 `app.js` 中，包体积会大出 20kb 左右，分割后明显能看到总包体减小，并且可以并行请求。
+
+## favicon 的设置
+
+favicon 虽然只是一个简单的图标，但是由于他是必须加载的低优先级资源，所以对他的优化也是有必要的。
+
+favicon 通常使用下面的格式文件，前者所有的桌面浏览器都支持，后者现代的浏览器支持，这些图标必须是正方形的，否则可能会面临兼容性问题
+
+- `favicon.ico` 图标
+- PNG 格式图标
+
+同时，由于使用场景非常多变，我们可能需要提供一组 16×16、32×32 和 48×48 图像集合，比如 16×16 放在地址栏，32×32 放在快捷任务栏上。这么多的图标，如果不借助工具来生成会非常困难，可以通过这个网站来实现 [https://realfavicongenerator.net/](https://realfavicongenerator.net/)，使用方法可以参考[张鑫旭的博客](https://www.zhangxinxu.com/wordpress/2019/06/html-favicon-size-ico-generator/?shrink=1)
+
+## 画廊懒加载和优化
+
+这部分可以去看[画廊的实现](./features/gallery.md)，唯独有一些小变化，就是关于 LQIP 的实现。我们确实没有很好的办法去生成低质量的缩略图，并且在前端提前请求这些图片，但是可以尝试在构建时将 base64 编码的 blurhash 内联到 HTML 中，然后在客户端解码，用 canvas 绘制出模糊图
+
+```toml
+[[entry]]
+title = "图片示例"
+image_url = "https://xxx.jpg"
+blurhash = "UxKwCFIURPs:~qaKRjV@%gayV@WBkWs:jFae"
+```
+
+上面 toml 列表中的 blurhash 就是在构建时生成的，并在下面的 vue 组件中解码使用
+
+```vue
+<template>
+  <canvas ref="canvas"></canvas>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { decode } from "blurhash";
+
+const props = defineProps<{
+  blurhash: string;
+  width?: number;
+  height?: number;
+  punch?: number;
+}>();
+
+const canvas = ref<HTMLCanvasElement | null>(null);
+
+const drawBlurhash = () => {
+  if (!canvas.value) return;
+
+  const ctx = canvas.value.getContext("2d");
+  if (!ctx) return;
+
+  const width = props.width || 32;
+  const height = props.height || 32;
+  const punch = props.punch || 1;
+
+  canvas.value.width = width;
+  canvas.value.height = height;
+
+  const pixels = decode(props.blurhash, width, height, punch);
+
+  const imageData = ctx.createImageData(width, height);
+  imageData.data.set(pixels);
+  ctx.putImageData(imageData, 0, 0);
+};
+
+onMounted(drawBlurhash);
+</script>
+
+<style scoped>
+canvas {
+  display: block;
+  max-width: 100%;
+}
+</style>
+```
+
+## 尽量避免引入外部包
+
+这个其实很难说，因为为了实现一些功能，我们不可避免的要使用一些外部模块，他们相对会做更好的性能优化和边缘情况处理，但是对于简单的场景，我们自己编写的代码已经足够应付，比如首页文章列表逐个进入的动画效果，最开始我使用的是 gsap 实现的，可以通过下面的代码替换
+
+```typescript
+// posts transition
+const isMounted = ref(false);
+onMounted(() => {
+  if (!foldEl.value) return;
+  isMounted.value = true;
+  const liEls = foldEl.value.querySelectorAll("li");
+  liEls.forEach((el, idx) => {
+    el.style.transition = "transform 1s ease-out, opacity 1s ease-out";
+    el.style.transitionDelay = `${String(idx * 0.1)}s`;
+  });
+});
+```
+
+这段 vue 中的 script 通过操控每个列表元素的 `transition` 样式，使他们获得了过渡效果和不同的延迟时间。而且这个动画的流畅程度可以和 gsap 媲美，因为他是纯 css 动画，只是通过 JavaScript 控制动画的时机而已。

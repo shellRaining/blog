@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import dayjs from "dayjs";
 import { data, ImgDiaryItem } from "../loader/gallery.data.ts";
 import Album from "./Album.vue";
 import ImagePopup from "./ImagePopup.vue";
@@ -10,10 +11,8 @@ const mainEl = ref<HTMLElement | null>();
 const isPopupOpen = ref(false);
 
 const albums = Object.groupBy(data, (galleryItem) => {
-  const date = new Date(galleryItem.date);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  return `${year}-${month}`;
+  const date = dayjs(galleryItem.date);
+  return date.format("YYYY-MM");
 }) as Record<string, ImgDiaryItem[]>;
 
 onMounted(() => {
