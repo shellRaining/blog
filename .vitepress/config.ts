@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 import { injectVersions } from "./injectPageData.ts";
 
 const APPEARANCE_KEY = "shellRaining-blog-theme";
+const fontPath = "/font/LXGWWenKaiScreen.woff2";
 export default defineConfig({
   lang: "zh-cn",
   title: "shellRaining's blog",
@@ -67,9 +68,17 @@ export default defineConfig({
     [
       "link",
       {
-        rel: "stylesheet",
-        href: "https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css",
+        rel: "preload",
+        href: fontPath,
+        type: "font/woff2",
+        as: "font",
+        crossorigin: "anonymous",
       },
+    ],
+    [
+      "style",
+      {},
+      `@font-face{font-family:"LXGW WenKai Screen";src:url('${fontPath}') format("woff2");font-weight:normal;font-style:normal;font-display:swap}:root{--vp-font-family-base:"LXGW WenKai Screen",sans-serif`,
     ],
     [
       "script",

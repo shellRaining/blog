@@ -4,11 +4,6 @@
   min-height: 100vh;
 }
 
-:root[lang] {
-  --vp-font-family-base: "LXGW WenKai screen", sans-serif;
-  --vp-font-family-mono: "LXGW WenKai Mono", monospace;
-}
-
 .VPDoc .content main {
   img {
     max-width: 300px;
