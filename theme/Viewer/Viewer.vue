@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import Viewer from "viewerjs";
 import { onMounted, onUnmounted } from "vue";
 import "viewerjs/dist/viewer.css";
 
-let viewer: Viewer | null = null;
+let viewer: any = null;
 
-function previewImage(e: Event) {
+async function previewImage(e: Event) {
   const target = e.target as HTMLElement; // maybe the img element
   const currentTarget = e.currentTarget as HTMLElement; // the event binded element
   if (target.tagName.toLowerCase() !== "img") return;
 
   if (!viewer) {
-    viewer = new Viewer(currentTarget, {
+    const ViewerModule = await import("viewerjs");
+    viewer = new ViewerModule.default(currentTarget, {
       toolbar: {
         prev: {
           show: 1,
@@ -23,8 +23,8 @@ function previewImage(e: Event) {
         },
       },
     });
-    viewer.show();
   }
+  viewer.show();
 }
 
 onMounted(() => {

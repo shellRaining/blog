@@ -64,6 +64,7 @@ blurhash = "UCA]t3xaR%t80eNcoMWA9WogaxWB}sn%W=of"
 title = "四季的窗"
 date = 2024-09-15
 image_url = "https://2f0f3db.webp.li/2024/09/116362193_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/116362193"
 note = """
 这是九月十八日补上的日记，重新下载回来了王者荣耀，一个人假期里实在是太闷了，还是和同学打打游戏比较好……不过因为是补充的日记，你也知道后续发生了什么（悲）。
 顺带一提，计算了伽罗太华皮肤要想抽到一共需要多少抽，深感概率论的实用性"""
@@ -74,6 +75,7 @@ blurhash = "UQHe%#}Y4TF{BEyF%1Mv0KOa%MrV-ORNM}xv"
 title = "你记录光，我记录你"
 date = 2024-09-16
 image_url = "https://2f0f3db.webp.li/2024/09/102210467_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/102210467"
 note = "想让男女保持同样的理性和思考步调，也许是一种奢望。今天 98 上的帖子实在是令人震撼。"
 keywords = ["光影"]
 blurhash = "ULC?P]?a-:~V~Vx[xu-:9aNHWXRk9ajGoLRj"
@@ -82,6 +84,7 @@ blurhash = "ULC?P]?a-:~V~Vx[xu-:9aNHWXRk9ajGoLRj"
 title = "水畔的风"
 date = 2024-09-17
 image_url = "https://2f0f3db.webp.li/2024/09/81060731_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/81060731"
 note = "最后一天咯，明天的面试就相当于是裸考了！"
 keywords = ["风", "湿地", "公主", "城堡"]
 blurhash = "UuMG*Jt8WTxs~pkCa#ofx]oes;a$-=t7kBoe"
@@ -90,6 +93,7 @@ blurhash = "UuMG*Jt8WTxs~pkCa#ofx]oes;a$-=t7kBoe"
 title = "花 & 光"
 date = 2024-09-18
 image_url = "https://2f0f3db.webp.li/2024/09/122326824_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122326824"
 note = """
 今天得到消息，因为我来的时间点不太好，所做的工作量不太够，转正名额无法给我，让我考虑以后的出路。说实话我挺感谢这次谈话的，如果一直吊着我，反而会让我没有理由去离开……
 我个人的想法也是早点出去，因为这里的工作实在是不太喜欢，没有可以提升的点，并且也受不了这里面“领头羊”一样的陈年代码，一个人写下了错误的代码，其他人就会复制粘贴到其他地方，尽管早期的设计让代码不至于太过凌乱，但内部已经很难维护了。
@@ -99,3 +103,14 @@ note = """
 """
 keywords = ["烟花", "若叶睦"]
 blurhash = "U34n-^od02NIxBj[IqWC0LWB~UxZIuay-noe"
+
+[[entry]]
+title = "萤与月"
+date = 2024-09-19
+image_url = "https://2f0f3db.webp.li/2024/09/122480274_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122480274"
+note = """
+今天从一块实习的同学那边得知，HR 根本没有留出给实习生的名额，我们两个怕都是要走人了。从这里还是能感觉就业的寒冬啊……本来以为今年的就业形势还不错，没想到还是没有复苏啊！
+不过这也是机遇！就像这张图上的萤与月，还是相信会有美好的事情发生。"""
+keywords = ["月亮", "光晕"]
+blurhash = "UOB}CHyG8{WGDmMz%Jt1Q+RNkUk7%zx[RmRo"
