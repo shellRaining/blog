@@ -17,9 +17,6 @@ importers:
       dayjs:
         specifier: latest
         version: 1.11.13
-      gsap:
-        specifier: ^3.12.5
-        version: 3.12.5
       idb-keyval:
         specifier: ^6.2.1
         version: 6.2.1
@@ -805,9 +802,6 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
-
-  gsap@3.12.5:
-    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
 
   hast-util-to-html@9.0.3:
     resolution: {integrity: sha512-M17uBDzMJ9RPCqLMO92gNNUDuBSq10a25SDBI08iCCxmorf4Yy6sYHK57n9WAbRAAaU+DuR4W6GN9K4DFZesYg==}
@@ -1801,8 +1795,6 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
-
-  gsap@3.12.5: {}
 
   hast-util-to-html@9.0.3:
     dependencies:

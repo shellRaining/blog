@@ -2,44 +2,36 @@
 import { ContentData } from "vitepress";
 import PostItem from "./PostItem.vue";
 import { onMounted, ref } from "vue";
-import gsap from "gsap";
 
 const props = defineProps<{
   date: string;
   posts: ContentData[];
 }>();
+
+// fold and chunk
 const showChunk = ref(false);
 const showList = ref(true);
 const foldEl = ref<HTMLUListElement | null>(null);
 const foldHeight = ref("");
-const isMounted = ref(false);
-
 function toggleList() {
   showList.value = !showList.value;
 }
-
-function beforeEnter(element: Element) {
-  const el = element as HTMLLIElement;
-  el.style.opacity = "0";
-  el.style.transform = "translateX(30px)";
-}
-function enter(element: Element, done: any) {
-  const el = element as HTMLLIElement;
-  gsap.to(el, {
-    duration: 1,
-    onComplete: done,
-    opacity: 1,
-    x: 0,
-    delay: parseFloat(el.dataset.index!) * 0.1,
-  });
-}
-
 onMounted(() => {
-  if (foldEl.value) {
-    const ulEl = foldEl.value;
-    foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
-  }
+  if (!foldEl.value) return;
+  const ulEl = foldEl.value;
+  foldHeight.value = `${ulEl.getBoundingClientRect().height}px`;
+});
+
+// posts transition
+const isMounted = ref(false);
+onMounted(() => {
+  if (!foldEl.value) return;
   isMounted.value = true;
+  const liEls = foldEl.value.querySelectorAll("li");
+  liEls.forEach((el, idx) => {
+    el.style.transition = "transform 1s ease-out, opacity 1s ease-out";
+    el.style.transitionDelay = `${String(idx * 0.1)}s`;
+  });
 });
 </script>
 
@@ -58,29 +50,13 @@ onMounted(() => {
 
     <Transition name="fold">
       <ul ref="foldEl" v-show="showList">
-        <TransitionGroup
-          appear
-          @before-enter="beforeEnter"
-          @enter="enter"
-          v-if="isMounted"
+        <li
+          v-for="post in props.posts"
+          :key="post.url"
+          :class="{ mounted: isMounted }"
         >
-          <li
-            v-for="(post, index) in props.posts"
-            :key="post.url"
-            :data-index="index"
-          >
-            <PostItem :post="post" />
-          </li>
-        </TransitionGroup>
-        <template v-else>
-          <li
-            v-for="post in props.posts"
-            :key="post.url"
-            :style="{ visibility: 'hidden' }"
-          >
-            <PostItem :post="post" />
-          </li>
-        </template>
+          <PostItem :post="post" />
+        </li>
       </ul>
     </Transition>
   </section>
@@ -106,6 +82,13 @@ section {
 
     & > li {
       margin: 0.5rem;
+      opacity: 0;
+      transform: translateX(30px);
+
+      &.mounted {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
   }
 }

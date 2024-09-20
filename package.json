@@ -14,7 +14,6 @@
     "@vueuse/core": "^10.11.1",
     "blurhash": "^2.0.5",
     "dayjs": "latest",
-    "gsap": "^3.12.5",
     "idb-keyval": "^6.2.1",
     "viewerjs": "^1.11.6"
   },
