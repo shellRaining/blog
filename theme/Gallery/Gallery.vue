@@ -10,7 +10,20 @@ const visibleAlbums = ref<Set<string>>(new Set());
 const mainEl = ref<HTMLElement | null>();
 const isPopupOpen = ref(false);
 
-const albums = Object.groupBy(data, (galleryItem) => {
+const groupBy =
+  Object.groupBy ??
+  function groupBy(array: any, keyGetter: any) {
+    return array.reduce((acc: any, item: any) => {
+      const key = keyGetter(item);
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(item);
+      return acc;
+    }, {});
+  };
+
+const albums = groupBy(data, (galleryItem) => {
   const date = dayjs(galleryItem.date);
   return date.format("YYYY-MM");
 }) as Record<string, ImgDiaryItem[]>;

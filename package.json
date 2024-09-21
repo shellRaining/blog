@@ -4,13 +4,13 @@
   "author": "shellraining <shellraining@gmail.com>",
   "type": "module",
   "scripts": {
-    "build": "node scripts/fontmin.js && vitepress build",
+    "build": "node --no-deprecation scripts/fontmin.js && vitepress build",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
     "debug": "vitepress build && vitepress preview",
     "gen_hash": "node gallery/hashGenerator.js && taplo format gallery/diary.toml",
-    "fontmin": "node scripts/fontmin.js"
+    "fontmin": "node --no-deprecation scripts/fontmin.js"
   },
   "dependencies": {
     "@vueuse/core": "^10.11.1",

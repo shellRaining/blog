@@ -1,10 +1,11 @@
 import Fontmin from "fontmin";
 import fs from "fs";
+import path from "path";
 import { glob } from "glob";
 
 const srcPath = "scripts/LXGWWenKaiScreen.ttf";
 const destPath = "public/font";
-const projectRoot = process.cwd(); // 假设脚本在项目根目录运行
+const projectRoot = process.cwd();
 
 function getAllFiles(patterns) {
   return patterns.flatMap((pattern) =>
@@ -35,11 +36,18 @@ const fontmin = new Fontmin()
   .use(Fontmin.ttf2woff2())
   .dest(destPath);
 
-fontmin.run(function (err, files, stream) {
+fontmin.run(function(err, files) {
   if (err) {
     console.error(err);
   } else {
     console.log("Font subset created successfully");
-    console.log(`Output files: ${files.map((f) => f.path).join(", ")}`);
+
+    files.forEach((file) => {
+      if (path.extname(file.path) !== ".woff2") {
+        fs.unlinkSync(file.path);
+      } else {
+        console.log(`Output file: ${file.path}`);
+      }
+    });
   }
 });
