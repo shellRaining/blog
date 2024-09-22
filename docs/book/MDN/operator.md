@@ -22,23 +22,15 @@ await expression;
 >
 > 即使异步函数的返回值看起来像是被包装在了一个 `Promise.resolve` 中，但它们不是等价的。
 >
-> 如果给定的值是一个 promise，异步函数会返回一个不同的*引用*，而 `Promise.resolve` 会返回相同的引用
+> 如果给定的值是一个 promise，异步函数会返回一个不同的*引用*，而 `Promise.resolve` 会返回相同的引用，具体原因可以看 Promise.resolve 的实现原理
 >
 > ```javascript
-> const p = new Promise((res, rej) => {
->   res(1);
-> });
->
-> async function asyncReturn() {
->   return p;
-> }
->
-> function basicReturn() {
->   return Promise.resolve(p);
-> }
+> const p = new Promise((res, rej) => { res(1) });
+>   async function asyncReturn() { return p }
+> function basicReturn() { return Promise.resolve(p) }
 >
 > console.log(p === basicReturn()); // true
-> console.log(p === asyncReturn()); // false
+>   console.log(p === asyncReturn()); // false
 > ```
 
 ## import.meta
@@ -85,3 +77,28 @@ button.onclick = () => void doSomething();
 >
 > - 返回 `true` (或任何真值): 不会阻止默认行为。
 > - 返回 `false`: 会阻止默认行为(相当于调用 `event.preventDefault()`)。
+
+## new
+
+老生常谈的东西，new 操作符在调用时发生了什么？
+
+1. 首先创建一个简单的 JavaScript 空对象
+2. 根据 new 后面跟的变量类型分别决定逻辑
+   1. 如果不是函数，直接 throw 一个 TypeError
+   2. 如果是函数，且函数的 prototype 是对象，那么将前面创建的对象的 `[[Prototype]]` 指向构造函数的 `prototype` 属性
+   3. 否则其 `[[Prototype]]` 为 `Object.prototype`
+3. 将 this 绑定到前面创建的对象上，执行构造函数
+4. 如果构造函数返回了对象，那么该返回的对象成为整个 `new` 表达式的结果。否则，如果构造函数未返回任何值或返回了一个原始值，则返回我们前面新建的对象
+
+那么我们是否可以按照上述的规则来实现一个 new 函数？
+
+```javascript
+function myNew(ctor, ...args) {
+  if (typeof ctor !== "function") throw new TypeError("");
+  const obj = Object.create(ctor.prototype); // 第一步和第二步
+  const res = ctor.apply(obj, args); // 第三步
+  if (res !== null && (typeof res === "object" || typeof res === "function")) return res;
+  else return obj;
+}
+```
+

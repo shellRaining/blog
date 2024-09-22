@@ -262,3 +262,77 @@ as="font" crossorigin="anonymous">
 > 字体在预加载的时候一定要记得加上 `as`，否则开发者工具会报错，剩下的两个属性似乎没有太大影响，但加上也不会有问题，没准还能更好的处理兼容性问题呢！
 
 这样做也有坏处，没有被打包进去的字会回退到浏览器默认字体，比如你在搜索框输入“萍”这个字，就可以看到回退的效果。实际上我们只打包了一千四百多个汉字，而生活中常用的汉字有四千多个，可以说还是有很大几率出问题的。
+
+## 文件压缩
+
+如果查看开发者面板，你会看到如下的网络请求面板
+
+![network_transfer](https://2f0f3db.webp.li/2024/09/network_transfer.png)
+
+一共传输了 637kb 的资源，但是后面还跟了一个 869kb 资源，这表示我们的网络请求使用到了压缩技术，解压后一共是 869kb 的占用，压缩率大概是 73%，可以说相当可观了，你为地球减少碳排放做出了重大的努力！（bushi）
+
+把网络面板的大请求行选项打开后，可以看到每个资源具体的压缩情况，比如我们的 HTML 资源，从 16.5kb 直接压到 4.6kb，点一下这个文件，查看可以接受的压缩方式为 `accept-encoding: gzip, deflate, br, zstd`，实际压缩方式为 `content-encoding: br`，这表示我们最终选用 `brotli` 格式来进行压缩
+
+至于具体如何开启压缩，你无须担心，vercel 已经替我们做了这个事情，在他们的文档中也有说明
+
+> Vercel's Edge Network regularly maintains a configuration file for the MIME types that will be compressed for both `gzip` and `brotli`:
+>
+> **Application MIME types**
+>
+> - `json`
+> - `javascript`
+> - `wasm`
+> - `...`
+>
+> **Font file types**
+>
+> - `otf`
+>
+> **Image file types**
+>
+> - `svg+xml`
+> - `bmp`
+>
+> **Text file types**
+>
+> - `css`
+> - `javascript`
+> - `markdown`
+> - `...`
+
+> [!tip]
+>
+> 虽然 `gzip` 已经存在了相当长的时间，但 `brotli` 是由 Google 开发的一种较新的压缩算法，尤其适用于文本压缩。如果你的客户端支持 [brotli](https://en.wikipedia.org/wiki/Brotli)，建议优先于 [gzip](https://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77)，因为：
+>
+> - `brotli` 压缩的 JavaScript 文件比 `gzip` 小 14%
+>
+> - HTML 文件比 `gzip` 小 21%
+>
+> - CSS 文件比 `gzip` 小 17%
+>
+> `brotli` 相对于 `gzip` 的优势在于它使用了客户端和服务器端共有的常见关键词字典，从而实现了更好的压缩比。
+
+上面都说的是文件压缩，字体压缩也很重要，我们这里采用了先进的 woff2 格式来储存字体，他自身已经做了很好的压缩，无需采用其他压缩算法了！
+
+## 网络协议
+
+这算是一个小尾巴，前面我们对数据和代码做了很多的文章，也不能忽视信息传送的途径，打开开发者工具的网络面板，勾选协议栏，可以看到多种协议，比如 h2（http2 的缩写） 或者 http1.1，我见过的网站大多开启了 http2，这是因为提升真的很大，比对如下：
+
+http1.1 的网络请求概览
+
+![vite_http1](https://2f0f3db.webp.li/2024/09/vite_http1.png)
+
+http2 的网络请求概览
+
+![vite_http2](https://2f0f3db.webp.li/2024/09/vite_http2.png)
+
+这里能看到 http1.1 的概览有六行请求的柱子，而 http2 只有一行，这就是他们的重要差别，详情可以看 [http 版本介绍](../../book/MDN/http_version.md)，在启用了 http2 后，不仅传输数据变少了，而且速度更快！
+
+## 随笔尾声
+
+从上面一系列的措施来看，我们进行性能优化主要通过以下几个方面
+
+1. 文件大小，极力采用压缩比好的算法，并对源代码进行最小化，上传文件前也通过在线平台进行压缩
+2. 加载时机，避免因网络请求阻塞网页，规定好高优先级的加载文件（如 HTML CSS 和框架 JavaScript chunk），低优先级（一些无关紧要的 icon 和需要预加载的博文信息）。还有利用 JavaScript 的视口交叉 api 进行懒加载
+3. 文件拆分，有时候文件实在太大了，就通过动态引入的方式来引导 vite 进行代码拆分，通过网络的并发请求来降低大文件影响
+4. 服务端渲染，这是提升最大的一个点，使用前 lightinghouse 只有六七十分，但是使用后直接能拉满！
