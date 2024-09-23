@@ -1,32 +1,37 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { ImgDiaryItem } from "../loader/gallery.data";
+import { ImgDiaryItem } from "../loader/gallery.data.ts";
 
-const { open, blobUrl, imgDiaryItem } = defineProps<{
+const props = defineProps<{
   open: boolean;
   blobUrl?: string;
   imgDiaryItem: ImgDiaryItem;
 }>();
 
 const emit = defineEmits(["close"]);
-const paragraphs = computed(() => imgDiaryItem.note.split("\n"));
 </script>
 
 <template>
   <Transition name="flyout">
-    <section v-if="open" class="popup-overlay" @click="$emit('close')">
+    <section v-if="props.open" class="popup-overlay" @click="$emit('close')">
       <article class="popup-content" @click.stop>
         <header>
           <h2>{{ imgDiaryItem.title }}</h2>
         </header>
         <main>
           <img
-            :src="blobUrl ?? imgDiaryItem.image_url"
+            :src="props.blobUrl ?? imgDiaryItem.image_url"
             :alt="imgDiaryItem.title"
             class="left-side"
           />
           <div class="right-side">
-            <p class="passage" v-for="p in paragraphs" :key="p">{{ p }}</p>
+            <p
+              class="passage"
+              v-for="p in props.imgDiaryItem.note?.split('\n')"
+              :key="p"
+            >
+              {{ p }}
+            </p>
           </div>
         </main>
       </article>
