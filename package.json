@@ -23,6 +23,8 @@
     "@iarna/toml": "^2.2.5",
     "@types/dom-view-transitions": "^1.0.5",
     "@types/node": "latest",
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "@vite-pwa/vitepress": "^0.5.3",
     "axios": "^1.7.7",
     "fontmin": "^1.1.0",
     "glob": "^11.0.0",
