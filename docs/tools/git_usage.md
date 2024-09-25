@@ -181,3 +181,27 @@ git ls-files -v | grep '^h'
 有时候很想要在一个分支的不同时间段进行时间旅行，来查看代码的工作状态，但是仅凭借 checkout 命令还是感觉力不从心，可以考虑使用 reflog 来进行从老分支到新分支的履行。
 
 但这也许意味着我们必须先从最新的分支跳转到一个最近的可能的分支，然后慢慢的向老分支跳转，直到找到想要的分支后使用 reflog 重新跳回
+
+## 大文件存储
+
+我在给我的博客添加落霞孤鹜字体时，需要加入一个大小为 20MB 左右的 ttf 文件，但 git 对大文件管理并不是很友好，因此考虑引入 git lfs
+
+1. 首先是下载 git-lfs 工具
+2. 然后再我们的博客仓库根目录初始化 git lfs
+3. 指定需要用 git lfs 管理的文件类型
+4. 这时候可以看到多了一个 `.gitattributes` 文件，我们追踪并提交它和要上传的大文件即可
+
+```bash
+brew install git-lfs
+git lfs install
+git lfs track "*.ttf"
+git add .
+git commit -m "配置 Git LFS 追踪字体文件"
+```
+
+上面提到的是上传的步骤，如果要在其他设备克隆这个大文件，也需要一些额外的操作（初始化和单独拉取大文件）
+
+```bash
+git lfs install
+git lfs pull
+```
