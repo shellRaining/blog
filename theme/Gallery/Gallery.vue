@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { data, ImgDiaryItem } from "../loader/gallery.data.ts";
 import Album from "./Album.vue";
 import ImagePopup from "./ImagePopup.vue";
-import GalleryHead from "./GalleryHead.vue";
 
 const visibleAlbums = ref<Set<string>>(new Set());
 const mainEl = ref<HTMLElement | null>();
@@ -77,7 +76,18 @@ onMounted(() => {
 
 <template>
   <main ref="mainEl">
-    <GalleryHead />
+    <h1>Gallery</h1>
+    <section class="card desc-box">
+      <p>
+        这是我从 pixiv
+        收集到的画片，我从其中挑选出了我认为最优雅的一些放在这里，他们就像是一个笔记本的一页，每张都承载着我一段思绪和旧念。若你感兴趣，可以依次点开图片欣赏，再次点击可以打开更大的窗口。若心情不佳，你也可以在旁边的文本框记录自己的心绪……
+      </p>
+      <p>
+        我把他们按照时间排列，用一种我感觉还算比较优雅的方式组织起来，陈列在这里。但还存在一些问题，如果一个月的画片过多或者过少，都会造成布局的不平衡，如果你有什么好主意，可以在
+        <a href="https://github.com/shellRaining/blog/issues">issue</a>
+        中反馈。
+      </p>
+    </section>
     <section
       v-for="(album, albumName) in albums"
       class="card"
@@ -101,14 +111,32 @@ onMounted(() => {
 </template>
 
 <style scoped>
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 3rem;
+}
+
+.desc-box {
+  text-indent: 2em;
+
+  & > p + p {
+    margin-top: 1rem;
+  }
+}
+
 .card {
   background-color: var(--sr-c-bg-section);
-  padding: 1rem;
-  margin: 1rem;
+  padding: 1.5rem;
   transition: box-shadow 0.3s;
 
   &:hover {
     box-shadow: var(--sr-card-shadow);
+  }
+
+  & + & {
+    margin-top: 2rem;
   }
 }
 
@@ -120,6 +148,6 @@ h2 {
 
 main {
   margin: 20px auto;
-  max-width: 48rem;
+  max-width: 64rem;
 }
 </style>

@@ -137,6 +137,7 @@ blurhash = "UGQmCz?v_M_4_M%M?FxZS$ofRQM|_2jFt6E2"
 title = "会议，要迟到了吧！"
 date = 2024-09-22
 image_url = "https://2f0f3db.webp.li/2024/09/92999806_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/92999806"
 note = """
 不是什么会议……是双选会，深感现在就业之寒冬，简历收了一沓又一沓，能有多少回音呢？
 期间有一个公司的 HR（也许是吧），用很浓的说教语气来劝诫我，说了一堆我感觉没有用的东西，不过有一个确实很能让我反思，你打算干前端干一辈子吗？
@@ -151,8 +152,45 @@ blurhash = "UMQ9l=-S_4~q^+DhR*%hcFRl?bxv?b-;IARP"
 title = "归路"
 date = 2024-09-23
 image_url = "https://2f0f3db.webp.li/2024/09/122532774_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/122532774"
 note = """
 今天我们部门和 AIoT 的新 BOSS 吃饭，饭局上还真是窘迫啊！如果我没有延毕，兴许也不会有今天的样子。
 但这条路还是我自己选择的，这份苦还是要吃下去，而且以此为鉴，不要再吃第二次苦，课内的东西还是要抓紧！"""
 keywords = ["月亮", "路灯"]
 blurhash = "U44Vg=D*Mwoz8}xVtRWD8wxtjsa__LI@M|ax"
+
+[[entry]]
+title = "亚特兰蒂斯"
+date = 2024-09-24
+image_url = "https://2f0f3db.webp.li/2024/09/115642123_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/115642123"
+note = """
+神功大成，高强度面试四场（，回宿舍以后感觉是真的累，一点也不想动。
+第一场是快手，问的问题说实话有点简单……甚至可以说没有什么技术含量，都是我最讨厌的八股文，难道你们的前端都是这么做的吗
+第二场面试拓竹，那个面试官的气质是真的挺有字节范的，不过我不知道拓竹和字节的关系，也许是一个子公司？考的笔试题也是很有意思，第一个就是简单的 sleep 实现，第二个是函数调用栈最大容量，第三个是实现开方操作，都很有新意。而且对我的个人项目挖的很深，有字节一面的感觉了（笑）
+第三场是心芯相栖，还挺有意思的一个老哥，创业的内容也很有想法
+第四场是字节……也是我感觉最难绷的一场面试，也许是我挑的面试时间太晚了，耽误到他的美好时光（雾），感觉有点上压力
+流水账的倾诉一下"""
+keywords = ["水", "建筑"]
+blurhash = "UED0+QRp00?G_M8_8{_3X9V?slx^?IogNHbc"
+
+[[entry]]
+title = "紫藤萝"
+date = 2024-09-26
+image_url = "https://2f0f3db.webp.li/2024/09/108613290_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/108613290"
+note = "递交了离职申请，整个流程和另一位同学相比显得急促不少，前一天递交，后一天就要离开，互联网行业也许就是这么残酷吧！"
+keywords = ["紫藤萝"]
+blurhash = "URNwBL~p-=DkaBV_IXt59FM|j=t7?boct3j^"
+
+[[entry]]
+title = "落日"
+date = 2024-09-26
+image_url = "https://2f0f3db.webp.li/2024/09/202409261906298.png"
+origin_url = "https://www.pixiv.net/artworks/122673030"
+note = """
+离职的所有事情都办完了，交还桔卡，清理个人数据，还有和学长学姐道别。这次走的实在是太匆忙了，没能好好的感谢他们，略感遗憾。
+回去的时候将近五点，本来是一个阴翳的天气，但就在这时，还有有一小片阳光漏出了头，给今天增添了一点亮色。
+那么，离职之后的我，会选择哪条路呢？"""
+keywords = ["落日", "背影"]
+blurhash = "UQH_D99Z0Ks,.TITr:WCV|Rit6R+R+ocxuWA"

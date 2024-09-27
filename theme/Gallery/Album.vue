@@ -55,19 +55,25 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 一个 card 长 64rem，其中 padding 占用 3rem
+*  内部最多有 31 张卡片，每个卡片间隔 0.5rem，故间隔共有 15rem
+*  每个图片的长度为一个单位，该单位长为 1.5rem
+*/
+
 .items {
-  --index: calc(1vw + 1vh);
+  --index: 1.5rem;
   --transition: cubic-bezier(0.1, 0.7, 0, 1);
-  margin: 0 2rem;
+  margin: 0 1rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   perspective: calc(var(--index) * 60);
-  min-height: calc(var(--index) * 12);
+  min-height: calc(var(--index) * 10);
 
   .item {
-    width: calc(var(--index) * 3);
-    height: calc(var(--index) * 12);
+    box-sizing: content-box;
+    width: var(--index);
+    height: calc(var(--index) * 9);
     object-fit: cover;
     cursor: pointer;
     object-fit: cover;
@@ -139,20 +145,14 @@ onMounted(() => {
   }
 }
 
-@media (min-width: 1440px) {
-  .items {
-    --index: 1vw;
-  }
-}
-
 @media (max-width: 480px) {
   .items {
-    --index: calc(2vw + 2vh);
+    --index: 1rem;
     flex-direction: column;
 
     .item {
       width: 80%;
-      height: calc(var(--index) * 3);
+      height: calc(var(--index) * 2);
       transition:
         transform 1.25s var(--transition),
         filter 3s var(--transition),
