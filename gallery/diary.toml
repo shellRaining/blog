@@ -194,3 +194,50 @@ note = """
 那么，离职之后的我，会选择哪条路呢？"""
 keywords = ["落日", "背影"]
 blurhash = "UQH_D99Z0Ks,.TITr:WCV|Rit6R+R+ocxuWA"
+
+[[entry]]
+title = "知世的宠溺"
+date = 2024-09-27
+image_url = "https://2f0f3db.webp.li/2024/10/1760296234202681417.jpeg"
+origin_url = "https://x.com/Ollll_nnn/status/1760296234202681417"
+note = "这是国庆节补充的一篇日记，百度的结果出来了，说是可以去，但是日薪只有贰佰，餐补也只有每天二十，说实话这不就是把人骗过去打白工嘛……正常人怎么会自降身价到这种份上"
+keywords = ["大道寺知世", "宠溺"]
+blurhash = "UoP%L#WC~q_2xuRjj[xu_3t7D%RjkCoft7Rj"
+
+[[entry]]
+title = "美好的一天"
+date = 2024-09-28
+image_url = "https://2f0f3db.webp.li/2024/10/1839269632148124043.jpeg"
+origin_url = "https://x.com/K_aohi/status/1839269632148124043"
+note = "发现叙事曲2可以通过流式传输在平板上玩，还挺不错的，很怀念里面的大学伊始的轻松愉悦，还有美好的经历"
+keywords = ["明媚"]
+blurhash = "U9QSeq001E%#-Y009?S~g+9XIFM{%}InVsV@"
+
+[[entry]]
+title = "放学后的情人节"
+date = 2024-09-29
+image_url = "https://2f0f3db.webp.li/2024/10/87755854_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/87755854"
+note = "和创业的那个大佬袒露了自己的忧虑之处，不过他没有回消息，又让我的焦虑更加一分……"
+keywords = ["情人节", "校园"]
+blurhash = "U%N9d-%L-;Vt~WxttQV@NLRjM|jYogjZaKWB"
+
+[[entry]]
+title = "我会梦见她"
+date = 2024-09-30
+image_url = "https://2f0f3db.webp.li/2024/10/1840315589551591583.jpeg"
+note = "今天还是回了消息，很高兴能有进展，算下来现在秋招已经落定了一些，但总体还不是令人满意，百度那边还是打算压价，字节那边给的又不是一个稳定的秋招岗位，而是一个实习以后转正的机会……不过这是不是冥冥中让我和初创有了交集呢？"
+keywords = ["梦幻"]
+blurhash = "UHQvqX%69$~q0FsoE7Ne0VI?M}SxEDNLnit3"
+
+[[entry]]
+title = "迎着柔和的光"
+date = 2024-10-01
+image_url = "https://2f0f3db.webp.li/2024/10/77785222_p0_master1200.jpg"
+origin_url = "https://www.pixiv.net/artworks/77785222"
+note = """
+国庆节也没有闲下来，更新了一天的插件，看 wakatime 一共写了六个小时，但实际上还有一些时间没有被记录下来，比如看文档或者出门思考，总之处理了一部分的 issue 和 PR，能让我暂时喘口气了……
+但还有一些阴影笼罩着，比如 Lua 的类型系统实在是太差了，使用 annotation 几乎完不成高难度的函数书写，相比 typescript 简直就是残废，所以后续我可能转向 rust 这种强类型语言的学习（因为有 rsvim 项目），确实是一个很大的挑战。
+"""
+keywords = ["柔光"]
+blurhash = "UCKmzx019YIo-.E3IVxusjxa?a-p~o-pxZIU"
