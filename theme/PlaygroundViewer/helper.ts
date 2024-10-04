@@ -1,4 +1,4 @@
-import { getFilenameFromPath, resolveRelativePath } from "../share/path.ts";
+import { getFilenameFromPath, resolveRelativePath } from "../share/path";
 
 export interface SrcMeta {
   name: string;

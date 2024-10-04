@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { ImgDiaryItem } from "../loader/gallery.data.ts";
+import { ImgDiaryItem } from "../loader/gallery.data";
 
 const props = defineProps<{
   open: boolean;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import dayjs from "dayjs";
-import { data, ImgDiaryItem } from "../loader/gallery.data.ts";
+import { data, ImgDiaryItem } from "../loader/gallery.data";
 import Album from "./Album.vue";
 import ImagePopup from "./ImagePopup.vue";
 

@@ -17,6 +17,9 @@
     "blurhash": "^2.0.5",
     "dayjs": "latest",
     "idb-keyval": "^6.2.1",
+    "markdown-it-mark": "^4.0.0",
+    "markdown-it-sub": "^2.0.0",
+    "markdown-it-sup": "^2.0.0",
     "viewerjs": "^1.11.6"
   },
   "devDependencies": {

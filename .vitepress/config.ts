@@ -1,6 +1,9 @@
 import { defineConfig } from "vitepress";
-import { injectVersions } from "./injectPageData.ts";
+import { injectVersions } from "./injectPageData";
 import { withPwa } from "@vite-pwa/vitepress";
+import markdownItMark from "markdown-it-mark";
+import markdownItSup from "markdown-it-sup";
+import markdownItSub from "markdown-it-sub";
 
 const APPEARANCE_KEY = "shellRaining-blog-theme";
 const fontPath = "/font/LXGWWenKaiScreen.woff2";
@@ -97,6 +100,13 @@ export default withPwa(
     },
     async transformPageData(pageData, ctx) {
       await injectVersions(pageData, ctx);
+    },
+    markdown: {
+      config(md) {
+        md.use(markdownItMark);
+        md.use(markdownItSub);
+        md.use(markdownItSup);
+      },
     },
   }),
 );

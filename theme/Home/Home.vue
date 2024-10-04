@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ContentData } from "vitepress";
-import { data } from "../loader/posts.data.ts";
+import { data } from "../loader/posts.data";
 import GroupedPostsCard from "./GroupedPostsCard.vue";
 import dayjs from "dayjs";
 
