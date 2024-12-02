@@ -98,6 +98,7 @@ export default withPwa(
     sitemap: {
       hostname: "https://shellraining.xyz",
     },
+    cleanUrls: true,
     async transformPageData(pageData, ctx) {
       await injectVersions(pageData, ctx);
     },
