@@ -38,6 +38,16 @@ export default defineConfig({
     [
       "link",
       {
+        rel: "sitemap",
+        type: "application/xml",
+        title: "Sitemap",
+        href: "/sitemap.xml",
+      },
+    ],
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    [
+      "link",
+      {
         rel: "preload",
         href: fontPath,
         type: "font/woff2",
