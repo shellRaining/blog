@@ -249,3 +249,50 @@ image_url = "https://2f0f3db.webp.li/2024/10/1841402748044214607.jpeg"
 note = "国庆假期的最后一天，现在总结来看，我只花了两天的时间来进行修整，剩下的时间能够好好安排起来，并且学到一门语言的基础知识，尚能饭否？"
 keywords = ["蓝玫瑰"]
 blurhash = "UUOgNl-;K5*0oer=-o%M?an$xZnNY6NKNHMx"
+
+[[entry]]
+title = "antique"
+date = 2024-12-10
+origin_url = "https://www.pixiv.net/artworks/72496509"
+image_url = "https://2f0f3db.webp.li/2024/12/202412100014533.png"
+note = "antique 的同时带有细微的 fragile"
+keywords = ["冷色", "洋装"]
+blurhash = "ULJuiYSL-:%M~q%MENM{j?tRW=flpING%2s:"
+
+[[entry]]
+title = "船帽"
+date = 2024-12-08
+origin_url = "https://www.pixiv.net/artworks/72596175"
+image_url = "https://2f0f3db.webp.li/2024/12/202412100007173.png"
+note = "船上寄托的是愁思吗？"
+keywords = ["忧郁", "典雅"]
+blurhash = "UNEf1oozIpxt~p?HkCWCIp?Ht7NGWXogRkt6"
+
+[[entry]]
+title = "大吉"
+date = 2024-12-09
+origin_url = "https://www.pixiv.net/artworks/72414258"
+image_url = "https://2f0f3db.webp.li/2024/12/202412092355349.png"
+note = "自从开始新的实习后，我就一直没有再写博客了，高强度的消耗自己的精力在一些 dirty work 上，虽说感悟很多，但是并没有多大的提升，因此下一份工作迫切的需要一些喘息的时间，沉淀也是必不可少的一环"
+keywords = ["新春"]
+blurhash = "UZNcj3My%$%2.lMxa5i_eTRksqWVWCS2Shnj"
+
+[[entry]]
+title = "花与少女"
+date = 2024-12-10
+origin_url = "https://www.pixiv.net/artworks/72810724"
+image_url = "https://2f0f3db.webp.li/2024/12/202412110017607.png"
+note = "画片一副春意盎然，但是今天可不是一个好天气（笑），整天都是阴天，下午和晚上还下了雨，裹着风衣回去的，路上颇有二郎听到冬之旅的感受。今天还试水了 Minecraft，成功迈入铁器时代！"
+keywords = ["春", "少女"]
+blurhash = "UQNc+[.7u5-;t+S1sDxu~qofxYRk-:ofn$V["
+
+[[entry]]
+title = "papercut"
+date = 2024-12-11
+origin_url = "https://www.pixiv.net/artworks/72744399"
+image_url = "https://2f0f3db.webp.li/2024/12/202412120015861.png"
+note = """
+挺有意思的一张画片，少女是从一张白纸上裁剪出来的，画师的创意非常棒！
+今天学到了计算机网络可靠数据传输原理，没想到 rdt 能够渐进式的逐步发展为抗损坏，抗丢包这样复杂的协议，不禁想到这样中思路能不能带到我们实际开发中，我是否也能规避（或者减少）复杂问题对我的影响呢？"""
+keywords = ["纸", "少女"]
+blurhash = "UGEV,0~qM_oz009FoyM{4-IUIU%M9Z-;%2sm"
