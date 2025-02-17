@@ -79,6 +79,7 @@ export default defineConfig({
     await injectVersions(pageData, ctx);
   },
   markdown: {
+    math: true,
     config(md) {
       md.use(markdownItMark);
       md.use(markdownItSub);
