@@ -20,20 +20,25 @@
     "markdown-it-mark": "^4.0.0",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
-    "viewerjs": "^1.11.7"
+    "viewerjs": "^1.11.7",
+    "vitepress": "^1.6.3"
   },
   "devDependencies": {
     "@iarna/toml": "^2.2.5",
     "@types/dom-view-transitions": "^1.0.5",
     "@types/node": "latest",
-    "axios": "^1.7.8",
+    "axios": "^1.7.9",
     "fontmin": "^1.1.0",
-    "glob": "^11.0.0",
+    "glob": "^11.0.1",
     "js-toml": "^1.0.1",
     "markdown-it-mathjax3": "^4.3.2",
     "sharp": "^0.33.5",
-    "typescript": "^5.7.2",
-    "vitepress": "latest",
+    "typescript": "^5.7.3",
     "vue": "latest"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
